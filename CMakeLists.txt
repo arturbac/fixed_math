@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(fixed_math)
 
-add_executable(fixed_math main.cpp)
+set( CMAKE_CXX_STANDARD 17 )
 
-install(TARGETS fixed_math RUNTIME DESTINATION bin)
+add_subdirectory( fixed_lib )
+add_subdirectory(table_gen)
