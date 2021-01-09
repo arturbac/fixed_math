@@ -269,6 +269,7 @@ namespace fixedmath
       {
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) + promote_to_double( rh );
       }
@@ -279,6 +280,7 @@ namespace fixedmath
       {
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return fixed_additioni(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -292,6 +294,7 @@ namespace fixedmath
     {
     static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
       return promoted_double_addition( rh, lh );
@@ -337,6 +340,7 @@ namespace fixedmath
       {
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) - promote_to_double( rh );
       }
@@ -347,6 +351,7 @@ namespace fixedmath
       {
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return fixed_substracti(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -359,6 +364,7 @@ namespace fixedmath
     {
     static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
       return promoted_double_substract( rh, lh );
@@ -400,6 +406,7 @@ namespace fixedmath
       {
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) * promote_to_double( rh );
       }
@@ -411,6 +418,7 @@ namespace fixedmath
       {
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return fixed_multiplyi(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -436,6 +444,7 @@ namespace fixedmath
     {
     static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
       return promoted_double_multiply( lh, rh );
@@ -486,8 +495,10 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t promoted_fixed_division( supported_type1 lh, supported_type2 rh ) noexcept
       {
+      //promote only one of arguments, doesnt allow using this function for ppromothing twu not fixed types
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return fixed_divisionf(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -497,8 +508,10 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr double promoted_double_division( supported_type1 lh, supported_type2 rh ) noexcept
       {
+      //promote only one of arguments, doesnt allow using this function for ppromothing twu not fixed types
       static_assert( is_arithemetic<supported_type1>{}
                   && is_arithemetic<supported_type2>{}
+                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) / promote_to_double( rh );
       }
@@ -522,6 +535,10 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto fixed_division(supported_type1 lh, supported_type2 rh ) noexcept
     {
+    static_assert( is_arithemetic<supported_type1>{}
+                && is_arithemetic<supported_type2>{}
+                && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+                            ,"Arguments must be supported arithmetic types");
     if constexpr( is_integral<supported_type2>::value )
       return fixed_division_by_scalar( lh, rh );
     else if constexpr ( is_double<supported_type1>::value || is_double<supported_type2>{} )
@@ -537,7 +554,7 @@ namespace fixedmath
 
   template<typename supported_type1, typename supported_type2>
   [[ gnu::const, gnu::always_inline ]]
-  constexpr auto operator / ( supported_type1 lh, supported_type2 rh ) noexcept 
+  constexpr auto operator / ( supported_type1 lh, supported_type2 rh ) noexcept
     { 
     return fixed_division(lh,rh);
     }
