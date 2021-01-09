@@ -140,6 +140,9 @@ namespace fixedmath
   template<typename supported_type>
   inline fixed_t & operator /= ( fixed_t & lh, supported_type rh ) noexcept;
   
+  template<typename supported_type1, typename supported_type2>
+  constexpr auto operator / ( supported_type1 lh, supported_type2 rh ) noexcept;
+  
   ///\returns square root
   fixed_t sqrt(fixed_t value) noexcept;
   

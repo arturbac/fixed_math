@@ -77,7 +77,7 @@ namespace fixedmath
     
     constexpr fixed_t & operator=( fixed_t const & ) = default;
     
-    constexpr fixed_t( fix_carrier_t const & value) : v{ value.v }{}
+    constexpr fixed_t( fix_carrier_t value) : v{ value.v }{}
     };
 
   template<typename supported_type>
