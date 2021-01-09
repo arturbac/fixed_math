@@ -127,15 +127,16 @@ namespace fixedmath
       auto it { std::lower_bound( std::begin(tan_table__), std::next(std::begin(tan_table__),128), value.v ) };
 
       fixed_internal index{ std::distance( std::begin(tan_table__), it ) };
-      if( (tan_tab(index)-value) >  ( value - tan_tab(index-1) ) )
+      if( index !=0 && (tan_tab(index)-value) >  ( value - tan_tab(index-1) ) )
         index = index -1;
-      std::cout << '[' << int(index) <<  ']' << '(' << tan_tab(index) << ')' << '(' << tan_tab(index-1) << ')';
       return as_fixed( fixed_internal(index) << 15);
       }
     else
       {
       auto it { std::lower_bound( std::next(std::begin(tan_table__),128), std::next(std::begin(tan_table__),256), value.v ) };
       fixed_internal index{ std::distance( std::begin(tan_table__), it ) };
+      if( index !=0 && (tan_tab(index)-value) >  ( value - tan_tab(index-1) ) )
+        index = index -1;
       return -128_fix + as_fixed( fixed_internal(index) << 15);
       }
 #else
