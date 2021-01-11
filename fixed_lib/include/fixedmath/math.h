@@ -51,13 +51,21 @@ namespace fixedmath
   {
   template<int digits>
   [[ gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal unsigned_shift_left( fixed_internal value ) noexcept
+  constexpr fixed_internal unsigned_shift_left_signed( fixed_internal value ) noexcept
     {
     using unsigned_internal = std::make_unsigned<fixed_internal>::type;
     return static_cast<fixed_internal>(
           (static_cast<unsigned_internal>( value ) << digits)
           | (static_cast<unsigned_internal>( value ) & ( unsigned_internal(1) << 63u))
       );
+    }
+  template<int digits>
+  [[ gnu::const, gnu::always_inline ]]
+  constexpr fixed_internal unsigned_shift_left_unsigned( fixed_internal value ) noexcept
+    {
+    using unsigned_internal = std::make_unsigned<fixed_internal>::type;
+    return static_cast<fixed_internal>(
+          (static_cast<unsigned_internal>( value ) << digits));
     }
   }
   
@@ -69,9 +77,14 @@ namespace fixedmath
   constexpr fixed_t integral_to_fixed(integral_type value) noexcept
     { 
     static_assert( is_integral<integral_type>::value,"Must be integral type");
-    if( fixed_likely(value < limits__::max_integral() && 
-                     value > limits__::min_integral()) ) 
-        return fix_carrier_t{unsigned_shift_left<16>(value)};
+    if( fixed_likely(cxx20::cmp_less(value, limits__::max_integral()) && 
+                     cxx20::cmp_greater(value, limits__::min_integral()) ) ) 
+      {
+      if constexpr ( std::is_unsigned<integral_type>::value )
+        return fix_carrier_t{unsigned_shift_left_unsigned<16>(value)};
+      else
+        return fix_carrier_t{unsigned_shift_left_signed<16>(value)};
+      }
     return quiet_NaN_result();
     }
   
