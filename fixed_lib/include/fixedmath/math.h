@@ -447,6 +447,10 @@ namespace fixedmath
         return result;
       return limits__::quiet_NaN();
       }
+    template<typename integral_type>
+    [[ gnu::const, gnu::always_inline ]]
+    constexpr fixed_t fixed_multiply_scalar (integral_type lh, fixed_t rh ) noexcept
+      { return fixed_multiply_scalar(rh,lh); }
     }
     
   ///\brief returns result of addition of to arguments
