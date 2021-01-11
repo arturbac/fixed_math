@@ -57,6 +57,9 @@ namespace fixedmath
   template<typename integral_type>
   constexpr fixed_t integral_to_fixed(integral_type value) noexcept;
   
+  template<typename arithmethic_type>
+  constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept;
+  
   template<typename integral_type>
   constexpr integral_type fixed_to_integral ( fixed_t value ) noexcept;
   
@@ -78,6 +81,9 @@ namespace fixedmath
     constexpr fixed_t & operator=( fixed_t const & ) = default;
     
     constexpr fixed_t( fix_carrier_t value) : v{ value.v }{}
+    
+    template<typename arithemtic_type>
+    explicit constexpr fixed_t( arithemtic_type const & value );
     };
 
   template<typename supported_type>
@@ -134,6 +140,13 @@ namespace fixedmath
   ///\brief constructs fixed from raw value in internal format
   constexpr fixed_t as_fixed( fixed_internal carried ) { return fix_carrier_t{carried}; }
   
+  template<typename arithmethic_type>
+  constexpr fixed_t::fixed_t( arithmethic_type const & value )
+    : v{ arithmetic_to_fixed(value).v }
+    {
+    static_assert( is_arithemetic_and_not_fixed<arithmethic_type>{} );
+    }
+    
   [[ gnu::const, gnu::always_inline ]]
   inline bool constexpr
   operator != ( fixed_t l, fixed_t r ) noexcept { return l.v != r.v; }
