@@ -567,8 +567,11 @@ namespace fixedmath
   template<typename supported_type>
   [[ gnu::always_inline ]]
   inline fixed_t & operator /= ( fixed_t & lh, supported_type rh ) noexcept
-    { return fixed_division(lh,rh); } 
-
+    {
+    lh = fixed_division(lh,rh);
+    return lh;
+    }
+    
   template<typename supported_type1, typename supported_type2>
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto operator / ( supported_type1 lh, supported_type2 rh ) noexcept
