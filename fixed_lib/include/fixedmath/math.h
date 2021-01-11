@@ -626,6 +626,8 @@ namespace fixedmath
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t sqrt(fixed_t value) noexcept;
   
+  [[nodiscard,FIXEDMATH_PUBLIC]]
+  fixed_t hypot (fixed_t lh, fixed_t rh ) noexcept;
   //------------------------------------------------------------------------------------------------------
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t atan( fixed_t value ) noexcept;
