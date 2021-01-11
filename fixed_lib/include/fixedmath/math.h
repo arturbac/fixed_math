@@ -636,12 +636,16 @@ namespace fixedmath
 
   
   //------------------------------------------------------------------------------------------------------
+  uint16_t square_root_tab( uint8_t index ) noexcept;
+  
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t sqrt(fixed_t value) noexcept;
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t hypot (fixed_t lh, fixed_t rh ) noexcept;
   //------------------------------------------------------------------------------------------------------
+  fixed_t tan_tab( uint8_t index ) noexcept;
+  
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t atan( fixed_t value ) noexcept;
   
@@ -655,13 +659,28 @@ namespace std
 namespace fixedmath
 {
   //------------------------------------------------------------------------------------------------------
+  fixed_t sin_angle_tab( uint16_t degrees ) noexcept;
   
-    if( angle < 0 || angle > 360 )
-      angle = angle % 360;
-
+  inline fixed_t sin_angle(int32_t angle) noexcept
     {
-    if( angle < 0 || angle > 360 )
+    if(fixed_unlikely(angle < 0 || angle > 360) )
       angle = angle % 360;
+    return sin_angle_tab(angle);
+    }
+
+  //------------------------------------------------------------------------------------------------------
+  fixed_t cos_angle_tab( uint16_t degrees ) noexcept;
+  
+  inline fixed_t cos_angle(int32_t angle) noexcept
+    {
+    if( fixed_unlikely( angle < 0 || angle > 360) )
+      angle = angle % 360;
+    return sin_angle_tab(angle);
     }
     
+
+  
+  
+  
+
 }

@@ -121,8 +121,72 @@ static void gen_tan_tab()
   foot(out);
   }
   
+static void gen_cos_angle_tab()
+  {
+  std::string filename = OUTPUT_FILE_PATH "/cos_angle_table.h";
+  std::fstream out(filename, out.binary | out.trunc | out.out);
+  
+  head( out );
+  
+  
+  out <<"// cosine of full circle for input in degrees"<< endl;
+  out << "static std::array<fixed_internal, 361> cos_angle_table__ {"<< endl;
+
+  out << std::dec << endl;
+  for( int16_t i{0}; i != 361 ; i++ )
+    {
+    double rad { static_cast<double>(i) * phi / 180.  };
+    fixed_t ftab { floating_point_to_fixed( std::cos( rad ) ) };
+    fixed_internal tabvalue{ ftab.v };
+    out << "  " << tabvalue << "ll /* cos("<< rad <<") ~=" << ftab << "*/";
+    if( i != 360 )
+      out << ", ";
+    if( i != 0 && (i+1) % 2 == 0 )
+      out << endl;
+    }
+  out <<"};"<< endl;
+  out << endl;
+  out <<"fixed_t cos_angle_tab( uint16_t index ) noexcept"<< endl;
+  out <<"  {" << endl;
+  out <<"  return as_fixed(cos_angle_table__[index]);"<< endl;
+  out <<"  }"<< endl;
+  foot(out);
+  }
+static void gen_sin_angle_tab()
+  {
+  std::string filename = OUTPUT_FILE_PATH "/sin_angle_table.h";
+  std::fstream out(filename, out.binary | out.trunc | out.out);
+  
+  head( out );
+  
+  
+  out <<"// sine of full circle for input in degrees"<< endl;
+  out << "static std::array<fixed_internal, 361> sin_angle_table__ {"<< endl;
+
+  out << std::dec << endl;
+  for( int16_t i{0}; i != 361 ; i++ )
+    {
+    double rad { static_cast<double>(i) * phi / 180.  };
+    fixed_t ftab { floating_point_to_fixed( std::sin( rad ) ) };
+    fixed_internal tabvalue{ ftab.v };
+    out << "  " << tabvalue << "ll /* sin("<< rad <<") ~=" << ftab << "*/";
+    if( i != 360 )
+      out << ", ";
+    if( i != 0 && (i+1) % 2 == 0 )
+      out << endl;
+    }
+  out <<"};"<< endl;
+  out << endl;
+  out <<"fixed_t sin_angle_tab( uint16_t index ) noexcept"<< endl;
+  out <<"  {" << endl;
+  out <<"  return as_fixed(sin_angle_table__[index]);"<< endl;
+  out <<"  }"<< endl;
+  foot(out);
+  }
 int main(int argc, char **argv) 
 {
   gen_sqrt_tab();
   gen_tan_tab();
+  gen_cos_angle_tab();
+  gen_sin_angle_tab();
 }
