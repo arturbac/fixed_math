@@ -78,7 +78,7 @@ namespace fixedmath
     return as_fixed(value.v >> 4);
     }
 
-  fixed_t fhypot (fixed_t lh, fixed_t rh ) noexcept
+  fixed_t hypot (fixed_t lh, fixed_t rh ) noexcept
     {
     uint64_t u_l = lh.v; 
     uint64_t u_r = rh.v;
