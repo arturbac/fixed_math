@@ -72,3 +72,19 @@ namespace fixedmath
 {
 inline constexpr fixed_t quiet_NaN_result() noexcept { return std::numeric_limits<fixed_t>::quiet_NaN(); }
 }
+namespace std
+{
+template<>
+struct is_signed<fixedmath::fixed_t>
+  : public std::true_type
+  {};
+template<>
+struct is_unsigned<fixedmath::fixed_t>
+  : public std::false_type
+  {};
+template<>
+struct is_arithmetic<fixedmath::fixed_t>
+  : public std::true_type
+  {};
+  
+}

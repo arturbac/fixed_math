@@ -23,6 +23,8 @@
 #include <fixed_math.hpp>
 #include "square_root_table.h"
 #include "tan_table.h"
+#include "sin_angle_table.h"
+#include "cos_angle_table.h"
 #include <algorithm>
 #include <fixedmath/iostream.h>
 
@@ -119,7 +121,7 @@ namespace fixedmath
     }
     
   //binary search closest value in tan table
-  fixed_t atan( fixed_t value ) noexcept
+  fixed_t fatan( fixed_t value ) noexcept
     {
     if( value >= 0_fix )
       {

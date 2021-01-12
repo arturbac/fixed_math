@@ -654,8 +654,10 @@ namespace fixedmath
   fixed_t tan_tab( uint8_t index ) noexcept;
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
-  fixed_t atan( fixed_t value ) noexcept;
+  fixed_t fatan( fixed_t value ) noexcept;
+  inline fixed_t atan( fixed_t value ) noexcept  { return fatan( value ) * fixtorad_r; }
   
+  fixed_t tan_angle( int32_t angle ) noexcept;
 }
 namespace std
 {

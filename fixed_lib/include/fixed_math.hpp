@@ -147,7 +147,10 @@ namespace fixedmath
   fixed_t sqrt(fixed_t value) noexcept;
   
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
-  fixed_t atan( fixed_t value ) noexcept;
+  fixed_t fatan( fixed_t value ) noexcept;
+  
+  ///\returns arc tan in radians
+  inline fixed_t atan( fixed_t value ) noexcept;
   
   ///\returns sine of \param angle specified in degrees
   inline fixed_t sin_angle(int32_t angle) noexcept;

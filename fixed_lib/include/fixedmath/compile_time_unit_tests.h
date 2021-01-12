@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "limits.h"
 #include "math.h"
 
 namespace fixedmath
@@ -36,6 +37,8 @@ namespace fixedmath
   static_assert( is_integral_t<uint32_t>::value ); static_assert( is_integral_t<uint32_t const &>::value );
   static_assert( is_integral_t<int16_t>::value ); static_assert( is_integral_t<int16_t const & >::value );
   static_assert( is_integral_t<int64_t>::value );
+  static_assert( std::is_signed<fixed_t>::value );
+  static_assert( std::is_arithmetic<fixed_t>::value );
   //------------------------------------------------------------------------------------------------------
   //
   // integral_to_fixed unit tests

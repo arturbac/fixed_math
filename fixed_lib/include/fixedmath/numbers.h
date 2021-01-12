@@ -15,6 +15,7 @@ namespace fixedmath
   inline constexpr fixed_t fixa270    = {as_fixed(17694720)};
   inline constexpr fixed_t fixa360    = {as_fixed(23592960)};
 
+  //fixed index to radians
   inline constexpr fixed_t fixtorad_r = {as_fixed(1608)};     /* 2pi/256 */
   inline constexpr fixed_t radtofix_r = {as_fixed(2670177)};  /* 256/2pi */
 }
