@@ -29,7 +29,10 @@ namespace fixedmath
 {
   inline std::ostream & operator << ( std::ostream & outstr, fixed_t src )
     {
-    outstr << std::fixed << std::setprecision( 16 ) << static_cast<double>( src );
+    if( src != std::numeric_limits<fixed_t>::quiet_NaN() )
+      outstr << std::fixed << std::setprecision( 16 ) << static_cast<double>( src );
+    else
+      outstr << "NaN";
     return outstr;
     }
 }
