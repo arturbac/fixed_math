@@ -156,7 +156,7 @@ namespace fixedmath
   inline fixed_t atan( fixed_t value ) noexcept;
   
   ///\returns sine of \param angle specified in degrees
-  inline fixed_t sin_angle(int32_t angle) noexcept;
+  constexpr fixed_t sin_angle(int32_t angle) noexcept;
   
   ///\returns cosine of \param angle specified in degrees
   inline fixed_t cos_angle(int32_t angle) noexcept;

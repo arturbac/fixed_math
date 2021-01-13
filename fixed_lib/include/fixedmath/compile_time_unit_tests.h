@@ -236,4 +236,48 @@ namespace fixedmath
   //
   static_assert_equal( (angle_to_radians(0)).v , (0_fix).v );
   static_assert_equal( (angle_to_radians(180)).v , (3.1415926536_fix).v );
+  static_assert_equal( (angle_to_radians(180)).v , phi.v );
+  static_assert_equal( (angle_to_radians(90)).v , (phi/2).v );
+  static_assert_equal( (angle_to_radians(45)).v , (phi/4).v );
+  //------------------------------------------------------------------------------------------------------
+  //
+  // sin
+  //
+  static_assert( sin( phi + phi/2 ) == -0.9998626708984375_fix );
+  static_assert( sin( phi + phi/4 ) == -0.7070922851562500_fix );
+  static_assert( sin( phi ) == 0_fix ) ;
+  static_assert( sin( phi /2 + phi/4 ) == 0.7071380615234375_fix ) ;
+  
+  static_assert( sin( phi/2_fix) == 0.9998779296875000_fix);
+  static_assert( sin( phi/4_fix) == 0.7071075439453125_fix);
+  static_assert( sin( phi/5_fix) == 0.5877838134765625_fix);
+  static_assert( sin( phi/8_fix) == 0.3826751708984375_fix);
+  static_assert( sin( phi/16_fix) == 0.1950836181640625_fix);
+  static_assert( sin( phi/16_fix) == 0.1950836181640625_fix);
+  static_assert( sin( phi/-8_fix) == -0.3826599121093750_fix);
+  static_assert( sin( phi/-5_fix) == -0.5877685546875000_fix);
+  static_assert( sin( phi/-4_fix) == -0.7070922851562500_fix);
+  static_assert( sin( phi/-2_fix) == -0.9998626708984375_fix);
+  
+  static_assert( sin( phi + phi + phi/2 ) == 0.9998779296875000_fix);
+  static_assert( sin( phi + phi + phi/4 ) == 0.7071075439453125_fix);
+  static_assert( sin( phi + phi ) == 0_fix);
+  static_assert( sin( phi + phi /2 + phi/4 ) == -0.7071228027343750_fix);
+  static_assert( sin( 2*phi + phi + phi/2 ) == -0.9998626708984375_fix);
+  static_assert( sin( 2*phi + phi + phi/4 ) == -0.7070922851562500_fix);
+  static_assert( sin( 2*phi + phi ) == 0_fix);
+  static_assert( sin( 2*phi + phi /2 + phi/4 ) == 0.7071380615234375_fix);
+  
+  static_assert( sin( -phi-phi /16 ) == 0.1950836181640625_fix );
+  static_assert( sin( -phi-phi /8 ) == 0.3826751708984375_fix );
+  static_assert( sin( -phi-phi /5 ) == 0.5877838134765625_fix );
+  static_assert( sin( -phi-phi /4 ) == 0.7071075439453125_fix );
+  static_assert( sin( -phi-phi /2 ) == 0.9998779296875000_fix );
+  
+  static_assert( sin( -6*phi + -95* phi / 180 ) == -0.9961090087890625_fix );
+  static_assert( sin( -4*phi + -95* phi / 180 ) == -0.9961090087890625_fix );
+  static_assert( sin( -2*phi + -95* phi / 180 ) == -0.9961090087890625_fix );
+  static_assert( sin( -95* phi / 180 ) == -0.9961090087890625_fix );
+  static_assert( sin( -90* phi / 180 ) == -0.9998626708984375_fix );
+  static_assert( sin( -85* phi / 180 ) == -0.9961242675781250_fix );
 }

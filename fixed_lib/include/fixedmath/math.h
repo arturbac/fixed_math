@@ -724,9 +724,84 @@ namespace std
 namespace fixedmath
 {
   //------------------------------------------------------------------------------------------------------
+  namespace
+    {
+      
+    constexpr int64_t fac( fixed_internal value )
+      {
+      fixed_internal result{1};
+      for( fixed_internal i = 2; i <= value; ++i )
+        result *= i;
+      return result;
+      }
+      
+    constexpr fixed_t inv_fac( fixed_internal value )
+      {
+      return 1_fix/fac(value);
+      }
+    }
+  /// 
+  //------------------------------------------------------------------------------------------------------
+  ///\returns sine range normalized into -phi/2 .. 3phi/2  for \param rad
+  constexpr fixed_t sin_range( fixed_t rad )
+    {
+    constexpr fixed_t phi2 { phi/2 };
+    constexpr fixed_t _2phi { 2*phi };
+    constexpr fixed_t _5phi2 { _2phi + phi2 };
+    
+    if( fixed_unlikely( rad < -phi2 || rad > phi+phi2 ) )
+      {
+      rad = as_fixed( ( phi2.v + rad.v) % _2phi.v - phi2.v );
+      if( fixed_unlikely( rad < -phi2 ) )
+        rad = as_fixed( rad.v + _2phi.v );
+      }
+
+    return rad;
+    }
+  
+  ///\returns sine of value in radians
+  /// Y = X - X^3/ 3! + X^5/ 5! - ... + (-1)^(n+1) * X^(2*n-1)/(2n-1)!
+  [[ gnu::const, gnu::always_inline ]]
+  constexpr fixed_t sin( fixed_t rad ) noexcept
+    {
+    rad = sin_range(rad);
+      
+    // on arm64 condition is compiled as  substraction with csel instruction without jump
+    //         mov     w9, #9279
+    //         movk    w9, #3, lsl #16
+    //         cmp     x0, x8
+    //         sub     x9, x9, x0
+    //         csel    x9, x9, x0, gt
+    if(fixed_unlikely( rad > phi/2) )
+      rad = phi - rad;
+    
+    fixed_internal rad2 { (rad.v * rad.v) >> 16 };
+    fixed_internal rad3 { (rad2 * rad.v) >> 16 };
+    fixed_internal rad5 { (rad3 * rad2) >> 16 };
+    fixed_internal rad7 { (rad5 * rad2) >> 16 };
+    fixed_internal tay3 { (rad3 * inv_fac(3).v) >> 16 };
+    fixed_internal tay5 { (rad5 * inv_fac(5).v) >> 16 };
+    fixed_internal tay7 { (rad7 * inv_fac(7).v) >> 16 };
+    return as_fixed( rad.v - tay3 + tay5 - tay7 );
+    }
+}
+namespace std
+{
+  using fixedmath::sin;
+}
+namespace fixedmath
+{
+  //------------------------------------------------------------------------------------------------------
+  constexpr fixed_t sin_angle( int angle ) noexcept
+    {
+    if(fixed_unlikely(angle <= -90 || angle >= 270) )
+      angle = angle % 180;
+    return sin( angle * (fixedmath::phi / 180) );
+    }
+    
   fixed_t sin_angle_tab( uint16_t degrees ) noexcept;
   
-  inline fixed_t sin_angle(int32_t angle) noexcept
+  inline fixed_t sin_angle_aprox(int32_t angle) noexcept
     {
     if(fixed_unlikely(angle < 0 || angle > 360) )
       angle = angle % 360;
@@ -736,7 +811,7 @@ namespace fixedmath
   //------------------------------------------------------------------------------------------------------
   fixed_t cos_angle_tab( uint16_t degrees ) noexcept;
   
-  inline fixed_t cos_angle(int32_t angle) noexcept
+  inline fixed_t cos_angle_aprox(int32_t angle) noexcept
     {
     if( fixed_unlikely( angle < 0 || angle > 360) )
       angle = angle % 360;
