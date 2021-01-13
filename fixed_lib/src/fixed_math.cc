@@ -63,7 +63,7 @@ namespace fixedmath
       }
     };
     
-  fixed_t sqrt(fixed_t value) noexcept
+  fixed_t sqrt_tab(fixed_t value) noexcept
     {
     if( fixed_unlikely(value <= 0_fix) ) 
       {

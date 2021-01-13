@@ -144,8 +144,8 @@ namespace fixedmath
   constexpr auto operator / ( supported_type1 lh, supported_type2 rh ) noexcept;
   
   ///\returns square root
-  fixed_t sqrt(fixed_t value) noexcept;
-  
+  constexpr fixed_t sqrt(fixed_t value) noexcept;
+  fixed_t sqrt_tab(fixed_t value) noexcept;
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
   fixed_t fatan( fixed_t value ) noexcept;
   

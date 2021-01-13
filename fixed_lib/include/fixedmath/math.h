@@ -646,7 +646,59 @@ namespace fixedmath
   uint16_t square_root_tab( uint8_t index ) noexcept;
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
-  fixed_t sqrt(fixed_t value) noexcept;
+  fixed_t sqrt_tab(fixed_t value) noexcept;
+  
+  namespace 
+    {
+    ///\returns the highest power of 4 that is less than or equal to \param value
+    constexpr fixed_internal highest_pwr4_clz( fixed_internal value )
+      {
+      if( fixed_likely( value != 0 ) )
+        {
+        int clz{ cxx20::countl_zero( value ) };
+        
+        clz = (64 - clz);
+        if( (clz & 1) == 0 )
+          clz -= 1;
+
+        return 1ll << (clz-1);
+        }
+      return 0;
+      }
+      
+    constexpr fixed_internal highest_pwr4( fixed_internal value )
+      {
+      // one starts at the highest power of four <= than the argument.
+      fixed_internal pwr4 { 1ll << 62 }; // second-to-top bit set
+      
+      while (pwr4 > value)
+        pwr4 >>= 2;
+      return pwr4;
+      }
+    }
+  ///\brief Square root by abacus algorithm
+  constexpr fixed_t sqrt( fixed_t value ) noexcept
+    {
+    if( fixed_unlikely(value.v < 0 || value.v >= (1ll<<48)) )
+      return std::numeric_limits<fixed_t>::quiet_NaN();
+
+    value.v <<= 16;
+    
+    fixed_internal pwr4 { highest_pwr4_clz(value.v) };
+    
+    fixed_internal result{};
+    while( pwr4 != 0 )
+      {
+      if( value.v >= ( result + pwr4 ) )
+        {
+        value.v -= result + pwr4;
+        result += pwr4 << 1;
+        }
+      result >>= 1;
+      pwr4 >>= 2;
+      }
+    return as_fixed(result);
+    }
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t hypot (fixed_t lh, fixed_t rh ) noexcept;
