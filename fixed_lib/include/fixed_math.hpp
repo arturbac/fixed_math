@@ -149,6 +149,13 @@ namespace fixedmath
   ///\returns aproxymated precalculated square root
   fixed_t sqrt_aprox(fixed_t value) noexcept;
   
+  ///\returns sine of \param rad in radians
+  /// Y = X - X^3/ 3! + X^5/ 5! - ... + (-1)^(n+1) * X^(2*n-1)/(2n-1)!
+  constexpr fixed_t sin( fixed_t rad ) noexcept;
+  
+  ///\returns cosine of value in radians
+  constexpr fixed_t cos( fixed_t rad ) noexcept;
+  
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
   fixed_t fatan( fixed_t value ) noexcept;
   
