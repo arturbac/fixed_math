@@ -63,7 +63,7 @@ namespace fixedmath
       }
     };
     
-  fixed_t sqrt_tab(fixed_t value) noexcept
+  fixed_t sqrt_aprox(fixed_t value) noexcept
     {
     if( fixed_unlikely(value <= 0_fix) ) 
       {
@@ -80,7 +80,7 @@ namespace fixedmath
     return as_fixed(value.v >> 4);
     }
 
-  fixed_t hypot (fixed_t lh, fixed_t rh ) noexcept
+  fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept
     {
     uint64_t u_l = lh.v; 
     uint64_t u_r = rh.v;

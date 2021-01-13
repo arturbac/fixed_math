@@ -646,11 +646,12 @@ namespace fixedmath
   uint16_t square_root_tab( uint8_t index ) noexcept;
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
-  fixed_t sqrt_tab(fixed_t value) noexcept;
+  fixed_t sqrt_aprox(fixed_t value) noexcept;
   
   namespace 
     {
     ///\returns the highest power of 4 that is less than or equal to \param value
+    [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_internal highest_pwr4_clz( fixed_internal value )
       {
       if( fixed_likely( value != 0 ) )
@@ -666,6 +667,7 @@ namespace fixedmath
       return 0;
       }
       
+    [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_internal highest_pwr4( fixed_internal value )
       {
       // one starts at the highest power of four <= than the argument.
@@ -676,7 +678,9 @@ namespace fixedmath
       return pwr4;
       }
     }
+    
   ///\brief Square root by abacus algorithm
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t sqrt( fixed_t value ) noexcept
     {
     if( fixed_unlikely(value.v < 0 || value.v >= (1ll<<48)) )
@@ -701,7 +705,7 @@ namespace fixedmath
     }
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
-  fixed_t hypot (fixed_t lh, fixed_t rh ) noexcept;
+  fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept;
   //------------------------------------------------------------------------------------------------------
   fixed_t tan_tab( uint8_t index ) noexcept;
   

@@ -145,7 +145,10 @@ namespace fixedmath
   
   ///\returns square root
   constexpr fixed_t sqrt(fixed_t value) noexcept;
-  fixed_t sqrt_tab(fixed_t value) noexcept;
+  
+  ///\returns aproxymated precalculated square root
+  fixed_t sqrt_aprox(fixed_t value) noexcept;
+  
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
   fixed_t fatan( fixed_t value ) noexcept;
   
