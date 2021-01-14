@@ -721,6 +721,7 @@ namespace fixedmath
 namespace std
 {
   using fixedmath::sqrt;
+  using fixedmath::hypot;
 }
 
 namespace fixedmath
