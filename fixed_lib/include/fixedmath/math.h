@@ -921,6 +921,7 @@ namespace fixedmath
       fixed_internal x7 { (x5 * x2) >> 16 };
       fixed_internal x9 { (x7 * x2) >> 16 };
       fixed_internal x11 { (x9 * x2) >> 16 };
+      
       return as_fixed( x.v - x3/3 + x5/5 - x7/7 + x9/9 - x11/11);
       }
     else
@@ -933,6 +934,50 @@ namespace std
 }
 namespace fixedmath
 {
+  namespace 
+    {
+    // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
+    constexpr fixed_t asin_unchecked( fixed_t x ) noexcept
+      {
+      fixed_internal x2 { (x.v * x.v) >> 16 };
+      fixed_internal x3 { (x2 * x.v) >> 16 };
+      fixed_internal x5 { (x3 * x2) >> 16 };
+      fixed_internal x7 { (x5 * x2) >> 16 };
+      fixed_internal x9 { (x7 * x2) >> 16 };
+      
+      fixed_internal tayl { x.v + x3/6 + 3*x5/40 + 5*x7/112 + 35*x9/1152  };
+      if(fixed_likely( x > 0.5_fix || x < -0.5_fix ) )
+        {
+        fixed_internal x11 { (x9 * x2) >> 16 };
+        fixed_internal x13 { (x11 * x2) >> 16 };
+        fixed_internal x15 { (x13 * x2) >> 16 };
+        fixed_internal x17 { (x15 * x2) >> 16 };
+        tayl += 63*x11/2816 + 231*x13/13312 + 143*x15/10240 + 6435*x17/557056;
+        }
+      return as_fixed( tayl );
+      }
+    }
+  //------------------------------------------------------------------------------------------------------
+  // asin |X| <= 1
+  // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
+  constexpr fixed_t asin( fixed_t x ) noexcept
+    {
+    if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
+      return asin_unchecked(x);
+    else
+      return limits__::quiet_NaN();
+    }
+  //------------------------------------------------------------------------------------------------------
+  // acos |X| <= 1
+  // pi/2 - X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
+  constexpr fixed_t acos( fixed_t x ) noexcept
+    {
+    constexpr fixed_t phi2 { phi/2 };
+    if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
+      return as_fixed( phi2.v - asin_unchecked(x).v );
+    else
+      return limits__::quiet_NaN();
+    }
   //------------------------------------------------------------------------------------------------------
   // compat with old lib function
   constexpr fixed_t atan_index( fixed_t value ) noexcept

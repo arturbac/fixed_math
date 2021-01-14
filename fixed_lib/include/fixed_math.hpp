@@ -158,6 +158,16 @@ namespace fixedmath
   // Y = X + X^3/3 + 2x^5/15 + 51x^7/945 + 62x^9/2835 + 1382*x^11/155925
   constexpr fixed_t tan( fixed_t rad ) noexcept;
   
+  ///\returns arcus sine
+  // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
+  ///\warning valid range < -1 .. 1 >
+  constexpr fixed_t asin( fixed_t x ) noexcept;
+  
+  ///\returns arcus sine
+  // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
+  ///\warning valid range < -1 .. 1 >
+  constexpr fixed_t acos( fixed_t x ) noexcept;
+  
   ///\returns arcus tangent of \param x
   // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
   ///\warning valid range < -1 .. 1 >
