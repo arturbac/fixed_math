@@ -146,9 +146,6 @@ namespace fixedmath
   ///\returns square root
   constexpr fixed_t sqrt(fixed_t value) noexcept;
   
-  ///\returns aproxymated precalculated square root
-  fixed_t sqrt_aprox(fixed_t value) noexcept;
-  
   ///\returns sine of \param rad in radians
   /// Y = X - X^3/ 3! + X^5/ 5! - ... + (-1)^(n+1) * X^(2*n-1)/(2n-1)!
   constexpr fixed_t sin( fixed_t rad ) noexcept;
@@ -167,14 +164,14 @@ namespace fixedmath
   constexpr fixed_t atan( fixed_t x ) noexcept;
   
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
-  fixed_t fatan( fixed_t value ) noexcept;
-  
-  ///\returns arc tan in radians
-  inline fixed_t atan_aprox( fixed_t value ) noexcept;
+  constexpr fixed_t atan_index( fixed_t value ) noexcept;
   
   ///\returns sine of \param angle specified in degrees
   constexpr fixed_t sin_angle(int32_t angle) noexcept;
   
   ///\returns cosine of \param angle specified in degrees
-  inline fixed_t cos_angle(int32_t angle) noexcept;
+  constexpr fixed_t cos_angle(int32_t angle) noexcept;
+  
+  ///\returns tangent of \param angle specified in degrees
+  constexpr fixed_t tan_angle( int32_t angle ) noexcept;
 }

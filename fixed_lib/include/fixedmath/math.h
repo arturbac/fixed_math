@@ -707,6 +707,16 @@ namespace fixedmath
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept;
 
+  constexpr fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept
+    {
+    //TODO
+    //sqrt (x^2+y^2) = sqrt ((x/d)^2+(y/d)^2) * d
+    //d = 2^n
+    //reorder hi/lo
+    //check hi for overflow and shift right with d
+    //else check lo for underflow and shift left with d
+    return sqrt( lh*lh+rh*rh);
+    }
 }
 namespace std
 {
@@ -794,12 +804,12 @@ namespace fixedmath
   constexpr fixed_t cos( fixed_t rad ) noexcept
 #if 1
     {
+    constexpr fixed_t phi2 { phi/2 };
     //more effective to use sine than calculate maclurin series for cosine
     //as maclurin series give precise results for -pi/2 .. pi/2
-    return sin( phi/2 + rad );
+    return sin( phi2 + rad );
     }
 #else
-    
     /// Y = 1 - X^2/ 2! + X^4/ 4! - ... + (-1)^(n) * X^(2*n)/(2n)!
     {
     //aprox valid for -phi/2 .. phi/2  
@@ -884,6 +894,13 @@ namespace fixedmath
     else
       return limits__::quiet_NaN();
     }
+}
+namespace std
+{
+  using fixedmath::tan;
+}
+namespace fixedmath
+{
   //------------------------------------------------------------------------------------------------------
   // atan
   // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
@@ -908,12 +925,38 @@ namespace fixedmath
     else
       return limits__::quiet_NaN();
     }
+}
+namespace std
+{
+  using fixedmath::atan;
+}
+namespace fixedmath
+{
+  //------------------------------------------------------------------------------------------------------
+  // compat with old lib function
+  constexpr fixed_t atan_index( fixed_t value ) noexcept
+    {
+    return atan( value ) * radtofix_r;
+    }
+    
   //------------------------------------------------------------------------------------------------------
   constexpr fixed_t sin_angle( int angle ) noexcept
     {
     return sin( angle * phi / 180 );
     }
-    
+  //------------------------------------------------------------------------------------------------------
+  constexpr fixed_t cos_angle( int angle ) noexcept
+    {
+    return cos( angle * phi / 180 );
+    }
+  //------------------------------------------------------------------------------------------------------
+  
+  constexpr fixed_t tan_angle( int32_t angle ) noexcept
+    {
+    return tan( angle * phi / 180 );
+    }
+  //------------------------------------------------------------------------------------------------------
+  // compat with old lib function
   fixed_t sin_angle_tab( uint16_t degrees ) noexcept;
   
   inline fixed_t sin_angle_aprox(int32_t angle) noexcept
@@ -924,6 +967,7 @@ namespace fixedmath
     }
 
   //------------------------------------------------------------------------------------------------------
+  // compat with old lib function
   fixed_t cos_angle_tab( uint16_t degrees ) noexcept;
   
   inline fixed_t cos_angle_aprox(int32_t angle) noexcept
@@ -934,13 +978,14 @@ namespace fixedmath
     }
     
   //------------------------------------------------------------------------------------------------------
+  // compat with old lib function
   fixed_t tan_tab( uint8_t index ) noexcept;
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
-  fixed_t fatan( fixed_t value ) noexcept;
-  inline fixed_t atan_aprox( fixed_t value ) noexcept  { return fatan( value ) * fixtorad_r; }
+  fixed_t atan_index_aprox( fixed_t value ) noexcept;
   
-  fixed_t tan_angle( int32_t angle ) noexcept;
+  inline fixed_t atan_aprox( fixed_t value ) noexcept  { return atan_index_aprox( value ) * fixtorad_r; }
+  
   
   
   

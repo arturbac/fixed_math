@@ -121,7 +121,7 @@ namespace fixedmath
     }
     
   //binary search closest value in tan table
-  fixed_t fatan( fixed_t value ) noexcept
+  fixed_t atan_index_aprox( fixed_t value ) noexcept
     {
     if( value >= 0_fix )
       {
