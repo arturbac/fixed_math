@@ -1,0 +1,148 @@
+Iterations:        1
+Instructions:      53
+Total Cycles:      55
+Total uOps:        53
+
+Dispatch Width:    3
+uOps Per Cycle:    0.96
+IPC:               0.96
+Block RThroughput: 17.7
+
+
+No resource or data dependency bottlenecks discovered.
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      1     0.50                        add	x8, x0, #16, lsl #12
+ 1      1     0.50                        cmp	x8, #32, lsl #12
+ 1      1     1.00                        b.hi	.LBB0_2
+ 1      5     1.00                        mul	x8, x0, x0
+ 1      1     0.50                        lsr	x8, x8, #16
+ 1      5     1.00                        mul	x12, x8, x0
+ 1      1     0.50                        mov	x9, #6148914691236517205
+ 1      1     0.50                        asr	x12, x12, #16
+ 1      6     1.00                        smulh	x9, x12, x9
+ 1      1     0.50                        mov	x10, #7378697629483820646
+ 1      1     0.50                        mov	x11, #46811
+ 1      1     0.50                        sub	x9, x9, x12
+ 1      5     1.00                        mul	x12, x12, x8
+ 1      1     0.50                        movk	x10, #26215
+ 1      1     0.50                        movk	x11, #56173, lsl #16
+ 1      1     0.50                        asr	x12, x12, #16
+ 1      1     0.50                        movk	x11, #28086, lsl #32
+ 1      1     0.50                        asr	x13, x9, #1
+ 1      6     1.00                        smulh	x10, x12, x10
+ 1      5     1.00                        mul	x12, x12, x8
+ 1      1     0.50                        movk	x11, #46811, lsl #48
+ 1      2     1.00                        add	x9, x13, x9, lsr #63
+ 1      1     0.50                        mov	x13, #7282
+ 1      1     0.50                        asr	x14, x10, #1
+ 1      1     0.50                        asr	x12, x12, #16
+ 1      1     0.50                        movk	x13, #29127, lsl #16
+ 1      2     1.00                        add	x10, x14, x10, lsr #63
+ 1      1     0.50                        mov	x14, #29789
+ 1      6     1.00                        smulh	x11, x12, x11
+ 1      5     1.00                        mul	x12, x12, x8
+ 1      1     0.50                        movk	x13, #50972, lsl #32
+ 1      1     0.50                        add	x9, x9, x0
+ 1      1     0.50                        movk	x14, #17873, lsl #16
+ 1      1     0.50                        asr	x12, x12, #16
+ 1      1     0.50                        movk	x13, #7281, lsl #48
+ 1      1     0.50                        movk	x14, #23831, lsl #32
+ 1      1     0.50                        add	x9, x9, x10
+ 1      1     0.50                        asr	x10, x11, #1
+ 1      5     1.00                        mul	x8, x12, x8
+ 1      1     0.50                        movk	x14, #53620, lsl #48
+ 1      2     1.00                        add	x10, x10, x11, lsr #63
+ 1      6     1.00                        smulh	x11, x12, x13
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      1     0.50                        add	x9, x9, x10
+ 1      2     1.00                        add	x10, x11, x11, lsr #63
+ 1      6     1.00                        smulh	x8, x8, x14
+ 1      1     0.50                        add	x9, x9, x10
+ 1      1     0.50                        asr	x10, x8, #1
+ 1      2     1.00                        add	x8, x10, x8, lsr #63
+ 1      1     0.50                        add	x0, x9, x8
+ 1      1     1.00                  U     ret
+ 1      1     0.50                        mov	x0, #9223372036854775807
+ 1      1     1.00                  U     ret
+
+
+Resources:
+[0]   - A57UnitB
+[1.0] - A57UnitI
+[1.1] - A57UnitI
+[2]   - A57UnitL
+[3]   - A57UnitM
+[4]   - A57UnitS
+[5]   - A57UnitW
+[6]   - A57UnitX
+
+
+Resource pressure per iteration:
+[0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    
+3.00   17.00  17.00   -     16.00   -      -      -     
+
+Resource pressure by instruction:
+[0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    Instructions:
+ -      -     1.00    -      -      -      -      -     add	x8, x0, #16, lsl #12
+ -     1.00    -      -      -      -      -      -     cmp	x8, #32, lsl #12
+1.00    -      -      -      -      -      -      -     b.hi	.LBB0_2
+ -      -      -      -     1.00    -      -      -     mul	x8, x0, x0
+ -     1.00    -      -      -      -      -      -     lsr	x8, x8, #16
+ -      -      -      -     1.00    -      -      -     mul	x12, x8, x0
+ -      -     1.00    -      -      -      -      -     mov	x9, #6148914691236517205
+ -     1.00    -      -      -      -      -      -     asr	x12, x12, #16
+ -      -      -      -     1.00    -      -      -     smulh	x9, x12, x9
+ -     1.00    -      -      -      -      -      -     mov	x10, #7378697629483820646
+ -      -     1.00    -      -      -      -      -     mov	x11, #46811
+ -      -     1.00    -      -      -      -      -     sub	x9, x9, x12
+ -      -      -      -     1.00    -      -      -     mul	x12, x12, x8
+ -     1.00    -      -      -      -      -      -     movk	x10, #26215
+ -      -     1.00    -      -      -      -      -     movk	x11, #56173, lsl #16
+ -     1.00    -      -      -      -      -      -     asr	x12, x12, #16
+ -     1.00    -      -      -      -      -      -     movk	x11, #28086, lsl #32
+ -      -     1.00    -      -      -      -      -     asr	x13, x9, #1
+ -      -      -      -     1.00    -      -      -     smulh	x10, x12, x10
+ -      -      -      -     1.00    -      -      -     mul	x12, x12, x8
+ -      -     1.00    -      -      -      -      -     movk	x11, #46811, lsl #48
+ -      -      -      -     1.00    -      -      -     add	x9, x13, x9, lsr #63
+ -      -     1.00    -      -      -      -      -     mov	x13, #7282
+ -      -     1.00    -      -      -      -      -     asr	x14, x10, #1
+ -     1.00    -      -      -      -      -      -     asr	x12, x12, #16
+ -     1.00    -      -      -      -      -      -     movk	x13, #29127, lsl #16
+ -      -      -      -     1.00    -      -      -     add	x10, x14, x10, lsr #63
+ -      -     1.00    -      -      -      -      -     mov	x14, #29789
+ -      -      -      -     1.00    -      -      -     smulh	x11, x12, x11
+ -      -      -      -     1.00    -      -      -     mul	x12, x12, x8
+ -     1.00    -      -      -      -      -      -     movk	x13, #50972, lsl #32
+ -     1.00    -      -      -      -      -      -     add	x9, x9, x0
+ -      -     1.00    -      -      -      -      -     movk	x14, #17873, lsl #16
+ -     1.00    -      -      -      -      -      -     asr	x12, x12, #16
+ -     1.00    -      -      -      -      -      -     movk	x13, #7281, lsl #48
+ -      -     1.00    -      -      -      -      -     movk	x14, #23831, lsl #32
+ -      -     1.00    -      -      -      -      -     add	x9, x9, x10
+ -      -     1.00    -      -      -      -      -     asr	x10, x11, #1
+ -      -      -      -     1.00    -      -      -     mul	x8, x12, x8
+ -      -     1.00    -      -      -      -      -     movk	x14, #53620, lsl #48
+ -      -      -      -     1.00    -      -      -     add	x10, x10, x11, lsr #63
+ -      -      -      -     1.00    -      -      -     smulh	x11, x12, x13
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -     1.00    -      -      -      -      -      -     add	x9, x9, x10
+ -      -      -      -     1.00    -      -      -     add	x10, x11, x11, lsr #63
+ -      -      -      -     1.00    -      -      -     smulh	x8, x8, x14
+ -     1.00    -      -      -      -      -      -     add	x9, x9, x10
+ -      -     1.00    -      -      -      -      -     asr	x10, x8, #1
+ -      -      -      -     1.00    -      -      -     add	x8, x10, x8, lsr #63
+ -     1.00    -      -      -      -      -      -     add	x0, x9, x8
+1.00    -      -      -      -      -      -      -     ret
+ -     1.00    -      -      -      -      -      -     mov	x0, #9223372036854775807
+1.00    -      -      -      -      -      -      -     ret

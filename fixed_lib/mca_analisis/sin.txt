@@ -1,0 +1,124 @@
+Iterations:        1
+Instructions:      41
+Total Cycles:      80
+Total uOps:        41
+
+Dispatch Width:    3
+uOps Per Cycle:    0.51
+IPC:               0.51
+Block RThroughput: 45.0
+
+
+No resource or data dependency bottlenecks discovered.
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      1     0.50                        mov	w8, #37407
+ 1      1     0.50                        mov	w9, #18558
+ 1      1     0.50                        movk	w8, #1, lsl #16
+ 1      1     0.50                        movk	w9, #6, lsl #16
+ 1      1     0.50                        add	x10, x0, x8
+ 1      1     0.50                        cmp	x10, x9
+ 1      1     1.00                        b.hs	.LBB0_2
+ 1      1     0.50                        mov	w9, #9279
+ 1      1     0.50                        movk	w9, #3, lsl #16
+ 1      1     0.50                        cmp	x0, x8
+ 1      1     0.50                        sub	x9, x9, x0
+ 1      1     0.50                        csel	x9, x9, x0, gt
+ 1      5     1.00                        mul	x11, x9, x9
+ 1      1     0.50                        lsr	x11, x11, #16
+ 1      5     1.00                        mul	x12, x11, x9
+ 1      1     0.50                        mov	w8, #10922
+ 1      1     0.50                        asr	x12, x12, #16
+ 1      5     1.00                        mul	x8, x12, x8
+ 1      5     1.00                        mul	x12, x12, x11
+ 1      1     0.50                        asr	x12, x12, #16
+ 1      1     0.50                        mov	w10, #546
+ 1      5     1.00                        mul	x11, x12, x11
+ 1      5     1.00                        mul	x10, x12, x10
+ 1      1     0.50                        mov	w12, #13
+ 1      1     0.50                        asr	x11, x11, #16
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      5     1.00                        mul	x11, x11, x12
+ 1      2     1.00                        add	x9, x9, x10, asr #16
+ 1      2     1.00                        add	x8, x8, x11, asr #16
+ 1      1     0.50                        sub	x0, x9, x8
+ 1      1     1.00                  U     ret
+ 1      35    35.00                       sdiv	x11, x10, x9
+ 1      1     0.50                        mov	w12, #46687
+ 1      5     1.00                        msub	x9, x11, x9, x10
+ 1      1     0.50                        mov	x10, #-37407
+ 1      1     0.50                        movk	w12, #4, lsl #16
+ 1      1     0.50                        cmp	x9, #0
+ 1      1     0.50                        movk	x10, #65534, lsl #16
+ 1      1     0.50                        csel	x10, x12, x10, lt
+ 1      1     0.50                        add	x0, x10, x9
+ 1      1     1.00                        b	.LBB0_1
+
+
+Resources:
+[0]   - A57UnitB
+[1.0] - A57UnitI
+[1.1] - A57UnitI
+[2]   - A57UnitL
+[3]   - A57UnitM
+[4]   - A57UnitS
+[5]   - A57UnitW
+[6]   - A57UnitX
+
+
+Resource pressure per iteration:
+[0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    
+3.00   13.00  14.00   -     45.00   -      -      -     
+
+Resource pressure by instruction:
+[0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    Instructions:
+ -      -     1.00    -      -      -      -      -     mov	w8, #37407
+ -     1.00    -      -      -      -      -      -     mov	w9, #18558
+ -      -     1.00    -      -      -      -      -     movk	w8, #1, lsl #16
+ -     1.00    -      -      -      -      -      -     movk	w9, #6, lsl #16
+ -      -     1.00    -      -      -      -      -     add	x10, x0, x8
+ -      -     1.00    -      -      -      -      -     cmp	x10, x9
+1.00    -      -      -      -      -      -      -     b.hs	.LBB0_2
+ -     1.00    -      -      -      -      -      -     mov	w9, #9279
+ -     1.00    -      -      -      -      -      -     movk	w9, #3, lsl #16
+ -      -     1.00    -      -      -      -      -     cmp	x0, x8
+ -     1.00    -      -      -      -      -      -     sub	x9, x9, x0
+ -      -     1.00    -      -      -      -      -     csel	x9, x9, x0, gt
+ -      -      -      -     1.00    -      -      -     mul	x11, x9, x9
+ -     1.00    -      -      -      -      -      -     lsr	x11, x11, #16
+ -      -      -      -     1.00    -      -      -     mul	x12, x11, x9
+ -     1.00    -      -      -      -      -      -     mov	w8, #10922
+ -     1.00    -      -      -      -      -      -     asr	x12, x12, #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x12, x8
+ -      -      -      -     1.00    -      -      -     mul	x12, x12, x11
+ -     1.00    -      -      -      -      -      -     asr	x12, x12, #16
+ -      -     1.00    -      -      -      -      -     mov	w10, #546
+ -      -      -      -     1.00    -      -      -     mul	x11, x12, x11
+ -      -      -      -     1.00    -      -      -     mul	x10, x12, x10
+ -     1.00    -      -      -      -      -      -     mov	w12, #13
+ -      -     1.00    -      -      -      -      -     asr	x11, x11, #16
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -      -      -      -     1.00    -      -      -     mul	x11, x11, x12
+ -      -      -      -     1.00    -      -      -     add	x9, x9, x10, asr #16
+ -      -      -      -     1.00    -      -      -     add	x8, x8, x11, asr #16
+ -     1.00    -      -      -      -      -      -     sub	x0, x9, x8
+1.00    -      -      -      -      -      -      -     ret
+ -      -      -      -     35.00   -      -      -     sdiv	x11, x10, x9
+ -      -     1.00    -      -      -      -      -     mov	w12, #46687
+ -      -      -      -     1.00    -      -      -     msub	x9, x11, x9, x10
+ -      -     1.00    -      -      -      -      -     mov	x10, #-37407
+ -     1.00    -      -      -      -      -      -     movk	w12, #4, lsl #16
+ -      -     1.00    -      -      -      -      -     cmp	x9, #0
+ -      -     1.00    -      -      -      -      -     movk	x10, #65534, lsl #16
+ -     1.00    -      -      -      -      -      -     csel	x10, x12, x10, lt
+ -      -     1.00    -      -      -      -      -     add	x0, x10, x9
+1.00    -      -      -      -      -      -      -     b	.LBB0_1

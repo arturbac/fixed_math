@@ -1,0 +1,102 @@
+Iterations:        1
+Instructions:      30
+Total Cycles:      17
+Total uOps:        30
+
+Dispatch Width:    3
+uOps Per Cycle:    1.76
+IPC:               1.76
+Block RThroughput: 12.0
+
+
+No resource or data dependency bottlenecks discovered.
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      1     0.50                        lsr	x9, x0, #48
+ 1      1     1.00                        cbnz	x9, .LBB0_5
+ 1      1     0.50                        mov	x8, x0
+ 1      1     1.00                        cbz	x0, .LBB0_6
+ 1      1     0.50                        lsl	x8, x8, #16
+ 1      1     0.50                        mov	w9, #64
+ 1      1     0.50                        clz	x10, x8
+ 1      1     0.50                        sub	w9, w9, w10
+ 1      1     0.50                        eor	w10, w10, #0x3f
+ 1      1     0.50                        tst	w9, #0x1
+ 1      1     0.50                        csel	w9, w10, w9, eq
+ 1      1     0.50                        sub	w9, w9, #1
+ 1      1     0.50                        mov	w10, #1
+ 1      1     0.50                        mov	x0, xzr
+ 1      1     0.50                        lsl	x9, x10, x9
+ 1      1     0.50                        add	x10, x9, x0
+ 1      1     0.50                        lsl	x11, x9, #1
+ 1      1     0.50                        cmp	x8, x10
+ 1      1     0.50                        csel	x11, xzr, x11, lt
+ 1      1     0.50                        csel	x10, xzr, x10, lt
+ 1      1     0.50                        add	x11, x11, x0
+ 1      1     0.50                        sub	x8, x8, x10
+ 1      1     0.50                        asr	x9, x9, #2
+ 1      1     0.50                        asr	x0, x11, #1
+ 1      1     1.00                        cbnz	x9, .LBB0_3
+ 1      1     1.00                  U     ret
+ 1      1     0.50                        mov	x0, #9223372036854775807
+ 1      1     1.00                  U     ret
+ 1      1     0.50                        mov	x0, xzr
+ 1      1     1.00                  U     ret
+
+
+Resources:
+[0]   - A57UnitB
+[1.0] - A57UnitI
+[1.1] - A57UnitI
+[2]   - A57UnitL
+[3]   - A57UnitM
+[4]   - A57UnitS
+[5]   - A57UnitW
+[6]   - A57UnitX
+
+
+Resource pressure per iteration:
+[0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    
+6.00   12.00  12.00   -      -      -      -      -     
+
+Resource pressure by instruction:
+[0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    Instructions:
+ -      -     1.00    -      -      -      -      -     lsr	x9, x0, #48
+1.00    -      -      -      -      -      -      -     cbnz	x9, .LBB0_5
+ -     1.00    -      -      -      -      -      -     mov	x8, x0
+1.00    -      -      -      -      -      -      -     cbz	x0, .LBB0_6
+ -      -     1.00    -      -      -      -      -     lsl	x8, x8, #16
+ -     1.00    -      -      -      -      -      -     mov	w9, #64
+ -      -     1.00    -      -      -      -      -     clz	x10, x8
+ -     1.00    -      -      -      -      -      -     sub	w9, w9, w10
+ -      -     1.00    -      -      -      -      -     eor	w10, w10, #0x3f
+ -     1.00    -      -      -      -      -      -     tst	w9, #0x1
+ -     1.00    -      -      -      -      -      -     csel	w9, w10, w9, eq
+ -     1.00    -      -      -      -      -      -     sub	w9, w9, #1
+ -      -     1.00    -      -      -      -      -     mov	w10, #1
+ -      -     1.00    -      -      -      -      -     mov	x0, xzr
+ -      -     1.00    -      -      -      -      -     lsl	x9, x10, x9
+ -     1.00    -      -      -      -      -      -     add	x10, x9, x0
+ -      -     1.00    -      -      -      -      -     lsl	x11, x9, #1
+ -     1.00    -      -      -      -      -      -     cmp	x8, x10
+ -     1.00    -      -      -      -      -      -     csel	x11, xzr, x11, lt
+ -      -     1.00    -      -      -      -      -     csel	x10, xzr, x10, lt
+ -     1.00    -      -      -      -      -      -     add	x11, x11, x0
+ -      -     1.00    -      -      -      -      -     sub	x8, x8, x10
+ -      -     1.00    -      -      -      -      -     asr	x9, x9, #2
+ -     1.00    -      -      -      -      -      -     asr	x0, x11, #1
+1.00    -      -      -      -      -      -      -     cbnz	x9, .LBB0_3
+1.00    -      -      -      -      -      -      -     ret
+ -      -     1.00    -      -      -      -      -     mov	x0, #9223372036854775807
+1.00    -      -      -      -      -      -      -     ret
+ -     1.00    -      -      -      -      -      -     mov	x0, xzr
+1.00    -      -      -      -      -      -      -     ret
