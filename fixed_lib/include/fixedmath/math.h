@@ -986,18 +986,20 @@ namespace fixedmath
     }
     
   //------------------------------------------------------------------------------------------------------
-  constexpr fixed_t sin_angle( int angle ) noexcept
+  template<typename supported_type>
+  constexpr fixed_t sin_angle( supported_type angle ) noexcept
     {
     return sin( angle * phi / 180 );
     }
   //------------------------------------------------------------------------------------------------------
-  constexpr fixed_t cos_angle( int angle ) noexcept
+  template<typename supported_type>
+  constexpr fixed_t cos_angle( supported_type angle ) noexcept
     {
     return cos( angle * phi / 180 );
     }
   //------------------------------------------------------------------------------------------------------
-  
-  constexpr fixed_t tan_angle( int32_t angle ) noexcept
+  template<typename supported_type>
+  constexpr fixed_t tan_angle( supported_type angle ) noexcept
     {
     return tan( angle * phi / 180 );
     }

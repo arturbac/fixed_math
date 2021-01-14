@@ -177,11 +177,14 @@ namespace fixedmath
   constexpr fixed_t atan_index( fixed_t value ) noexcept;
   
   ///\returns sine of \param angle specified in degrees
-  constexpr fixed_t sin_angle(int32_t angle) noexcept;
+  template<typename supported_type>
+  constexpr fixed_t sin_angle(supported_type angle) noexcept;
   
   ///\returns cosine of \param angle specified in degrees
-  constexpr fixed_t cos_angle(int32_t angle) noexcept;
+  template<typename supported_type>
+  constexpr fixed_t cos_angle(supported_type angle) noexcept;
   
   ///\returns tangent of \param angle specified in degrees
-  constexpr fixed_t tan_angle( int32_t angle ) noexcept;
+  template<typename supported_type>
+  constexpr fixed_t tan_angle(supported_type angle) noexcept;
 }
