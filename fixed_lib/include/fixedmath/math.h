@@ -885,6 +885,30 @@ namespace fixedmath
       return limits__::quiet_NaN();
     }
   //------------------------------------------------------------------------------------------------------
+  // atan
+  // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
+  [[ nodiscard,gnu::const, gnu::always_inline ]]
+  constexpr fixed_t atan( fixed_t x ) noexcept
+    {
+    //if( fixed_likely( rad >= -1_fix && rad <= 1_fix ) )
+    //is optimised as fixed_likely( abs(rad) <= 1_fix )
+    //   and     x8, x0, #0x7fffffffffffffff
+    //   cmp     x8, #16, lsl #12                // =65536
+    //   b.hi    .LBB0_2
+    if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
+      {
+      fixed_internal x2 { (x.v * x.v) >> 16 };
+      fixed_internal x3 { (x2 * x.v) >> 16 };
+      fixed_internal x5 { (x3 * x2) >> 16 };
+      fixed_internal x7 { (x5 * x2) >> 16 };
+      fixed_internal x9 { (x7 * x2) >> 16 };
+      fixed_internal x11 { (x9 * x2) >> 16 };
+      return as_fixed( x.v - x3/3 + x5/5 - x7/7 + x9/9 - x11/11);
+      }
+    else
+      return limits__::quiet_NaN();
+    }
+  //------------------------------------------------------------------------------------------------------
   constexpr fixed_t sin_angle( int angle ) noexcept
     {
     return sin( angle * phi / 180 );

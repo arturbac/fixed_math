@@ -161,6 +161,11 @@ namespace fixedmath
   // Y = X + X^3/3 + 2x^5/15 + 51x^7/945 + 62x^9/2835 + 1382*x^11/155925
   constexpr fixed_t tan( fixed_t rad ) noexcept;
   
+  ///\returns arcus tangent of \param x
+  // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
+  ///\warning valid range < -1 .. 1 >
+  constexpr fixed_t atan( fixed_t x ) noexcept;
+  
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
   fixed_t fatan( fixed_t value ) noexcept;
   
