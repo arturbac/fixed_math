@@ -706,23 +706,17 @@ namespace fixedmath
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept;
-  //------------------------------------------------------------------------------------------------------
-  fixed_t tan_tab( uint8_t index ) noexcept;
-  
-  [[nodiscard,FIXEDMATH_PUBLIC]]
-  fixed_t fatan( fixed_t value ) noexcept;
-  inline fixed_t atan( fixed_t value ) noexcept  { return fatan( value ) * fixtorad_r; }
-  
-  fixed_t tan_angle( int32_t angle ) noexcept;
+
 }
 namespace std
 {
   using fixedmath::sqrt;
-  using fixedmath::atan;
 }
 
 namespace fixedmath
 {
+  // for trigonometric functions maclurin taylor series are used
+  // https://en.wikipedia.org/wiki/Taylor_series
   //------------------------------------------------------------------------------------------------------
   namespace
     {
@@ -801,9 +795,11 @@ namespace fixedmath
 #if 1
     {
     //more effective to use sine than calculate maclurin series for cosine
+    //as maclurin series give precise results for -pi/2 .. pi/2
     return sin( phi/2 + rad );
     }
 #else
+    
     /// Y = 1 - X^2/ 2! + X^4/ 4! - ... + (-1)^(n) * X^(2*n)/(2n)!
     {
     //aprox valid for -phi/2 .. phi/2  
@@ -819,6 +815,75 @@ namespace fixedmath
     return as_fixed( (1_fix).v - tay2 + tay4 - tay6 + tay8 );
     }
 #endif
+}
+namespace std
+{
+  using fixedmath::cos;
+}
+namespace fixedmath
+{
+  //------------------------------------------------------------------------------------------------------
+  // tan
+  // Y = X + X^3/3 + 2x^5/15 + 51x^7/945 + 62x^9/2835 + 1382*x^11/155925
+  [[ nodiscard,gnu::const, gnu::always_inline ]]
+  constexpr fixed_t tan( fixed_t rad ) noexcept
+    {
+    constexpr fixed_t phi2 { phi/2 };
+    if( fixed_likely( rad > -phi2 && rad < phi2 ) )
+      {
+      fixed_internal rad2 { (rad.v * rad.v) >> 16 };
+      fixed_internal rad3 { (rad2 * rad.v) >> 16 };
+      fixed_internal rad5 { (rad3 * rad2) >> 16 };
+      fixed_internal rad7 { (rad5 * rad2) >> 16 };
+      fixed_internal rad9 { (rad7 * rad2) >> 16 };
+      fixed_internal rad11 { (rad9 * rad2) >> 16 };
+#if 0
+      // -march=armv8a -O3 -ffast-math
+      // Instructions:      28
+      // Total Cycles:      48
+      // Total uOps:        28
+      // Dispatch Width:    3
+      // uOps Per Cycle:    0.58
+      // IPC:               0.58
+      // Block RThroughput: 16.0
+      //little less precision but acceptable than runtine division
+      constexpr fixed_internal tay3f{ (1_fix/3).v};
+      fixed_internal tay3 { (rad3 * tay3f) >> 16 };
+      
+      constexpr fixed_internal tay5f{ (2_fix/15).v };
+      fixed_internal tay5 { (rad5 * tay5f) >> 16 };
+      
+      constexpr fixed_internal tay7f{ (51_fix/945).v };
+      fixed_internal tay7 { (rad7 * tay7f) >> 16 };
+      
+      constexpr fixed_internal tay9f{ (62_fix/2835).v };
+      fixed_internal tay9 { (rad9 * tay9f) >> 16 };
+      
+      constexpr fixed_internal tay11f{ (1382_fix/155925).v };
+      fixed_internal tay11 { (rad11 * tay11f) >> 16 };
+      return as_fixed(rad.v + tay3 + tay5 + tay7 + tay9 + tay11);
+#else
+      //compiled code on arm64 uses asr & smul instead ov division
+      // -march=armv8a -O3 -ffast-math
+      // Instructions:      57
+      // Total Cycles:      57
+      // Total uOps:        57
+      // 
+      // Dispatch Width:    3
+      // uOps Per Cycle:    1.00
+      // IPC:               1.00
+      // Block RThroughput: 19.0
+      fixed_internal tay3 { rad3/3 };
+      fixed_internal tay5 { 2*rad5/15 };
+      fixed_internal tay7 { 51*rad7/945 };
+      fixed_internal tay9 { 62*rad9/2835 };
+      fixed_internal tay11 { 1382*rad11/155925 };
+      return as_fixed(rad.v + tay3 + tay5 + tay7 + tay9 + tay11);
+#endif
+      }
+    else
+      return limits__::quiet_NaN();
+    }
   //------------------------------------------------------------------------------------------------------
   constexpr fixed_t sin_angle( int angle ) noexcept
     {
@@ -844,7 +909,14 @@ namespace fixedmath
     return cos_angle_tab(angle);
     }
     
-
+  //------------------------------------------------------------------------------------------------------
+  fixed_t tan_tab( uint8_t index ) noexcept;
+  
+  [[nodiscard,FIXEDMATH_PUBLIC]]
+  fixed_t fatan( fixed_t value ) noexcept;
+  inline fixed_t atan_aprox( fixed_t value ) noexcept  { return fatan( value ) * fixtorad_r; }
+  
+  fixed_t tan_angle( int32_t angle ) noexcept;
   
   
   

@@ -156,11 +156,16 @@ namespace fixedmath
   ///\returns cosine of value in radians
   constexpr fixed_t cos( fixed_t rad ) noexcept;
   
+  ///\returns tangent of \param rad
+  ///\warning valid range (-phi/2 .. phi/2)
+  // Y = X + X^3/3 + 2x^5/15 + 51x^7/945 + 62x^9/2835 + 1382*x^11/155925
+  constexpr fixed_t tan( fixed_t rad ) noexcept;
+  
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
   fixed_t fatan( fixed_t value ) noexcept;
   
   ///\returns arc tan in radians
-  inline fixed_t atan( fixed_t value ) noexcept;
+  inline fixed_t atan_aprox( fixed_t value ) noexcept;
   
   ///\returns sine of \param angle specified in degrees
   constexpr fixed_t sin_angle(int32_t angle) noexcept;
