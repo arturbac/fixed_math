@@ -386,7 +386,11 @@ namespace fixedmath
     }
   template<typename supported_type>
   [[ gnu::always_inline ]]
-  inline fixed_t & operator -= ( fixed_t & lh, supported_type rh ) noexcept { lh.v -= rh.v; return lh; } 
+  inline fixed_t & operator -= ( fixed_t & lh, supported_type rh ) noexcept 
+    { 
+    lh = fixed_substract(lh,rh);
+    return lh;
+    } 
   
   template<typename supported_type1, typename supported_type2>
   [[ gnu::const, gnu::always_inline ]]
