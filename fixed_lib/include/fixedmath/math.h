@@ -186,9 +186,9 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t abs( fixed_t value ) noexcept
       {
-      using unsigned_fix_internal = std::make_unsigned<fixed_internal>::type;
-      return as_fixed(
-            static_cast<unsigned_fix_internal>(value.v) & 0x7fffffffffffffffull);
+      // cmp     x0, #0                          // =0
+      // cneg    x0, x0, mi
+      return as_fixed(value.v > 0 ? value.v : -value.v);
       }
     //------------------------------------------------------------------------------------------------------
     [[ gnu::const, gnu::always_inline ]]
@@ -584,7 +584,7 @@ namespace fixedmath
     }
 
   //------------------------------------------------------------------------------------------------------
-  
+
   //------------------------------------------------------------------------------------------------------
 
   [[ gnu::const, gnu::always_inline ]]
@@ -748,6 +748,17 @@ namespace fixedmath
       {
       return 1_fix/fac(value);
       }
+    template<int precision>
+    [[ gnu::const, gnu::always_inline ]]
+    constexpr fixed_internal mul_( fixed_internal x, fixed_internal y ) 
+      {
+      return (x * y) >> precision;
+      }
+    [[ gnu::const, gnu::always_inline ]]
+    constexpr fixed_internal div_( fixed_internal x, fixed_internal y ) 
+      {
+      return (x<<16) / y;
+      }
     }
   /// 
   //------------------------------------------------------------------------------------------------------
@@ -770,10 +781,14 @@ namespace fixedmath
   
   ///\returns sine of value in radians
   /// Y = X - X^3/ 3! + X^5/ 5! - ... + (-1)^(n+1) * X^(2*n-1)/(2n-1)!
+  /// X - X^3/ 3! + X^5/ 5! - X^7/7! 
+  /// X - X^3/6 + x^3*x^2/(6*20) - x^3*x^2*x^2/(6*20*42)
+  /// X*(1-X^2*(1-X^2*(1-X^2/42)/20)/6)
   /// error is less or equal to X^9/9!
   [[ nodiscard,gnu::const, gnu::always_inline ]]
   constexpr fixed_t sin( fixed_t rad ) noexcept
     {
+    constexpr fixed_t phi2 { phi/2 };
     rad = sin_range(rad);
       
     // on arm64 condition is compiled as  substraction with csel instruction without jump
@@ -782,19 +797,17 @@ namespace fixedmath
     //         cmp     x0, x8
     //         sub     x9, x9, x0
     //         csel    x9, x9, x0, gt
-    if(fixed_unlikely( rad > phi/2) )
+    if(fixed_unlikely( rad > phi2) )
       rad = phi - rad; //inverse of phi/2 .. -phi/2
-    
+
     //aprox valid for -phi/2 .. phi/2
-    fixed_internal rad2 { (rad.v * rad.v) >> 16 };
-    fixed_internal rad3 { (rad2 * rad.v) >> 16 };
-    fixed_internal rad5 { (rad3 * rad2) >> 16 };
-    fixed_internal rad7 { (rad5 * rad2) >> 16 };
+    constexpr int prec_ = 16;
+    constexpr fixed_internal one__{ fixed_internal{1}<<prec_};
+    fixed_internal x { rad.v };
     
-    fixed_internal tay3 { (rad3 * inv_fac(3).v) >> 16 };
-    fixed_internal tay5 { (rad5 * inv_fac(5).v) >> 16 };
-    fixed_internal tay7 { (rad7 * inv_fac(7).v) >> 16 };
-    return as_fixed( rad.v - tay3 + tay5 - tay7 );
+    fixed_internal x2{ mul_<prec_>(x,x) };
+    fixed_internal result{ mul_<prec_>(x,( one__ - mul_<prec_>(x2,( one__ - mul_<prec_>(x2,( one__-x2/42))/20))/6)) };
+    return as_fixed(result);
     }
 }
 namespace std
@@ -807,29 +820,12 @@ namespace fixedmath
   ///\returns cosine of value in radians
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t cos( fixed_t rad ) noexcept
-#if 1
     {
-    constexpr fixed_t phi2 { phi/2 };
+    constexpr fixed_t phi2 { fixpidiv2 };
     //more effective to use sine than calculate maclurin series for cosine
     //as maclurin series give precise results for -pi/2 .. pi/2
     return sin( phi2 + rad );
     }
-#else
-    /// Y = 1 - X^2/ 2! + X^4/ 4! - ... + (-1)^(n) * X^(2*n)/(2n)!
-    {
-    //aprox valid for -phi/2 .. phi/2  
-    fixed_internal rad2 { (rad.v * rad.v) >> 16 };
-    fixed_internal rad4 { (rad2 * rad2 ) >> 16 };
-    fixed_internal rad6 { (rad4 * rad2) >> 16 };
-    fixed_internal rad8 { (rad6 * rad2) >> 16 };
-  
-    fixed_internal tay2{ (rad2 * inv_fac(2).v) >> 16 };
-    fixed_internal tay4{ (rad4 * inv_fac(4).v) >> 16 };
-    fixed_internal tay6{ (rad6 * inv_fac(6).v) >> 16 };
-    fixed_internal tay8{ (rad8 * inv_fac(8).v) >> 16 };
-    return as_fixed( (1_fix).v - tay2 + tay4 - tay6 + tay8 );
-    }
-#endif
 }
 namespace std
 {
