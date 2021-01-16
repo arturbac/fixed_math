@@ -759,6 +759,13 @@ namespace fixedmath
       {
       return (x<<16) / y;
       }
+      
+    template<int precision>
+    [[ gnu::const, gnu::always_inline ]]
+    constexpr fixed_internal fix_( fixed_internal x ) 
+      {
+      return (x<<precision);
+      }
     }
   /// 
   //------------------------------------------------------------------------------------------------------
@@ -783,7 +790,10 @@ namespace fixedmath
   /// Y = X - X^3/ 3! + X^5/ 5! - ... + (-1)^(n+1) * X^(2*n-1)/(2n-1)!
   /// X - X^3/ 3! + X^5/ 5! - X^7/7! 
   /// X - X^3/6 + x^3*x^2/(6*20) - x^3*x^2*x^2/(6*20*42)
-  /// X*(1-X^2*(1-X^2*(1-X^2/42)/20)/6)
+  ///
+  /// let X2 = X*X
+  /// X * (1 - X2*(1 - X2*(1 - X2/42)/20)/6)
+  ///
   /// error is less or equal to X^9/9!
   [[ nodiscard,gnu::const, gnu::always_inline ]]
   constexpr fixed_t sin( fixed_t rad ) noexcept
@@ -835,62 +845,44 @@ namespace fixedmath
 {
   //------------------------------------------------------------------------------------------------------
   // tan
-  // Y = X + X^3/3 + 2x^5/15 + 51x^7/945 + 62x^9/2835 + 1382*x^11/155925
+  // Bernoulli number B 2*n
+  // 1 1/6
+  // 2 -1/30
+  // 3 1/42
+  // 4 -1/30
+  // 5 5/66
+  // 6 -691/2730
+  // 7 7/6
+  // 8 -3617/510
+  // 9 43867/798
   [[ nodiscard,gnu::const, gnu::always_inline ]]
   constexpr fixed_t tan( fixed_t rad ) noexcept
     {
     constexpr fixed_t phi2 { phi/2 };
     if( fixed_likely( rad > -phi2 && rad < phi2 ) )
       {
-      fixed_internal rad2 { (rad.v * rad.v) >> 16 };
-      fixed_internal rad3 { (rad2 * rad.v) >> 16 };
-      fixed_internal rad5 { (rad3 * rad2) >> 16 };
-      fixed_internal rad7 { (rad5 * rad2) >> 16 };
-      fixed_internal rad9 { (rad7 * rad2) >> 16 };
-      fixed_internal rad11 { (rad9 * rad2) >> 16 };
-#if 0
-      // -march=armv8a -O3 -ffast-math
-      // Instructions:      28
-      // Total Cycles:      48
-      // Total uOps:        28
-      // Dispatch Width:    3
-      // uOps Per Cycle:    0.58
-      // IPC:               0.58
-      // Block RThroughput: 16.0
-      //little less precision but acceptable than runtine division
-      constexpr fixed_internal tay3f{ (1_fix/3).v};
-      fixed_internal tay3 { (rad3 * tay3f) >> 16 };
-      
-      constexpr fixed_internal tay5f{ (2_fix/15).v };
-      fixed_internal tay5 { (rad5 * tay5f) >> 16 };
-      
-      constexpr fixed_internal tay7f{ (51_fix/945).v };
-      fixed_internal tay7 { (rad7 * tay7f) >> 16 };
-      
-      constexpr fixed_internal tay9f{ (62_fix/2835).v };
-      fixed_internal tay9 { (rad9 * tay9f) >> 16 };
-      
-      constexpr fixed_internal tay11f{ (1382_fix/155925).v };
-      fixed_internal tay11 { (rad11 * tay11f) >> 16 };
-      return as_fixed(rad.v + tay3 + tay5 + tay7 + tay9 + tay11);
-#else
-      //compiled code on arm64 uses asr & smul instead ov division
-      // -march=armv8a -O3 -ffast-math
-      // Instructions:      57
-      // Total Cycles:      57
-      // Total uOps:        57
-      // 
-      // Dispatch Width:    3
-      // uOps Per Cycle:    1.00
-      // IPC:               1.00
-      // Block RThroughput: 19.0
-      fixed_internal tay3 { rad3/3 };
-      fixed_internal tay5 { 2*rad5/15 };
-      fixed_internal tay7 { 51*rad7/945 };
-      fixed_internal tay9 { 62*rad9/2835 };
-      fixed_internal tay11 { 1382*rad11/155925 };
-      return as_fixed(rad.v + tay3 + tay5 + tay7 + tay9 + tay11);
-#endif
+      constexpr int prec_ = 16;
+      fixed_internal x{ rad.v };
+      fixed_internal x2{ mul_<prec_>(x,x) };
+    
+      //X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2(21844+929569X2/105)/39)/55)/9)/21)/5)/3)
+      // y0 = 21844+929569X2/105 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2*y0/39)/55)/9)/21)/5)/3)
+      // y1 = 691+X2*y0/39 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2*y1/55)/9)/21)/5)/3)
+      // y2 = 31+X2*y1/55 -> X(1+X2(1+X2(2+X2(17+2*X2*y2/9)/21)/5)/3)
+      // y3 = 17+2*X2*y2/9 -> X(1+X2(1+X2(2+X2*y3/21)/5)/3)
+      // y4 = 2+X2*y3/21 -> X(1+X2(1+X2*y4/5)/3)
+      // y5 = 1+X2*y4/5 -> X(1+X2*y5/3)
+      // y6 = 1+X2*y5/3 -> X*y6
+      // tan = X*y6
+      fixed_internal y0_{ fix_<prec_>(21844) + 929569 * x2 / 105 };
+      fixed_internal y1_{ fix_<prec_>(691) + mul_<prec_>(x2,y0_)/ 39 };
+      fixed_internal y2_{ fix_<prec_>(31) + mul_<prec_>(x2,y1_) / 55 };
+      fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_-1>(x2,y2_)/ 9 };
+      fixed_internal y4_{ fix_<prec_>(2) + mul_<prec_>(x2,y3_)/ 21 };
+      fixed_internal y5_{ fix_<prec_>(1) + mul_<prec_>(x2,y4_)/ 5 };
+      fixed_internal y6_{ fix_<prec_>(1) + mul_<prec_>(x2,y5_)/ 3 };
+      fixed_internal res{ mul_<prec_>(x,y6_) };
+      return as_fixed(res);
       }
     else
       return limits__::quiet_NaN();
