@@ -754,10 +754,11 @@ namespace fixedmath
       {
       return (x * y) >> precision;
       }
+    template<int precision>
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_internal div_( fixed_internal x, fixed_internal y ) 
       {
-      return (x<<16) / y;
+      return (x<<precision) / y;
       }
       
     template<int precision>
@@ -874,7 +875,8 @@ namespace fixedmath
       // y5 = 1+X2*y4/5 -> X(1+X2*y5/3)
       // y6 = 1+X2*y5/3 -> X*y6
       // tan = X*y6
-      fixed_internal y0_{ fix_<prec_>(21844) + 929569 * x2 / 105 };
+      fixed_internal ya_{ fix_<prec_>(929569) + 6404582 * x2 / 17 };
+      fixed_internal y0_{ fix_<prec_>(21844) + mul_<prec_>(x2,ya_) / 105 };
       fixed_internal y1_{ fix_<prec_>(691) + mul_<prec_>(x2,y0_)/ 39 };
       fixed_internal y2_{ fix_<prec_>(31) + mul_<prec_>(x2,y1_) / 55 };
       fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_-1>(x2,y2_)/ 9 };
@@ -929,24 +931,62 @@ namespace fixedmath
   namespace 
     {
     // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
-    constexpr fixed_t asin_unchecked( fixed_t x ) noexcept
+    constexpr fixed_t asin_unchecked( fixed_t rad ) noexcept
       {
-      fixed_internal x2 { (x.v * x.v) >> 16 };
-      fixed_internal x3 { (x2 * x.v) >> 16 };
-      fixed_internal x5 { (x3 * x2) >> 16 };
-      fixed_internal x7 { (x5 * x2) >> 16 };
-      fixed_internal x9 { (x7 * x2) >> 16 };
+      //y0=11/21+21x2/46
+      //y1=12155/19+4199x2*y0/4
+      //y2=6435/17+x2*y1/2
+      //y3=143/5+x2*y2/16
+      //y4=231/13+x2*y3/2
+      //y5=63/11+x2*y4/4
+      //y6=35/9+x2*y5/2
+      //y7=5/7+x2*y6/8
+      //y8=3/5+x2*y7/2
+      //y9=1/3+x2y8/4
+      //y10=1+x2*y9
+      //asin=x*y10/2
+      constexpr int prec_ = 16;
       
-      fixed_internal tayl { x.v + x3/6 + 3*x5/40 + 5*x7/112 + 35*x9/1152  };
-      if(fixed_likely( x > 0.5_fix || x < -0.5_fix ) )
+      fixed_internal x { rad.v };
+      fixed_internal x2{ mul_<prec_>(x,x) };
+      
+      fixed_internal y5{};
+      if(rad > 0.5_fix || rad < -0.5_fix )
         {
-        fixed_internal x11 { (x9 * x2) >> 16 };
-        fixed_internal x13 { (x11 * x2) >> 16 };
-        fixed_internal x15 { (x13 * x2) >> 16 };
-        fixed_internal x17 { (x15 * x2) >> 16 };
-        tayl += 63*x11/2816 + 231*x13/13312 + 143*x15/10240 + 6435*x17/557056;
+        constexpr fixed_internal _11o21{ div_<prec_>(11,21)};
+        fixed_internal y0{ _11o21 + 21*x2/46};
+        
+        constexpr fixed_internal _12155o19{ div_<prec_>(12155,19)+1};
+        fixed_internal y1{ _12155o19 + 4199*mul_<prec_>(x2,y0)/4};
+        
+        constexpr fixed_internal _6435o17{ div_<prec_>(6435,17)+1 };
+        fixed_internal y2{ _6435o17 +  mul_<prec_>(x2,y1)/2};
+        
+        constexpr fixed_internal _143o5{ div_<prec_>(143,5)+1 };
+        fixed_internal y3{ _143o5 +  mul_<prec_>(x2,y2)/16};
+        
+        constexpr fixed_internal _231o13{ div_<prec_>(231,13)+1 };
+        fixed_internal y4{ _231o13 +  mul_<prec_>(x2,y3)/2};
+        
+        constexpr fixed_internal _63o11{ div_<prec_>(63,11) + 1 };
+        y5 = mul_<prec_>(x2, _63o11 +  mul_<prec_>(x2,y4)/4)/2;
         }
-      return as_fixed( tayl );
+      constexpr fixed_internal _35o9{ div_<prec_>(35,9) + 1 };
+      fixed_internal y6{ _35o9 + y5 };
+      
+      constexpr fixed_internal _5o7{ div_<prec_>(5,7) + 1 };
+      fixed_internal y7{ _5o7 +  mul_<prec_>(x2,y6)/8};
+      
+      constexpr fixed_internal _3o5{ div_<prec_>(3,5) + 1 };
+      fixed_internal y8{ _3o5 +  mul_<prec_>(x2,y7)/2};
+      
+      constexpr fixed_internal _1o3{ div_<prec_>(1,3) };
+      fixed_internal y9{ _1o3 +  mul_<prec_>(x2,y8)/4};
+      
+      constexpr fixed_internal _1{ 1<<prec_ };
+      fixed_internal y10{ _1 +  mul_<prec_>(x2,y9)/2};
+      
+      return as_fixed(mul_<prec_>(x,y10));
       }
     }
   //------------------------------------------------------------------------------------------------------
