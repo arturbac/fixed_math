@@ -858,26 +858,27 @@ namespace fixedmath
   // 9 43867/798
   namespace 
     {
+    // { { 1 over 6 } { { left ( - 4 right ) ^ 1 left ( 1 - 4 ^ 1 right ) } over fact left ( 2 right ) } x + { - 1 over 30 } { { left ( - 4 right ) ^ 2 left ( 1 - 4 ^ 2 right ) } over fact left ( 2 cdot 2 right ) } x ^ left ( 2 cdot 2 - 1 right ) + { 1 over 42 } { { left ( - 4 right ) ^ 3 left ( 1 - 4 ^ 3 right ) } over fact left ( 2 cdot 3 right ) } x ^ left ( 2 cdot 3 - 1 right ) + { - 1 over 30 } cdot { { left ( - 4 right ) ^ 4 left ( 1 - 4 ^ 4 right ) } over fact left ( 2 cdot 4 right ) } x ^ left ( { 2 cdot 4 - 1 } right ) + { 5 over 66 } cdot { { left ( - 4 right ) ^ 5 left ( 1 - 4 ^ 5 right ) } over fact left ( 2 cdot 5 right ) } x ^ left ( { 2 cdot 5 - 1 } right ) + { - 691 over 2730 } cdot { { left ( - 4 right ) ^ 6 left ( 1 - 4 ^ 6 right ) } over fact left ( 2 cdot 6 right ) } x ^ left ( { 2 cdot 6 - 1 } right ) + { 7 over 6 } { { left ( - 4 right ) ^ 7 left ( 1 - 4 ^ 7 right ) } over fact left ( 2 cdot 7 right ) } x ^ left ( { 2 cdot 7 - 1 } right ) + { - 3617 over 510 } { { left ( - 4 right ) ^ 8 left ( 1 - 4 ^ 8 right ) } over fact left ( 2 cdot 8 right ) } x ^ left ( { 2 cdot 8 - 1 } right ) } 
+    
+    // { x + { 1 over 3 } x ^ 3 + { 2 over 15 } x ^ 5 + { 17 over 315 } x ^ 7 + { 62 over 2835 } x ^ 9 + { 1382 over 155925 } x ^ 11 + { 21844 over 6081075 } x ^ 13 + { 929569 over 638512875 } x ^ 15 } 
+    // { x left ( { 1 + { 1 over 3 } x ^ 2 + { 2 over 15 } x ^ 4 + { 17 over 315 } x ^ 6 + { 62 over 2835 } x ^ 8 + { 1382 over 155925 } x ^ 10 + { 21844 over 6081075 } x ^ 12 + { 929569 over 638512875 } x ^ 14 } right ) } 
+    // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 2 over 5 } x ^ 2 + { 17 over 105 } x ^ 4 + { 62 over 945 } x ^ 6 + { 1382 over 51975 } x ^ 8 + { 21844 over 2027025 } x ^ 10 + { 929569 over 212837625 } x ^ 12 } right ) } right ) } 
+    // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 17 over 21 } x ^ 2 + { 62 over 189 } x ^ 4 + { 1382 over 10395 } x ^ 6 + { 21844 over 405405 } x ^ 8 + { 929569 over 42567525 } x ^ 10 } right ) } right ) } right ) } 
+    // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 62 over 9 } x ^ 2 + { 1382 over 495 } x ^ 4 + { 21844 over 19305 } x ^ 6 + { 929569 over 2027025 } x ^ 8 } right ) } right ) } right ) } right ) } 
+    // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1382 over 55 } x ^ 2 + { 21844 over 2145 } x ^ 4 + { 929569 over 225225 } x ^ 6 } right ) } right ) } right ) } right ) } right ) } 
+    // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 21844 over 39 } x ^ 2 + { 929569 over 4095 } x ^ 4 } right ) } right ) } right ) } right ) } right ) } right ) }
+    // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 1 over 39 } x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) } right ) } right ) } right ) } right ) } right ) } right ) } 
+    // { x left ( { 1 + x ^ 2 left ( { 1 + x ^ 2 left ( { 2 + x ^ 2 left ( { 17 + x ^ 2 left ( { 62 + x ^ 2 left ( { 1382 + x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) :39 } right ) :55 } right ) :9 } right ) :21 } right ) :5 } right ) :3 } right ) } 
     [[ nodiscard,gnu::const]]
     constexpr fixed_internal tan__( fixed_internal x ) noexcept
       {
       constexpr int prec_ = 16;
       fixed_internal x2{ mul_<prec_>(x,x) };
-    
-      //X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2(21844+929569X2/105)/39)/55)/9)/21)/5)/3)
-      // y0 = 21844+929569X2/105 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2*y0/39)/55)/9)/21)/5)/3)
-      // y1 = 691+X2*y0/39 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2*y1/55)/9)/21)/5)/3)
-      // y2 = 31+X2*y1/55 -> X(1+X2(1+X2(2+X2(17+2*X2*y2/9)/21)/5)/3)
-      // y3 = 17+2*X2*y2/9 -> X(1+X2(1+X2(2+X2*y3/21)/5)/3)
-      // y4 = 2+X2*y3/21 -> X(1+X2(1+X2*y4/5)/3)
-      // y5 = 1+X2*y4/5 -> X(1+X2*y5/3)
-      // y6 = 1+X2*y5/3 -> X*y6
-      // tan = X*y6
-    
+
       fixed_internal y0_{ fix_<prec_>(21844) + 929569 * x2 / 105 };
-      fixed_internal y1_{ fix_<prec_>(691) + mul_<prec_>(x2,y0_)/ 39 };
-      fixed_internal y2_{ fix_<prec_>(31) + mul_<prec_>(x2,y1_) / 55 };
-      fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_-1>(x2,y2_)/ 9 };
+      fixed_internal y1_{ fix_<prec_>(1382) + mul_<prec_>(x2,y0_)/ 39 };
+      fixed_internal y2_{ fix_<prec_>(62) + mul_<prec_>(x2,y1_) / 55 };
+      fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_>(x2,y2_)/ 9 };
       fixed_internal y4_{ fix_<prec_>(2) + mul_<prec_>(x2,y3_)/ 21 };
       fixed_internal y5_{ fix_<prec_>(1) + mul_<prec_>(x2,y4_)/ 5 };
       fixed_internal y6_{ fix_<prec_>(1) + mul_<prec_>(x2,y5_)/ 3 };
