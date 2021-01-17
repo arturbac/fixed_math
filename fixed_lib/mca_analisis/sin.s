@@ -17,26 +17,35 @@ _Z3sinN9fixedmath7fixed_tE:             // @_Z3sinN9fixedmath7fixed_tE
 	mov	w9, #9279
 	movk	w9, #3, lsl #16
 	cmp	x0, x8
+	mov	x8, #15603
 	sub	x9, x9, x0
+	movk	x8, #62415, lsl #16
 	csel	x9, x9, x0, gt
-	mul	x11, x9, x9
-	lsr	x11, x11, #16
-	mul	x12, x11, x9
-	mov	w8, #10922
-	asr	x12, x12, #16
-	mul	x8, x12, x8
-	mul	x12, x12, x11
-	asr	x12, x12, #16
-	mov	w10, #546
-	mul	x11, x12, x11
-	mul	x10, x12, x10
-	mov	w12, #13
-	asr	x11, x11, #16
+	movk	x8, #53052, lsl #32
+	mul	x10, x9, x9
+	movk	x8, #15603, lsl #48
+	lsr	x10, x10, #16
+	smulh	x8, x10, x8
+	sub	x8, x8, x10
+	asr	x11, x8, #5
+	add	x8, x11, x8, lsr #63
+	add	x8, x8, #16, lsl #12            // =65536
+	mul	x8, x8, x10
+	mov	x11, #-7378697629483820647
 	asr	x8, x8, #16
-	mul	x11, x11, x12
-	add	x9, x9, x10, asr #16
-	add	x8, x8, x11, asr #16
-	sub	x0, x9, x8
+	smulh	x8, x8, x11
+	asr	x11, x8, #3
+	add	x8, x11, x8, lsr #63
+	add	x8, x8, #16, lsl #12            // =65536
+	mul	x8, x8, x10
+	mov	x10, #6148914691236517205
+	asr	x8, x8, #16
+	movk	x10, #54613, lsl #48
+	smulh	x8, x8, x10
+	add	x8, x8, x8, lsr #63
+	add	x8, x8, #16, lsl #12            // =65536
+	mul	x8, x8, x9
+	asr	x0, x8, #16
 	ret
 .LBB0_2:
 	sdiv	x11, x10, x9
