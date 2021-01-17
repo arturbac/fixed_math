@@ -856,38 +856,68 @@ namespace fixedmath
   // 7 7/6
   // 8 -3617/510
   // 9 43867/798
-  [[ nodiscard,gnu::const, gnu::always_inline ]]
+  namespace 
+    {
+    [[ nodiscard,gnu::const, gnu::always_inline ]]
+    constexpr fixed_t tan__( fixed_t rad ) noexcept
+      {
+      if( fixed_likely( rad != fixpidiv2 ) )
+        {
+        constexpr int prec_ = 16;
+        fixed_internal x{ rad.v };
+        fixed_internal x2{ mul_<prec_>(x,x) };
+      
+        //X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2(21844+929569X2/105)/39)/55)/9)/21)/5)/3)
+        // y0 = 21844+929569X2/105 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2*y0/39)/55)/9)/21)/5)/3)
+        // y1 = 691+X2*y0/39 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2*y1/55)/9)/21)/5)/3)
+        // y2 = 31+X2*y1/55 -> X(1+X2(1+X2(2+X2(17+2*X2*y2/9)/21)/5)/3)
+        // y3 = 17+2*X2*y2/9 -> X(1+X2(1+X2(2+X2*y3/21)/5)/3)
+        // y4 = 2+X2*y3/21 -> X(1+X2(1+X2*y4/5)/3)
+        // y5 = 1+X2*y4/5 -> X(1+X2*y5/3)
+        // y6 = 1+X2*y5/3 -> X*y6
+        // tan = X*y6
+  //       fixed_internal ya_{ fix_<prec_>(929569) + 6404582 * x2 / 17 };
+  //       fixed_internal y0_{ fix_<prec_>(21844) + mul_<prec_>(x2,ya_) / 105 };
+      
+        fixed_internal y0_{ fix_<prec_>(21844) + 929569 * x2 / 105 };
+        fixed_internal y1_{ fix_<prec_>(691) + mul_<prec_>(x2,y0_)/ 39 };
+        fixed_internal y2_{ fix_<prec_>(31) + mul_<prec_>(x2,y1_) / 55 };
+        fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_-1>(x2,y2_)/ 9 };
+        fixed_internal y4_{ fix_<prec_>(2) + mul_<prec_>(x2,y3_)/ 21 };
+        fixed_internal y5_{ fix_<prec_>(1) + mul_<prec_>(x2,y4_)/ 5 };
+        fixed_internal y6_{ fix_<prec_>(1) + mul_<prec_>(x2,y5_)/ 3 };
+        fixed_internal res{ mul_<prec_>(x,y6_) };
+        return as_fixed(res);
+       }
+      else
+        return limits__::quiet_NaN();
+      }
+    }
   constexpr fixed_t tan( fixed_t rad ) noexcept
     {
-    constexpr fixed_t phi2 { phi/2 };
-    if( fixed_likely( rad > -phi2 && rad < phi2 ) )
+    //tan(a+b) = (tan(a) + tan(b)) / (1 - tan(a) tan(b))
+    bool sign_ {};
+    if( rad < 0_fix )
       {
-      constexpr int prec_ = 16;
-      fixed_internal x{ rad.v };
-      fixed_internal x2{ mul_<prec_>(x,x) };
-    
-      //X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2(21844+929569X2/105)/39)/55)/9)/21)/5)/3)
-      // y0 = 21844+929569X2/105 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2*y0/39)/55)/9)/21)/5)/3)
-      // y1 = 691+X2*y0/39 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2*y1/55)/9)/21)/5)/3)
-      // y2 = 31+X2*y1/55 -> X(1+X2(1+X2(2+X2(17+2*X2*y2/9)/21)/5)/3)
-      // y3 = 17+2*X2*y2/9 -> X(1+X2(1+X2(2+X2*y3/21)/5)/3)
-      // y4 = 2+X2*y3/21 -> X(1+X2(1+X2*y4/5)/3)
-      // y5 = 1+X2*y4/5 -> X(1+X2*y5/3)
-      // y6 = 1+X2*y5/3 -> X*y6
-      // tan = X*y6
-      fixed_internal ya_{ fix_<prec_>(929569) + 6404582 * x2 / 17 };
-      fixed_internal y0_{ fix_<prec_>(21844) + mul_<prec_>(x2,ya_) / 105 };
-      fixed_internal y1_{ fix_<prec_>(691) + mul_<prec_>(x2,y0_)/ 39 };
-      fixed_internal y2_{ fix_<prec_>(31) + mul_<prec_>(x2,y1_) / 55 };
-      fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_-1>(x2,y2_)/ 9 };
-      fixed_internal y4_{ fix_<prec_>(2) + mul_<prec_>(x2,y3_)/ 21 };
-      fixed_internal y5_{ fix_<prec_>(1) + mul_<prec_>(x2,y4_)/ 5 };
-      fixed_internal y6_{ fix_<prec_>(1) + mul_<prec_>(x2,y5_)/ 3 };
-      fixed_internal res{ mul_<prec_>(x,y6_) };
-      return as_fixed(res);
+      rad = -rad;
+      sign_ = true;
+      }
+    //TODO normalize range to 0 .. phi/2
+    fixed_t res_tan {};
+    if( rad >= fixpidiv4 )
+      {
+      rad = rad - fixpidiv4;
+      fixed_t tan_b { tan__(rad) };
+      //tan(a+b) = (tan(a) + tan(b)) / (1 - tan(a) tan(b))
+      //tan(phi/4) = 1
+      //tan(phi/4+b) = (1 + tan(b)) / (1 - tan(b))
+      res_tan = (1_fix + tan_b) / (1_fix - tan_b );
       }
     else
-      return limits__::quiet_NaN();
+      res_tan = tan__(rad);
+    if( sign_ )
+      res_tan = -res_tan;
+    return res_tan;
     }
 }
 namespace std
@@ -899,6 +929,17 @@ namespace fixedmath
   //------------------------------------------------------------------------------------------------------
   // atan
   // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
+  // { x - { x ^ 3 over 3 } + { x ^ 5 over 5 } - { x ^ 7 over 7 } + { x ^ 9 over 9 } - { x ^ 11 over 11 } + { x ^ 13 over 13 } - { x ^ 15 over 15 } + { 2 over 3 } { x ^ 17 over 17 } } 
+  // { x left ( { 1 - { x ^ 2 over 3 } + { x ^ 4 over 5 } - { x ^ 6 over 7 } + { x ^ 8 over 9 } - { x ^ 10 over 11 } + { x ^ 12 over 13 } - { x ^ 14 over 15 } + { 2 over 3 } { x ^ 16 over 17 } } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { { 1 over 3 } + { x ^ 2 over 5 } - { x ^ 4 over 7 } + { x ^ 6 over 9 } - { x ^ 8 over 11 } + { x ^ 10 over 13 } - { x ^ 12 over 15 } + { 2 over 3 } { x ^ 14 over 17 } } right ) } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { { 1 over 3 } + x ^ 2 left ( { { 1 over 5 } - { x ^ 2 over 7 } + { x ^ 4 over 9 } - { x ^ 6 over 11 } + { x ^ 8 over 13 } - { x ^ 10 over 15 } + { 2 over 3 } { x ^ 12 over 17 } } right ) } right ) } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { { 1 over 3 } + x ^ 2 left ( { { 1 over 5 } - x ^ 2 left ( { { 1 over 7 } + { x ^ 2 over 9 } - { x ^ 4 over 11 } + { x ^ 6 over 13 } - { x ^ 8 over 15 } + { 2 over 3 } { x ^ 10 over 17 } } right ) } right ) } right ) } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { { 1 over 3 } + x ^ 2 left ( { { 1 over 5 } - x ^ 2 left ( { { 1 over 7 } + x ^ 2 left ( { { 1 over 9 } - { x ^ 2 over 11 } + { x ^ 4 over 13 } - { x ^ 6 over 15 } + { 2 over 3 } { x ^ 8 over 17 } } right ) } right ) } right ) } right ) } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { { 1 over 3 } + x ^ 2 left ( { { 1 over 5 } - x ^ 2 left ( { { 1 over 7 } + x ^ 2 left ( { { 1 over 9 } - x ^ 2 left ( { { 1 over 11 } + { x ^ 2 over 13 } - { x ^ 4 over 15 } + { 2 over 3 } { x ^ 6 over 17 } } right ) } right ) } right ) } right ) } right ) } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { { 1 over 3 } + x ^ 2 left ( { { 1 over 5 } - x ^ 2 left ( { { 1 over 7 } + x ^ 2 left ( { { 1 over 9 } - x ^ 2 left ( { { 1 over 11 } + x ^ 2 left ( { { 1 over 13 } - { x ^ 2 over 15 } + { 2 over 3 } { x ^ 4 over 17 } } right ) } right ) } right ) } right ) } right ) } right ) } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { { 1 over 3 } + x ^ 2 left ( { { 1 over 5 } - x ^ 2 left ( { { 1 over 7 } + x ^ 2 left ( { { 1 over 9 } - x ^ 2 left ( { { 1 over 11 } + x ^ 2 left ( { { 1 over 13 } - x ^ 2 left ( { { 1 over 15 } + { 2 over 3 } { x ^ 2 over 17 } } right ) } right ) } right ) } right ) } right ) } right ) } right ) } right ) } 
+  // { x left ( { 1 - { 1 over 3 } x ^ 2 left ( { 1 + { 3 over 5 } x ^ 2 left ( { 1 - { 5 over 7 } x ^ 2 left ( { 1 + { 7 over 9 } x ^ 2 left ( { 1 - { 9 over 11 } x ^ 2 left ( { 1 + { 11 over 13 } x ^ 2 left ( { 1 - { 13 over 15 } x ^ 2 left ( { 1 + { { 15 x ^ 2 } over 17 } } right ) } right ) } right ) } right ) } right ) } right ) } right ) } right ) } 
+  //  { x left ( { 1 + x ^ 2 left ( { - 1 + 3 x ^ 2 left ( { 1 + 5 x ^ 2 left ( { - 1 + 7 x ^ 2 left ( { 1 + 9 x ^ 2 left ( { - 1 + 11 x ^ 2 left ( { 1 - 13 x ^ 2 left ( { - 1 + { { 15 x ^ 2 } over 17 } } right ) : 15 } right ) : 13 } right ) : 11 } right ) : 9 } right ) : 7 } right ) : 5 } right ) : 3 } right ) } 
   [[ nodiscard,gnu::const, gnu::always_inline ]]
   constexpr fixed_t atan( fixed_t x ) noexcept
     {
@@ -983,7 +1024,7 @@ namespace fixedmath
       constexpr fixed_internal _1o3{ div_<prec_>(1,3) };
       fixed_internal y9{ _1o3 +  mul_<prec_>(x2,y8)/4};
       
-      constexpr fixed_internal _1{ 1<<prec_ };
+      constexpr fixed_internal _1{ fix_<prec_>(1) };
       fixed_internal y10{ _1 +  mul_<prec_>(x2,y9)/2};
       
       return as_fixed(mul_<prec_>(x,y10));
