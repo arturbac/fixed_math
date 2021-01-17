@@ -858,7 +858,7 @@ namespace fixedmath
   // 9 43867/798
   namespace 
     {
-    [[ nodiscard,gnu::const, gnu::always_inline ]]
+    [[ nodiscard,gnu::const]]
     constexpr fixed_internal tan__( fixed_internal x ) noexcept
       {
       constexpr int prec_ = 16;
@@ -886,6 +886,7 @@ namespace fixedmath
       }
       
     template<int prec_,fixed_internal a, fixed_internal tan_a >
+    [[ nodiscard,gnu::const]]
     constexpr fixed_internal tan2__( fixed_internal b )
       {
       constexpr fixed_internal one_{fix_<prec_>(1) };
@@ -893,7 +894,20 @@ namespace fixedmath
       fixed_internal tan_b { tan__(b) };
       return div_<prec_>( tan_a + tan_b, one_ - mul_<prec_>(tan_a, tan_b));
       }
+      
+    [[ nodiscard,gnu::const, gnu::always_inline ]]
+    constexpr fixed_internal tan_range( fixed_internal x )
+      {
+      constexpr fixed_t phi2 { phi/2 };
+      
+      //maximum performance for values in range thus fixed_unlikely
+      if( fixed_unlikely(x > phi2.v) )
+        x = x % phi.v;
+
+      return x;
+      }
     }
+    
   [[ nodiscard,gnu::const]]
   constexpr fixed_t tan( fixed_t rad ) noexcept
     {
@@ -907,7 +921,10 @@ namespace fixedmath
       x = -x;
       sign_ = true;
       }
-    //TODO normalize range to 0 .. phi/2
+    
+    //normalize range to 0 .. phi/2
+    x = tan_range( x );
+    
     if( fixed_likely( x != fixpidiv2.v ) )
       {
       constexpr fixed_internal _84 { 96081 }; //84,0001799224314 deg, 1,46607971191406 rad
