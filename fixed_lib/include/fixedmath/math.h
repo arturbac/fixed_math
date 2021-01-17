@@ -859,65 +859,87 @@ namespace fixedmath
   namespace 
     {
     [[ nodiscard,gnu::const, gnu::always_inline ]]
-    constexpr fixed_t tan__( fixed_t rad ) noexcept
+    constexpr fixed_internal tan__( fixed_internal x ) noexcept
       {
-      if( fixed_likely( rad != fixpidiv2 ) )
-        {
-        constexpr int prec_ = 16;
-        fixed_internal x{ rad.v };
-        fixed_internal x2{ mul_<prec_>(x,x) };
+      constexpr int prec_ = 16;
+      fixed_internal x2{ mul_<prec_>(x,x) };
+    
+      //X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2(21844+929569X2/105)/39)/55)/9)/21)/5)/3)
+      // y0 = 21844+929569X2/105 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2*y0/39)/55)/9)/21)/5)/3)
+      // y1 = 691+X2*y0/39 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2*y1/55)/9)/21)/5)/3)
+      // y2 = 31+X2*y1/55 -> X(1+X2(1+X2(2+X2(17+2*X2*y2/9)/21)/5)/3)
+      // y3 = 17+2*X2*y2/9 -> X(1+X2(1+X2(2+X2*y3/21)/5)/3)
+      // y4 = 2+X2*y3/21 -> X(1+X2(1+X2*y4/5)/3)
+      // y5 = 1+X2*y4/5 -> X(1+X2*y5/3)
+      // y6 = 1+X2*y5/3 -> X*y6
+      // tan = X*y6
+    
+      fixed_internal y0_{ fix_<prec_>(21844) + 929569 * x2 / 105 };
+      fixed_internal y1_{ fix_<prec_>(691) + mul_<prec_>(x2,y0_)/ 39 };
+      fixed_internal y2_{ fix_<prec_>(31) + mul_<prec_>(x2,y1_) / 55 };
+      fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_-1>(x2,y2_)/ 9 };
+      fixed_internal y4_{ fix_<prec_>(2) + mul_<prec_>(x2,y3_)/ 21 };
+      fixed_internal y5_{ fix_<prec_>(1) + mul_<prec_>(x2,y4_)/ 5 };
+      fixed_internal y6_{ fix_<prec_>(1) + mul_<prec_>(x2,y5_)/ 3 };
+      fixed_internal res{ mul_<prec_>(x,y6_) };
+      return res;
+      }
       
-        //X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2(21844+929569X2/105)/39)/55)/9)/21)/5)/3)
-        // y0 = 21844+929569X2/105 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2(691+X2*y0/39)/55)/9)/21)/5)/3)
-        // y1 = 691+X2*y0/39 -> X(1+X2(1+X2(2+X2(17+2*X2(31+X2*y1/55)/9)/21)/5)/3)
-        // y2 = 31+X2*y1/55 -> X(1+X2(1+X2(2+X2(17+2*X2*y2/9)/21)/5)/3)
-        // y3 = 17+2*X2*y2/9 -> X(1+X2(1+X2(2+X2*y3/21)/5)/3)
-        // y4 = 2+X2*y3/21 -> X(1+X2(1+X2*y4/5)/3)
-        // y5 = 1+X2*y4/5 -> X(1+X2*y5/3)
-        // y6 = 1+X2*y5/3 -> X*y6
-        // tan = X*y6
-  //       fixed_internal ya_{ fix_<prec_>(929569) + 6404582 * x2 / 17 };
-  //       fixed_internal y0_{ fix_<prec_>(21844) + mul_<prec_>(x2,ya_) / 105 };
-      
-        fixed_internal y0_{ fix_<prec_>(21844) + 929569 * x2 / 105 };
-        fixed_internal y1_{ fix_<prec_>(691) + mul_<prec_>(x2,y0_)/ 39 };
-        fixed_internal y2_{ fix_<prec_>(31) + mul_<prec_>(x2,y1_) / 55 };
-        fixed_internal y3_{ fix_<prec_>(17) + mul_<prec_-1>(x2,y2_)/ 9 };
-        fixed_internal y4_{ fix_<prec_>(2) + mul_<prec_>(x2,y3_)/ 21 };
-        fixed_internal y5_{ fix_<prec_>(1) + mul_<prec_>(x2,y4_)/ 5 };
-        fixed_internal y6_{ fix_<prec_>(1) + mul_<prec_>(x2,y5_)/ 3 };
-        fixed_internal res{ mul_<prec_>(x,y6_) };
-        return as_fixed(res);
-       }
-      else
-        return limits__::quiet_NaN();
+    template<int prec_,fixed_internal a, fixed_internal tan_a >
+    constexpr fixed_internal tan2__( fixed_internal b )
+      {
+      constexpr fixed_internal one_{fix_<prec_>(1) };
+      b = b - a;
+      fixed_internal tan_b { tan__(b) };
+      return div_<prec_>( tan_a + tan_b, one_ - mul_<prec_>(tan_a, tan_b));
       }
     }
+  [[ nodiscard,gnu::const]]
   constexpr fixed_t tan( fixed_t rad ) noexcept
     {
+    constexpr int prec_ = 16;
+    constexpr fixed_internal one_{fix_<prec_>(1) };
     //tan(a+b) = (tan(a) + tan(b)) / (1 - tan(a) tan(b))
+    fixed_internal x { rad.v };
     bool sign_ {};
-    if( rad < 0_fix )
+    if( x < 0 )
       {
-      rad = -rad;
+      x = -x;
       sign_ = true;
       }
     //TODO normalize range to 0 .. phi/2
-    fixed_t res_tan {};
-    if( rad >= fixpidiv4 )
+    if( fixed_likely( x != fixpidiv2.v ) )
       {
-      rad = rad - fixpidiv4;
-      fixed_t tan_b { tan__(rad) };
-      //tan(a+b) = (tan(a) + tan(b)) / (1 - tan(a) tan(b))
-      //tan(phi/4) = 1
-      //tan(phi/4+b) = (1 + tan(b)) / (1 - tan(b))
-      res_tan = (1_fix + tan_b) / (1_fix - tan_b );
-      }
+      constexpr fixed_internal _84 { 96081 }; //84,0001799224314 deg, 1,46607971191406 rad
+      
+      fixed_internal res_tan {};
+      if( x < fixpidiv4.v )
+        {
+        res_tan = tan__(x);
+        }
+      else if( x < fixpidiv3.v )
+        {
+        fixed_internal tan_b { tan__(x - fixpidiv4.v) };
+        //tan(phi/4) = 1
+        //tan(phi/4+b) = (1 + tan(b)) / (1 - tan(b))
+        res_tan = div_<prec_>( one_ + tan_b, one_ - tan_b );
+        }
+      else if( x < _84 ) 
+        {
+        constexpr fixed_internal tan_a_sqrt_3 { 113512 };
+        res_tan = tan2__<prec_, fixpidiv3.v, tan_a_sqrt_3>( x );
+        }
+      else
+        {
+        constexpr fixed_internal tan_a { 623552 };
+        res_tan = tan2__<prec_, _84, tan_a>( x );
+        }
+      if( sign_ )
+        res_tan = -res_tan;
+      return as_fixed(res_tan);
+       }
     else
-      res_tan = tan__(rad);
-    if( sign_ )
-      res_tan = -res_tan;
-    return res_tan;
+      return limits__::quiet_NaN();
     }
 }
 namespace std
