@@ -19,6 +19,7 @@ written from scratch fixed point math library in C++17
 - [    ] hypot - partialy done, needs x,y normalization to suitable range, to avoid overflow and underflow
 - [x] sin, cos - error ~<= 0.0001
 - [x] tan - error on range -Pi/2 .. PI/2 ~<= 0.001
+- [    ] tan - improve calculations, limit tan__ to |x|<=pi/4, reduce the argument x to y1+y2 = x-k*pi/2
 - [x] atan, atan2 - error  ~<= 0.000035
 - [x] asin error  ~<= 0.0001
 - [    ] remove all old compat code that is compiled
