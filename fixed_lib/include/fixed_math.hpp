@@ -147,31 +147,28 @@ namespace fixedmath
   constexpr fixed_t sqrt(fixed_t value) noexcept;
   
   ///\returns sine of \param rad in radians
-  /// Y = X - X^3/ 3! + X^5/ 5! - ... + (-1)^(n+1) * X^(2*n-1)/(2n-1)!
   constexpr fixed_t sin( fixed_t rad ) noexcept;
   
   ///\returns cosine of value in radians
   constexpr fixed_t cos( fixed_t rad ) noexcept;
   
   ///\returns tangent of \param rad
-  ///\warning valid range (-phi/2 .. phi/2)
-  // Y = X + X^3/3 + 2x^5/15 + 51x^7/945 + 62x^9/2835 + 1382*x^11/155925
   constexpr fixed_t tan( fixed_t rad ) noexcept;
   
   ///\returns arcus sine
-  // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
   ///\warning valid range < -1 .. 1 >
   constexpr fixed_t asin( fixed_t x ) noexcept;
   
   ///\returns arcus sine
-  // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
   ///\warning valid range < -1 .. 1 >
   constexpr fixed_t acos( fixed_t x ) noexcept;
   
   ///\returns arcus tangent of \param x
-  // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
   ///\warning valid range < -1 .. 1 >
   constexpr fixed_t atan( fixed_t x ) noexcept;
+  
+  ///\returns arcus tangent of y/x using the signs of arguments to determine the correct quadrant.
+  constexpr fixed_t atan2( fixed_t y, fixed_t x ) noexcept;
   
   ///\returns arc tan in range 0..+/-127 where 127 represents phi/2
   constexpr fixed_t atan_index( fixed_t value ) noexcept;
