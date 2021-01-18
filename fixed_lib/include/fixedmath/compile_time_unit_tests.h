@@ -300,4 +300,31 @@ namespace fixedmath
   static_assert( cos( -phi /2 + -phi/4  ) == -0.7070922851562500_fix );
   static_assert( cos( -phi  )             == -0.9998626708984375_fix );
   static_assert( cos( 2 * -phi  )         ==  0.9998474121093750_fix );
+  //------------------------------------------------------------------------------------------------------
+  //
+  // atan
+  //
+  constexpr bool test_atan( fixed_t x, double expected )
+    {
+    return std::abs(atan( x ) - expected ) < 0.000025 && std::abs(atan( -x ) - -expected ) < 0.000025;
+    }
+  static_assert( test_atan( 1_fix/16,0.062418809995957));
+  static_assert( test_atan( 3_fix/16,0.185347949995695));
+  static_assert( test_atan( 5_fix/16,0.302884868374971));
+  static_assert( test_atan( 7_fix/16,0.412410441597387));
+  static_assert( test_atan( 8_fix/16,0.463647609000806));
+  static_assert( test_atan( 9_fix/16,0.512389460310738));
+  static_assert( test_atan( 11_fix/16,0.602287346134964));
+  static_assert( test_atan( 13_fix/16,0.682316554874748));
+  static_assert( test_atan( 15_fix/16,0.753151280962194));
+  static_assert( test_atan( 17_fix/16,0.815691923316223));
+  static_assert( test_atan( 19_fix/16,0.870903457075653));
+  static_assert( test_atan( 21_fix/16,0.919719605350417));
+  static_assert( test_atan( 25_fix/16,1.00148313569423));
+  static_assert( test_atan( 37_fix/16,1.16264722303981));
+  static_assert( test_atan( 39_fix/16,1.18147960496176));
+  static_assert( test_atan( 40_fix/16,1.19028994968253));
+
+
+
 }
