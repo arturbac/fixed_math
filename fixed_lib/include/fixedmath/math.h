@@ -587,7 +587,7 @@ namespace fixedmath
 
   //------------------------------------------------------------------------------------------------------
 
-  [[ gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t ceil( fixed_t value ) noexcept
     {
     value = value + as_fixed( 0xffff );
@@ -613,7 +613,7 @@ namespace fixedmath
 
   //------------------------------------------------------------------------------------------------------
   
-  [[ gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t floor( fixed_t value ) noexcept
     {
     value = as_fixed( value.v & 0xffffffffffff0000llu );
@@ -637,7 +637,7 @@ namespace fixedmath
     
   //------------------------------------------------------------------------------------------------------
   ///\brief converts angle 0 - 360 to radians.
-  [[ gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t angle_to_radians( int angle ) noexcept
     {
     if( angle >= 0 && angle <= 360 )
@@ -649,7 +649,7 @@ namespace fixedmath
   //------------------------------------------------------------------------------------------------------
   uint16_t square_root_tab( uint8_t index ) noexcept;
   
-  [[nodiscard,FIXEDMATH_PUBLIC]]
+  [[nodiscard,FIXEDMATH_PUBLIC, deprecated]]
   fixed_t sqrt_aprox(fixed_t value) noexcept;
   
   namespace 
@@ -684,7 +684,7 @@ namespace fixedmath
     }
     
   ///\brief Square root by abacus algorithm
-  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const]]
   constexpr fixed_t sqrt( fixed_t value ) noexcept
     {
     if( fixed_unlikely(value.v < 0 || value.v >= (1ll<<48)) )
@@ -708,9 +708,10 @@ namespace fixedmath
     return as_fixed(result);
     }
   
-  [[nodiscard,FIXEDMATH_PUBLIC]]
+  [[nodiscard,FIXEDMATH_PUBLIC,deprecated]]
   fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept;
 
+  [[ nodiscard, gnu::const]]
   constexpr fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept
     {
     //TODO
@@ -771,7 +772,7 @@ namespace fixedmath
   /// 
   //------------------------------------------------------------------------------------------------------
   ///\returns \param rad normalized into range -phi/2 .. 3phi/2
-  [[ nodiscard,gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t sin_range( fixed_t rad )
     {
     constexpr fixed_t phi2 { phi/2 };
@@ -796,7 +797,7 @@ namespace fixedmath
   /// X * (1 - X2*(1 - X2*(1 - X2/42)/20)/6)
   ///
   /// error is less or equal to X^9/9!
-  [[ nodiscard,gnu::const, gnu::always_inline ]]
+  [[ nodiscard,gnu::const ]]
   constexpr fixed_t sin( fixed_t rad ) noexcept
     {
     constexpr fixed_t phi2 { phi/2 };
@@ -829,7 +830,7 @@ namespace fixedmath
 {
   //------------------------------------------------------------------------------------------------------
   ///\returns cosine of value in radians
-  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const ]]
   constexpr fixed_t cos( fixed_t rad ) noexcept
     {
     constexpr fixed_t phi2 { fixpidiv2 };
@@ -869,7 +870,7 @@ namespace fixedmath
     // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 21844 over 39 } x ^ 2 + { 929569 over 4095 } x ^ 4 } right ) } right ) } right ) } right ) } right ) } right ) }
     // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 1 over 39 } x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) } right ) } right ) } right ) } right ) } right ) } right ) } 
     // { x left ( { 1 + x ^ 2 left ( { 1 + x ^ 2 left ( { 2 + x ^ 2 left ( { 17 + x ^ 2 left ( { 62 + x ^ 2 left ( { 1382 + x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) :39 } right ) :55 } right ) :9 } right ) :21 } right ) :5 } right ) :3 } right ) } 
-    [[ nodiscard,gnu::const]]
+    [[ nodiscard, gnu::const, gnu::always_inline]]
     constexpr fixed_internal tan__( fixed_internal x ) noexcept
       {
       constexpr int prec_ = 16;
@@ -909,7 +910,7 @@ namespace fixedmath
       }
     }
     
-  [[ nodiscard,gnu::const]]
+  [[ nodiscard, gnu::const]]
   constexpr fixed_t tan( fixed_t rad ) noexcept
     {
     constexpr int prec_ = 16;
@@ -997,6 +998,7 @@ namespace fixedmath
 //     return mul_<prec_>(x,y4);
     }
     
+  [[ nodiscard, gnu::const ]]
   constexpr fixed_t atan( fixed_t rad ) noexcept
     {
     //     arctan (-x) = -arctan(x)
@@ -1042,6 +1044,7 @@ namespace fixedmath
     return as_fixed(-result);
     }
     
+  [[ nodiscard, gnu::const ]]
   constexpr fixed_t atan2( fixed_t y, fixed_t x ) noexcept
     {
     if( x > 0_fix )
@@ -1072,8 +1075,9 @@ namespace fixedmath
 {
   namespace 
     {
+    [[ nodiscard,gnu::const, gnu::always_inline ]]
     // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
-    constexpr fixed_t asin_unchecked( fixed_t rad ) noexcept
+    constexpr fixed_t asin__( fixed_t rad ) noexcept
       {
       //y0=11/21+21x2/46
       //y1=12155/19+4199x2*y0/4
@@ -1134,21 +1138,23 @@ namespace fixedmath
   //------------------------------------------------------------------------------------------------------
   // asin |X| <= 1
   // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
+  [[ nodiscard, gnu::const ]]
   constexpr fixed_t asin( fixed_t x ) noexcept
     {
     if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
-      return asin_unchecked(x);
+      return asin__(x);
     else
       return limits__::quiet_NaN();
     }
   //------------------------------------------------------------------------------------------------------
   // acos |X| <= 1
   // pi/2 - X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
+  [[ nodiscard, gnu::const ]]
   constexpr fixed_t acos( fixed_t x ) noexcept
     {
     constexpr fixed_t phi2 { phi/2 };
     if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
-      return as_fixed( phi2.v - asin_unchecked(x).v );
+      return as_fixed( phi2.v - asin__(x).v );
     else
       return limits__::quiet_NaN();
     }
@@ -1181,6 +1187,7 @@ namespace fixedmath
   // compat with old lib function
   fixed_t sin_angle_tab( uint16_t degrees ) noexcept;
   
+  [[deprecated]]
   inline fixed_t sin_angle_aprox(int32_t angle) noexcept
     {
     if(fixed_unlikely(angle < 0 || angle > 360) )
@@ -1192,6 +1199,7 @@ namespace fixedmath
   // compat with old lib function
   fixed_t cos_angle_tab( uint16_t degrees ) noexcept;
   
+  [[deprecated]]
   inline fixed_t cos_angle_aprox(int32_t angle) noexcept
     {
     if( fixed_unlikely( angle < 0 || angle > 360) )
@@ -1201,11 +1209,13 @@ namespace fixedmath
     
   //------------------------------------------------------------------------------------------------------
   // compat with old lib function
+  [[deprecated]]
   fixed_t tan_tab( uint8_t index ) noexcept;
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
   fixed_t atan_index_aprox( fixed_t value ) noexcept;
   
+  [[deprecated]]
   inline fixed_t atan_aprox( fixed_t value ) noexcept  { return atan_index_aprox( value ) * fixtorad_r; }
   
   
