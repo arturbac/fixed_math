@@ -16,4 +16,5 @@ stil under development
 - [    ] hypot - partialy done, needs x,y normalization to suitable range, to avoid overflow and underflow
 - [x] sin, cos - error ~<= 0.0001
 - [x] tan - error on range -Pi/2 .. PI/2 ~<= 0.001
-- [    ] atan, asin - partialy done needs better aproxymation near x=1
+- [x] atan - error on range -1 .. 1 ~<= 0.00015
+- [    ] asin - partialy done needs better aproxymation near x=1

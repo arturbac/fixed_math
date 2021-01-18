@@ -959,6 +959,7 @@ namespace fixedmath
     else
       return limits__::quiet_NaN();
     }
+    
 }
 namespace std
 {
@@ -981,23 +982,58 @@ namespace fixedmath
   // { x left ( { 1 - { 1 over 3 } x ^ 2 left ( { 1 + { 3 over 5 } x ^ 2 left ( { 1 - { 5 over 7 } x ^ 2 left ( { 1 + { 7 over 9 } x ^ 2 left ( { 1 - { 9 over 11 } x ^ 2 left ( { 1 + { 11 over 13 } x ^ 2 left ( { 1 - { 13 over 15 } x ^ 2 left ( { 1 + { { 15 x ^ 2 } over 17 } } right ) } right ) } right ) } right ) } right ) } right ) } right ) } right ) } 
   //  { x left ( { 1 + x ^ 2 left ( { - 1 + 3 x ^ 2 left ( { 1 + 5 x ^ 2 left ( { - 1 + 7 x ^ 2 left ( { 1 + 9 x ^ 2 left ( { - 1 + 11 x ^ 2 left ( { 1 - 13 x ^ 2 left ( { - 1 + { { 15 x ^ 2 } over 17 } } right ) : 15 } right ) : 13 } right ) : 11 } right ) : 9 } right ) : 7 } right ) : 5 } right ) : 3 } right ) } 
   [[ nodiscard,gnu::const, gnu::always_inline ]]
-  constexpr fixed_t atan( fixed_t x ) noexcept
+  constexpr fixed_internal atan_( fixed_internal x ) noexcept
     {
+    constexpr int prec_ = 16;
     //if( fixed_likely( rad >= -1_fix && rad <= 1_fix ) )
     //is optimised as fixed_likely( abs(rad) <= 1_fix )
     //   and     x8, x0, #0x7fffffffffffffff
     //   cmp     x8, #16, lsl #12                // =65536
     //   b.hi    .LBB0_2
-    if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
-      {
-      fixed_internal x2 { (x.v * x.v) >> 16 };
-      fixed_internal x3 { (x2 * x.v) >> 16 };
+//     if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
+//       {
+      fixed_internal x2 { mul_<prec_>(x, x) };
+      fixed_internal x3 { (x2 * x) >> 16 };
       fixed_internal x5 { (x3 * x2) >> 16 };
       fixed_internal x7 { (x5 * x2) >> 16 };
       fixed_internal x9 { (x7 * x2) >> 16 };
       fixed_internal x11 { (x9 * x2) >> 16 };
       
-      return as_fixed( x.v - x3/3 + x5/5 - x7/7 + x9/9 - x11/11);
+      return x - x3/3 + x5/5 - x7/7 + x9/9 - x11/11;
+//       }
+//     else
+//       return limits__::quiet_NaN();
+    }
+    
+  constexpr fixed_t atan( fixed_t rad ) noexcept
+    {
+    //     arctan (-x) = -arctan(x)
+    //     arctan (1/x) = 0.5 * pi - arctan(x) [x > 0]
+    //     arctan (x) = arctan(c) + arctan((x - c) / (1 + x*c))
+    //     arctan(x)' = 1/ (1+x^2)
+    constexpr int prec_ = 16;
+    constexpr fixed_internal _059999 { 39319 }; //0,599960327148438
+    constexpr fixed_internal atan_059999 { 35415 }; //~35415,020571566
+    constexpr fixed_internal one_{fix_<prec_>(1) };
+
+    fixed_internal x { rad.v };
+    bool sign_ {};
+    if( x < 0 )
+      {
+      x = -x;
+      sign_ = true;
+      }
+    if( fixed_likely( x <= one_ ) )
+      {
+      fixed_internal result{};
+      if( x < _059999 )
+        result = atan_( x );
+      else
+        result = atan_059999 + atan_( div_<prec_>(x - _059999,one_ + mul_<prec_>(x,_059999)) );
+      
+      if( !sign_)
+        return as_fixed(result);
+      return as_fixed(-result);
       }
     else
       return limits__::quiet_NaN();
