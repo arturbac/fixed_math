@@ -445,7 +445,7 @@ namespace fixedmath
     constexpr fixed_t fixed_multiply_scalar (fixed_t lh, integral_type rh) noexcept
       {
       static_assert( is_integral<integral_type>::value,"Must be integral type");
-      fixed_t result { fix_carrier_t{ lh.v * rh }};
+      fixed_t result { fix_carrier_t{ lh.v * static_cast<fixed_internal>(rh) }};
 
       if( fixed_likely( check_multiply_result(result)) )
         return result;
