@@ -146,6 +146,8 @@ namespace fixedmath
   static_assert( fixed_t{ -4096ll }  == -4096_fix );
   static_assert( fixed_t{ 4096llu } == 4096_fix );
   
+  template<typename expected, typename input>
+  constexpr bool test_resulting_type( input ) { return std::is_same<expected,input>::value; }
   //------------------------------------------------------------------------------------------------------
   //
   // fixed_addition
@@ -165,6 +167,26 @@ namespace fixedmath
   static_assert( 10.4 + 1_fix == 11.4 );
   static_assert( 10.5_fix + 10.2 == 20.7 );
   static_assert( -10_fix+ 1 == -9_fix );
+  
+  static_assert( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint64_t(1) + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  + uint64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1 + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix + 1 ) );
+  static_assert( test_resulting_type<fixed_t>( int16_t(1) + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  + int16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint16_t(1) + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  + uint16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( int8_t(1) + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  + int8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint8_t(1) + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  + uint8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1.f + 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  + 1.f ) );
+  static_assert( test_resulting_type<double>( 1. + 1_fix ) );
+  static_assert( test_resulting_type<double>( 1_fix  + 1. ) );
   //------------------------------------------------------------------------------------------------------
   //
   // fixed_substract
@@ -173,7 +195,25 @@ namespace fixedmath
   static_assert( 3.2_fix - 1.2_fix  == 2_fix );
   static_assert( -4.2_fix - 1.2_fix  == -5.4_fix );
   static_assert( 1_fix - 1.  ==  1. - 1. );
-  
+  static_assert( test_resulting_type<fixed_t>( int64_t(1) - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  - int64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint64_t(1) - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  - uint64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1 - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix - 1 ) );
+  static_assert( test_resulting_type<fixed_t>( int16_t(1) - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  - int16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint16_t(1) - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  - uint16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( int8_t(1) - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  - int8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint8_t(1) - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix - uint8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1.f - 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix - 1.f ) );
+  static_assert( test_resulting_type<double>( 1. - 1_fix ) );
+  static_assert( test_resulting_type<double>( 1_fix  - 1. ) );
   //------------------------------------------------------------------------------------------------------
   //
   // fixed_multiply
@@ -182,7 +222,25 @@ namespace fixedmath
   static_assert( 10_fix * 0.5_fix  == 5_fix );
   static_assert( std::abs(0.8_fix * 0.2_fix)  - 0.16_fix <= limits__::epsilon() );
   static_assert( std::abs(0.8_fix * -0.2_fix)  > 0_fix );
-  
+  static_assert( test_resulting_type<fixed_t>( int64_t(1) * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  * int64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint64_t(1) * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  * uint64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1 * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix * 1 ) );
+  static_assert( test_resulting_type<fixed_t>( int16_t(1) * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  * int16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint16_t(1) * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  * uint16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( int8_t(1) * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  * int8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint8_t(1) * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix * uint8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1.f * 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix * 1.f ) );
+  static_assert( test_resulting_type<double>( 1. * 1_fix ) );
+  static_assert( test_resulting_type<double>( 1_fix * 1. ) );
   
   //------------------------------------------------------------------------------------------------------
   //
@@ -200,7 +258,25 @@ namespace fixedmath
   static_assert( 1_fix / 2_fix  == 0.5_fix );
   static_assert( 1_fix / 4_fix  == 0.25_fix );
   static_assert( 1 / 4_fix  == 0.25_fix );
-  
+  static_assert( test_resulting_type<fixed_t>( int64_t(1) / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  / int64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint64_t(1) / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  / uint64_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1 / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix / 1 ) );
+  static_assert( test_resulting_type<fixed_t>( int16_t(1) / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  / int16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint16_t(1) / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  / uint16_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( int8_t(1) / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix  / int8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( uint8_t(1) / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix / uint8_t(1) ) );
+  static_assert( test_resulting_type<fixed_t>( 1.f / 1_fix ) );
+  static_assert( test_resulting_type<fixed_t>( 1_fix / 1.f ) );
+  static_assert( test_resulting_type<double>( 1. / 1_fix ) );
+  static_assert( test_resulting_type<double>( 1_fix / 1. ) );
   //------------------------------------------------------------------------------------------------------
   //
   // sqrt
