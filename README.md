@@ -15,12 +15,12 @@ written from scratch fixed point math library in C++17
 ## Goals status
 
 - [x] base arithemtic operations 
-- [x] sqrt - abacus algorithm using CLZ (avail on x86 and >=armv6, aarch64)  error ~<= 0.000015
+- [x] sqrt - abacus algorithm using CLZ ( CLZ is available on x86 and >=armv6, aarch64)  error ~<= 0.000015
 - [    ] hypot - partialy done, needs x,y normalization to suitable range, to avoid overflow and underflow
 - [x] sin, cos - error ~<= 0.0001
 - [x] tan - error on range -Pi/2 .. PI/2 ~<= 0.001
 - [x] atan, atan2 - error  ~<= 0.000035
-- [    ] asin - partialy done needs better aproxymation near x=1
+- [x] asin error  ~<= 0.0001
 
 ## License
 

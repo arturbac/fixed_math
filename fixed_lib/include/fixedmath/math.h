@@ -1075,86 +1075,78 @@ namespace fixedmath
 {
   namespace 
     {
-    [[ nodiscard,gnu::const, gnu::always_inline ]]
-    // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
-    constexpr fixed_t asin__( fixed_t rad ) noexcept
+
+    template<int prec_>
+    fixed_internal asin__( fixed_internal x )
       {
-      //y0=11/21+21x2/46
-      //y1=12155/19+4199x2*y0/4
-      //y2=6435/17+x2*y1/2
-      //y3=143/5+x2*y2/16
-      //y4=231/13+x2*y3/2
-      //y5=63/11+x2*y4/4
-      //y6=35/9+x2*y5/2
-      //y7=5/7+x2*y6/8
-      //y8=3/5+x2*y7/2
-      //y9=1/3+x2y8/4
-      //y10=1+x2*y9
-      //asin=x*y10/2
-      constexpr int prec_ = 16;
-      
-      fixed_internal x { rad.v };
       fixed_internal x2{ mul_<prec_>(x,x) };
-      
-      fixed_internal y5{};
-      if(rad > 0.5_fix || rad < -0.5_fix )
-        {
-        constexpr fixed_internal _11o21{ div_<prec_>(11,21)};
-        fixed_internal y0{ _11o21 + 21*x2/46};
         
-        constexpr fixed_internal _12155o19{ div_<prec_>(12155,19)+1};
-        fixed_internal y1{ _12155o19 + 4199*mul_<prec_>(x2,y0)/4};
-        
-        constexpr fixed_internal _6435o17{ div_<prec_>(6435,17)+1 };
-        fixed_internal y2{ _6435o17 +  mul_<prec_>(x2,y1)/2};
-        
-        constexpr fixed_internal _143o5{ div_<prec_>(143,5)+1 };
-        fixed_internal y3{ _143o5 +  mul_<prec_>(x2,y2)/16};
-        
-        constexpr fixed_internal _231o13{ div_<prec_>(231,13)+1 };
-        fixed_internal y4{ _231o13 +  mul_<prec_>(x2,y3)/2};
-        
-        constexpr fixed_internal _63o11{ div_<prec_>(63,11) + 1 };
-        y5 = mul_<prec_>(x2, _63o11 +  mul_<prec_>(x2,y4)/4)/2;
-        }
       constexpr fixed_internal _35o9{ div_<prec_>(35,9) + 1 };
-      fixed_internal y6{ _35o9 + y5 };
-      
       constexpr fixed_internal _5o7{ div_<prec_>(5,7) + 1 };
-      fixed_internal y7{ _5o7 +  mul_<prec_>(x2,y6)/8};
-      
       constexpr fixed_internal _3o5{ div_<prec_>(3,5) + 1 };
-      fixed_internal y8{ _3o5 +  mul_<prec_>(x2,y7)/2};
-      
       constexpr fixed_internal _1o3{ div_<prec_>(1,3) };
-      fixed_internal y9{ _1o3 +  mul_<prec_>(x2,y8)/4};
-      
       constexpr fixed_internal _1{ fix_<prec_>(1) };
-      fixed_internal y10{ _1 +  mul_<prec_>(x2,y9)/2};
+      constexpr fixed_internal _63o11{ div_<prec_>(63,11) + 1 };
       
-      return as_fixed(mul_<prec_>(x,y10));
+
+      fixed_internal y6{ _35o9 + mul_<prec_+1>(x2,_63o11) };
+      fixed_internal y7{ _5o7 +  mul_<prec_+3>(x2,y6)};
+      fixed_internal y8{ _3o5 +  mul_<prec_+1>(x2,y7)};
+      fixed_internal y9{ _1o3 +  mul_<prec_+2>(x2,y8)};
+      fixed_internal y10{ _1 +  mul_<prec_+1>(x2,y9)};
+      
+      return mul_<prec_>(x,y10);
+      }
+    constexpr fixed_t set_sign( bool sign_, fixed_internal result )
+      {
+      if(!sign_)
+        return as_fixed(result);
+      return -as_fixed(result);
       }
     }
   //------------------------------------------------------------------------------------------------------
   // asin |X| <= 1
-  // X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
   [[ nodiscard, gnu::const ]]
   constexpr fixed_t asin( fixed_t x ) noexcept
     {
-    if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
-      return asin__(x);
+      
+    fixed_internal x_{x.v};
+    bool sign_ {};
+    if( x_ < 0 )
+      {
+      x_ = -x_;
+      sign_ = true;
+      }
+    constexpr fixed_internal _1 { (1_fix).v };
+    if( fixed_likely( x_ <= _1 ) )
+      {
+      constexpr int ext_prec = 4;
+      constexpr int prec = 16+ext_prec;
+
+      if( x_ <= (0.60_fix).v )
+        {
+        fixed_internal result{ asin__<prec>(x_<<ext_prec)>>ext_prec };
+        return set_sign( sign_, result );
+        }
+      else 
+        {
+        // asin(x) = pi/2-2*asin(sqrt((1-x)/2))
+        fixed_internal sqr { sqrt( as_fixed((_1 - x_)>>1)).v };
+        fixed_internal result{ fixpidiv2.v - (asin__<prec>(sqr <<ext_prec)>>(ext_prec-1)) };
+        return set_sign( sign_, result );
+        }
+      }
     else
       return limits__::quiet_NaN();
     }
   //------------------------------------------------------------------------------------------------------
   // acos |X| <= 1
-  // pi/2 - X + X^3/6 + 3X^5/40 + 5*X^7/112 + 35X^9/1152 + 63X^11/2816
   [[ nodiscard, gnu::const ]]
   constexpr fixed_t acos( fixed_t x ) noexcept
     {
     constexpr fixed_t phi2 { phi/2 };
     if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
-      return as_fixed( phi2.v - asin__(x).v );
+      return as_fixed( phi2.v - asin(x).v );
     else
       return limits__::quiet_NaN();
     }

@@ -322,6 +322,7 @@ namespace fixedmath
   static_assert( sin( phi + phi/2 )    == -0.9998626708984375_fix );
   static_assert( sin( phi + phi/4 )    == -0.7071075439453125_fix );
   static_assert( sin( phi )            ==  0_fix ) ;
+  static_assert( sin( 0_fix )          ==  0_fix ) ;
   static_assert( sin( phi /2 + phi/4 ) ==  0.7071075439453125_fix ) ;
 
   static_assert( sin( phi/2_fix)  ==  0.9998474121093750_fix);
