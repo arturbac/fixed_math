@@ -12,7 +12,7 @@ written from scratch fixed point math library in C++17
 * fully header only library as everything is constexpr, see api interface [api](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixed_math.hpp) and [implementation](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/math.h)
 * unit tests are checked always during compilation time, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
 
-## Goals status
+## version 1.0 Goals status
 
 - [x] base arithemtic operations 
 - [x] sqrt - abacus algorithm using CLZ ( CLZ is available on x86 and >=armv6, aarch64)  error ~<= 0.000015
@@ -21,6 +21,18 @@ written from scratch fixed point math library in C++17
 - [x] tan - error on range -Pi/2 .. PI/2 ~<= 0.001
 - [x] atan, atan2 - error  ~<= 0.000035
 - [x] asin error  ~<= 0.0001
+- [    ] remove all old compat code that is compiled
+- [    ] cover all functionality with static_assert unit tests
+
+## future Goals
+
+- [    ] more math functionality
+- [    ] performance comparisions on arm64 and x86 with float/double arithemetic
+- [    ] more optimisations, calculation quality enchacments
+
+## Feedback
+
+If you think you have found a bug, please file an issue via issue submission [form](https://github.com/arturbac/fixed_math/issues). Include the relevant information to reproduce the bug for example as static_assert( expression ), if it is important also the compiler version and target architecture. Feature requests and contributions can be filed as issues or pull requests.
 
 ## License
 
