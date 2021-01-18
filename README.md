@@ -7,8 +7,8 @@ stil under development
 * all arithemtic types like float, integral types except double implicitly in base arithemitc operations are promoted to fixed_t
 * all arithmetic operations of fixed_t with double type of some variables yealds double result type, are promoted to double operations
 * entire code including trigonometry functions code is constexpr
-* fully header only as everything is constexpr
-* unit tests are checked always during compilation time
+* fully header only as everything is constexpr api interface, see [api](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixed_math.hpp) and [implementation](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/math.h)
+* unit tests are checked always during compilation time, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
 
 ## goals status
 - [x] base arithemtic operations 
