@@ -123,7 +123,6 @@ namespace fixedmath
   //binary search closest value in tan table
   fixed_t atan_index_aprox( fixed_t value ) noexcept
     {
-// #if 1
     if( value >= 0_fix )
       {
       auto it { std::lower_bound( std::begin(tan_table__), std::next(std::begin(tan_table__),128), value.v ) };
@@ -142,37 +141,5 @@ namespace fixedmath
         index = index -1;
       return -128_fix + as_fixed( fixed_internal(index) << 15);
       }
-// #else
-//     uint8_t low_bound, up_bound;
-// 
-//     if( value >= 0_fix )
-//       {
-//       low_bound = 0; up_bound = 127;
-//       }
-//     else
-//       {
-//       low_bound = 128; up_bound = 255;
-//       }
-// 
-//     uint8_t index;
-//     fixed_t diff;
-//     do 
-//       {
-//       index = (low_bound + up_bound) >> 1;
-//       diff = value - as_fixed( tan_tab(index) );
-// 
-//       if (diff > 0_fix)
-//         low_bound = index + 1;
-//       else if (diff < 0_fix)
-//         up_bound = index - 1;
-//       } 
-//     while ((low_bound <= up_bound) && (diff != 0_fix));
-//     std::cout << '[' << int(index) <<  ']' << '(' << as_fixed( tan_tab(index) ) << ')';
-//     fixed_t const result { as_fixed( fixed_internal(index) << 15) };
-//     if (value >= 0_fix)
-//       return result;
-// 
-//     return -128_fix + result;
-// #endif
     }
 }

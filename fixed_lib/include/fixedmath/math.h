@@ -583,12 +583,6 @@ namespace fixedmath
       return value;
     return limits__::quiet_NaN();
     }
-    
-  [[deprecated]]
-  constexpr int32_t fceil( fixed_t value ) noexcept
-    {
-    return fixed_to_integral<int32_t>(ceil( value ));
-    }
   
 }
 namespace std
@@ -599,7 +593,6 @@ namespace fixedmath
 {
 
   //------------------------------------------------------------------------------------------------------
-  
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t floor( fixed_t value ) noexcept
     {
@@ -1144,12 +1137,6 @@ namespace fixedmath
     else
       return limits__::quiet_NaN();
     }
-  //------------------------------------------------------------------------------------------------------
-  // compat with old lib function
-  constexpr fixed_t atan_index( fixed_t value ) noexcept
-    {
-    return atan( value ) * radtofix_r;
-    }
     
   //------------------------------------------------------------------------------------------------------
   template<typename supported_type>
@@ -1169,11 +1156,12 @@ namespace fixedmath
     {
     return tan( angle * phi / 180 );
     }
+    
   //------------------------------------------------------------------------------------------------------
   // compat with old lib function
   fixed_t sin_angle_tab( uint16_t degrees ) noexcept;
   
-  [[deprecated]]
+  [[deprecated,FIXEDMATH_PUBLIC]]
   inline fixed_t sin_angle_aprox(int32_t angle) noexcept
     {
     if(fixed_unlikely(angle < 0 || angle > 360) )
@@ -1185,7 +1173,7 @@ namespace fixedmath
   // compat with old lib function
   fixed_t cos_angle_tab( uint16_t degrees ) noexcept;
   
-  [[deprecated]]
+  [[deprecated,FIXEDMATH_PUBLIC]]
   inline fixed_t cos_angle_aprox(int32_t angle) noexcept
     {
     if( fixed_unlikely( angle < 0 || angle > 360) )
@@ -1195,7 +1183,6 @@ namespace fixedmath
     
   //------------------------------------------------------------------------------------------------------
   // compat with old lib function
-  [[deprecated]]
   fixed_t tan_tab( uint8_t index ) noexcept;
   
   [[nodiscard,FIXEDMATH_PUBLIC]]
