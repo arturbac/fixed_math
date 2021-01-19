@@ -27,7 +27,7 @@
 
 namespace fixedmath
 {
-  //representated fractions in fixed
+  //representated fractions in fixed and any of sum of them
   // 1      1<<0   0.0000152587890625
   // 2      1<<1   0.0000305175781250
   // 4      1<<2   0.0000610351562500

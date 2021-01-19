@@ -16,7 +16,7 @@ written from scratch fixed point math library in C++17
 
 - [x] base arithemtic operations 
 - [x] sqrt - abacus algorithm using CLZ ( CLZ is available on x86 and >=armv6, aarch64)  error ~<= 0.000015
-- [    ] hypot - partialy done, needs x,y normalization to suitable range, to avoid overflow and underflow
+- [x] hypot - with normalization to suitable range, to avoid overflow and underflow
 - [x] sin, cos - error ~<= 0.0001
 - [x] tan - error on normalized range |x| <= PI/4 ~<= 0.0001, PI/4 |x| <= PI/2 ~<=0.001 exept near 90deg ~<= 0.01
 - [x] tan - improve calculations, limit tan__ to |x|<=pi/4

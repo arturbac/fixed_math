@@ -714,13 +714,41 @@ namespace fixedmath
   [[ nodiscard, gnu::const]]
   constexpr fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept
     {
-    //TODO
-    //sqrt (x^2+y^2) = sqrt ((x/d)^2+(y/d)^2) * d
-    //d = 2^n
+    constexpr int prec_ = 16;
+    //sqrt(X^2+Y^2) = sqrt( (X/D)^2+(Y/D)^2) * D
+    //D = 2^n
+    if( lh < 0_fix )
+      lh = -lh;
+    if( rh < 0_fix )
+      rh = -rh;
+    uint64_t uhi { static_cast<uint64_t>(lh.v)};
+    uint64_t ulo { static_cast<uint64_t>(rh.v)};
+    
     //reorder hi/lo
+    if( uhi < ulo )
+      {
+      uhi = ulo;
+      ulo = static_cast<uint64_t>(lh.v);
+      }
+
     //check hi for overflow and shift right with d
+    if( uhi >= (1ull<<30) )
+      {
+      int rshbits{ 48 - cxx20::countl_zero( uhi ) };
+      uhi >>= rshbits;
+      ulo >>= rshbits;
+      return as_fixed(sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_ ) ).v << rshbits)  ;
+      }
     //else check lo for underflow and shift left with d
-    return sqrt( lh*lh+rh*rh);
+    else if( ulo < (1<<16) )
+      {
+      int lshbits{ 16 - cxx20::countr_zero( uhi ) };
+      uhi <<= lshbits;
+      ulo <<= lshbits;
+      return as_fixed( sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_) ).v  >> lshbits);
+      }
+    else
+      return sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_ ) );
     }
 }
 namespace std

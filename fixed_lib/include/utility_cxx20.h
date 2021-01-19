@@ -102,4 +102,24 @@ namespace cxx20
   static_assert( countl_zero(2) == 32 - 2 );
   static_assert( countl_zero(4) == 32 - 3 );
   static_assert( countl_zero(int64_t(4)) == 64 - 3 );
+  
+  template<typename T>
+  constexpr int countr_zero(T value ) noexcept
+    {
+    static_assert(std::is_integral<T>::value && sizeof(T)<=8);
+    if constexpr( sizeof(T) < 4 )
+      {
+      int lz{ __builtin_ctz( value ) };
+      return lz - 8 * (sizeof(int) - sizeof(T));
+      }
+    else if constexpr( sizeof(T) == 4 )
+      return __builtin_ctz( value );
+    else if constexpr( sizeof(T) == 8 )
+      {
+      if constexpr( sizeof(long) == 4 )
+        return __builtin_ctz( value );
+      else
+        return __builtin_ctz( value );
+      }
+    }
   }
