@@ -870,10 +870,10 @@ namespace fixedmath
     // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 21844 over 39 } x ^ 2 + { 929569 over 4095 } x ^ 4 } right ) } right ) } right ) } right ) } right ) } right ) }
     // { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 1 over 39 } x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) } right ) } right ) } right ) } right ) } right ) } right ) } 
     // { x left ( { 1 + x ^ 2 left ( { 1 + x ^ 2 left ( { 2 + x ^ 2 left ( { 17 + x ^ 2 left ( { 62 + x ^ 2 left ( { 1382 + x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) :39 } right ) :55 } right ) :9 } right ) :21 } right ) :5 } right ) :3 } right ) } 
+    template<int prec_>
     [[ nodiscard, gnu::const, gnu::always_inline]]
     constexpr fixed_internal tan__( fixed_internal x ) noexcept
       {
-      constexpr int prec_ = 16;
       fixed_internal x2{ mul_<prec_>(x,x) };
 
       fixed_internal y0_{ fix_<prec_>(21844) + 929569 * x2 / 105 };
@@ -893,7 +893,7 @@ namespace fixedmath
       {
       constexpr fixed_internal one_{fix_<prec_>(1) };
       b = b - a;
-      fixed_internal tan_b { tan__(b) };
+      fixed_internal tan_b { tan__<prec_>(b) };
       return div_<prec_>( tan_a + tan_b, one_ - mul_<prec_>(tan_a, tan_b));
       }
       
@@ -914,6 +914,7 @@ namespace fixedmath
   constexpr fixed_t tan( fixed_t rad ) noexcept
     {
     constexpr int prec_ = 16;
+    constexpr int prec_inc = 4;
     constexpr fixed_internal one_{fix_<prec_>(1) };
     //tan(a+b) = (tan(a) + tan(b)) / (1 - tan(a) tan(b))
     fixed_internal x { rad.v };
@@ -923,36 +924,14 @@ namespace fixedmath
       x = -x;
       sign_ = true;
       }
-    
-    //normalize range to 0 .. phi/2
-    x = tan_range( x );
-    
+      
     if( fixed_likely( x != fixpidiv2.v ) )
       {
-      constexpr fixed_internal _84 { 96081 }; //84,0001799224314 deg, 1,46607971191406 rad
-      
       fixed_internal res_tan {};
-      if( x < fixpidiv4.v )
-        {
-        res_tan = tan__(x);
-        }
-      else if( x < fixpidiv3.v )
-        {
-        fixed_internal tan_b { tan__(x - fixpidiv4.v) };
-        //tan(phi/4) = 1
-        //tan(phi/4+b) = (1 + tan(b)) / (1 - tan(b))
-        res_tan = div_<prec_>( one_ + tan_b, one_ - tan_b );
-        }
-      else if( x < _84 ) 
-        {
-        constexpr fixed_internal tan_a_sqrt_3 { 113512 };
-        res_tan = tan2__<prec_, fixpidiv3.v, tan_a_sqrt_3>( x );
-        }
+      if( x <= fixpidiv4.v )
+        res_tan = tan__<prec_+prec_inc>(x<<prec_inc)>>prec_inc;
       else
-        {
-        constexpr fixed_internal tan_a { 623552 };
-        res_tan = tan2__<prec_, _84, tan_a>( x );
-        }
+        res_tan = div_<prec_>( one_, tan__<prec_+prec_inc>( (fixpidiv2.v<<prec_inc) - (x<<prec_inc) )>>prec_inc );
       if( sign_ )
         res_tan = -res_tan;
       return as_fixed(res_tan);
