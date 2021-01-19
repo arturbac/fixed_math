@@ -596,7 +596,7 @@ namespace fixedmath
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t floor( fixed_t value ) noexcept
     {
-    value = as_fixed( value.v & 0xffffffffffff0000llu );
+    value = as_fixed( value.v & ~((1<<16)-1) );
     return value;
     }
     
