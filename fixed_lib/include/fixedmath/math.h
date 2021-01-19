@@ -42,7 +42,18 @@ namespace
   
 namespace fixedmath
 {
+  // concepts
+  template<typename supported_type1, typename supported_type2>
+  struct arithmetic_and_one_is_fixed_t :
+      public std::integral_constant<bool,
+                  is_arithemetic_t<supported_type1>::value && 
+                  is_arithemetic_t<supported_type2>::value && 
+                  ( is_fixed_t<supported_type1>::value || is_fixed_t<supported_type2>::value ) >::type
+  {};
 
+  template<typename supported_type1, typename supported_type2>
+  using arithmetic_and_one_is_fixed = typename arithmetic_and_one_is_fixed_t<supported_type1,supported_type2>::type;
+  
   [[ gnu::const, gnu::always_inline ]]
   constexpr fixed_t operator -( fixed_t l ) noexcept { return fix_carrier_t{-l.v}; }
   
@@ -280,9 +291,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr double promoted_double_addition( supported_type1 lh, supported_type2 rh ) noexcept
       {
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{} 
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) + promote_to_double( rh );
       }
@@ -291,9 +300,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t promoted_fixed_addition( supported_type1 lh, supported_type2 rh ) noexcept
       {
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
       return fixed_additioni(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -305,9 +312,7 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto fixed_addition( supported_type1 lh, supported_type2 rh) noexcept
     {
-    static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+    static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
       return promoted_double_addition( rh, lh );
@@ -351,9 +356,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr double promoted_double_substract( supported_type1 lh, supported_type2 rh ) noexcept
       {
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) - promote_to_double( rh );
       }
@@ -362,9 +365,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t promoted_fixed_substract( supported_type1 lh, supported_type2 rh ) noexcept
       {
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
       return fixed_substracti(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -375,9 +376,7 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto fixed_substract( supported_type1 lh, supported_type2 rh) noexcept
     {
-    static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+    static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
       return promoted_double_substract( rh, lh );
@@ -421,9 +420,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr double promoted_double_multiply( supported_type1 lh, supported_type2 rh ) noexcept
       {
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) * promote_to_double( rh );
       }
@@ -433,9 +430,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t promoted_fixed_multiply( supported_type1 lh, supported_type2 rh ) noexcept
       {
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
       return fixed_multiplyi(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -463,9 +458,7 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto fixed_multiply( supported_type1 lh, supported_type2 rh) noexcept
     {
-    static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+    static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
       return promoted_double_multiply( lh, rh );
@@ -517,9 +510,7 @@ namespace fixedmath
     constexpr fixed_t promoted_fixed_division( supported_type1 lh, supported_type2 rh ) noexcept
       {
       //promote only one of arguments, doesnt allow using this function for ppromothing twu not fixed types
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
       return fixed_divisionf(promote_to_fixed(lh), promote_to_fixed( rh ) );
       }
@@ -530,9 +521,7 @@ namespace fixedmath
     constexpr double promoted_double_division( supported_type1 lh, supported_type2 rh ) noexcept
       {
       //promote only one of arguments, doesnt allow using this function for ppromothing twu not fixed types
-      static_assert( is_arithemetic<supported_type1>{}
-                  && is_arithemetic<supported_type2>{}
-                  && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+      static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
       return promote_to_double(lh) / promote_to_double( rh );
       }
@@ -556,9 +545,7 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto fixed_division(supported_type1 lh, supported_type2 rh ) noexcept
     {
-    static_assert( is_arithemetic<supported_type1>{}
-                && is_arithemetic<supported_type2>{}
-                && ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} )
+    static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                             ,"Arguments must be supported arithmetic types");
     if constexpr( is_integral<supported_type2>::value )
       return fixed_division_by_scalar( lh, rh );
