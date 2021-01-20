@@ -25,7 +25,7 @@
 #include <type_traits>
 #include <limits>
 #include <cmath>
-#include "../utility_cxx20.h"
+#include "utility_cxx20.h"
 
 #define FIXEDMATH_PUBLIC gnu::visibility("default")
 

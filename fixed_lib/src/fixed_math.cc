@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <fixed_math.hpp>
+#include <fixedmath/fixed_math.hpp>
 #include "square_root_table.h"
 #include "tan_table.h"
 #include "sin_angle_table.h"

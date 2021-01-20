@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "fixedmath/math.h"
+#include "math.h"
 
 namespace fixedmath
 {
