@@ -882,7 +882,9 @@ namespace fixedmath
       x = -x;
       sign_ = true;
       }
-      
+    //normalize the range to phi/2
+    x = tan_range(x);
+    
     if( fixed_likely( x != fixpidiv2.v ) )
       {
       fixed_internal res_tan {};
