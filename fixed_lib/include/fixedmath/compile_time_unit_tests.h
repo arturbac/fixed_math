@@ -243,8 +243,8 @@ namespace fixedmath
   //
   static_assert( 1_fix * 1_fix  == 1_fix );
   static_assert( 10_fix * 0.5_fix  == 5_fix );
-  static_assert( std::abs(0.8_fix * 0.2_fix)  - 0.16_fix <= limits__::epsilon() );
-  static_assert( std::abs(0.8_fix * -0.2_fix)  > 0_fix );
+  static_assert( abs(0.8_fix * 0.2_fix)  - 0.16_fix <= limits__::epsilon() );
+  static_assert( abs(0.8_fix * -0.2_fix)  > 0_fix );
   static_assert( test_resulting_type<fixed_t>( int64_t(1) * 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  * int64_t(1) ) );
   static_assert( test_resulting_type<fixed_t>( uint64_t(1) * 1_fix ) );
@@ -319,10 +319,10 @@ namespace fixedmath
   //
   constexpr bool test_hypot( fixed_t x, fixed_t y, fixed_t expected )
     {
-    return std::abs( hypot( x, y ) - expected ) < 0.00001_fix &&
-           std::abs( hypot( -x, y ) - expected ) < 0.00001_fix &&
-           std::abs( hypot( x, -y ) - expected ) < 0.00001_fix &&
-           std::abs( hypot( -x, -y ) - expected ) < 0.00001_fix;
+    return abs( hypot( x, y ) - expected ) < 0.00001_fix &&
+           abs( hypot( -x, y ) - expected ) < 0.00001_fix &&
+           abs( hypot( x, -y ) - expected ) < 0.00001_fix &&
+           abs( hypot( -x, -y ) - expected ) < 0.00001_fix;
     }
   static_assert( test_hypot(as_fixed(1ul<<30),as_fixed(1<<0ul), 16384_fix) );
   static_assert( test_hypot(as_fixed(1ul<<33),as_fixed(1ul<<31), 135104_fix) );
