@@ -17,13 +17,13 @@ written from scratch fixed point math library in C++17
 
 ## installation
 
-this library is header only except tableraized trigonometric functions. So If you can use precise trigonometric functions You don't have to build anything.
-Just add fixed_lib/include to include path and #include fixed_math.hpp. If you want additional inprecise aproxymated functions compile project like any other ordinary CMake project. At this point it doesn't have any tuning parameters for CMake.
+this library is header only except tabelarized trigonometric functions. So If you can use precise trigonometric functions You don't have to build anything.
+Just add fixed_lib/include to include path and #include <fixedmath/fixed_math.hpp>. If you want additional inprecise aproxymated functions compile project like any other ordinary CMake project. At this point it doesn't have any tuning parameters for CMake.
 
 ## usage
 fixed_t is typename of fixed point arithmetic type with common operators like, +, -, * ..
 
-### Example
+### example
 
 ```C++
 #include <fixedmath/fixed_math.hpp>
@@ -59,8 +59,11 @@ some_fixed = some_float * 2.45_fix; //operation with float is promoted to fixed_
 some_double = 4.15 * some_fixed; //operation with double is promoted to double
 
 ```
+## unit tests
 
-## version 1.0 Goals status
+To check unit tests just #include <fixedmath/compile_time_unit_tests.h> in any of Your source file.
+
+## version 1.0 goals status
 
 - [x] base arithemtic operations 
 - [x] sqrt - abacus algorithm using CLZ ( CLZ is available on x86 and >=armv6, aarch64)  error ~<= 0.000015
@@ -73,7 +76,7 @@ some_double = 4.15 * some_fixed; //operation with double is promoted to double
 - [    ] remove all old compat code that is compiled
 - [    ] cover all functionality with static_assert unit tests
 
-## future Goals
+## future goals
 
 - [    ] more math functionality
 - [    ] performance comparisions on arm64 and x86 with float/double arithemetic
