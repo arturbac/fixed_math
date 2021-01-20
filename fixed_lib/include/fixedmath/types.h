@@ -119,9 +119,6 @@ namespace fixedmath
   template<typename supported_type>
   using is_floating_point = std::is_floating_point<supported_type>;
   
-  static_assert( is_fixed<fixed_t>{} );
-  static_assert( is_fixed<fixed_t const &>{} );
-  
   template<typename supported_type>
   struct is_arithemetic_t
     : public std::integral_constant<bool,
@@ -179,28 +176,4 @@ namespace fixedmath
 
   
 }
-#define make_const_value(x) const_val<decltype(x), x>
-#define static_assert_equal(x, y) static_assert( assert_equal_t< make_const_value( x ), make_const_value( y ) >::eq() )
-
-template<typename T, T val>
-struct const_val {
-    static constexpr T value { val };
-    constexpr const_val() = default;
-    constexpr const_val(T) {}
-};
-
-
-template<typename T, typename U>
-struct assert_equal_t 
-  {
-  static constexpr bool eq()
-    { return assert_equal_t<decltype(T::value), decltype(U::value)>::eq( T::value, U::value ); }
-    
-  static constexpr bool eq( T lh, U rh )
-    {
-//       static_assert( lh == rh );
-    return lh == rh;
-    }
-  static constexpr bool value { T::value == U::value };
-  };
 

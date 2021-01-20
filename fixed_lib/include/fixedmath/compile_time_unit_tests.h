@@ -25,12 +25,44 @@
 #include "limits.h"
 #include "math.h"
 
-namespace fixedmath
+namespace fixedmath::unittests
 {
+  using detail::limits__;
+  using detail::flimits__;
+  using detail::dlimits__;
+  
+  #define make_const_value(x) const_val<decltype(x), x>
+  #define static_assert_equal(x, y) static_assert( assert_equal_t< make_const_value( x ), make_const_value( y ) >::eq() )
+
+  template<typename T, T val>
+  struct const_val {
+      static constexpr T value { val };
+      constexpr const_val() = default;
+      constexpr const_val(T) {}
+  };
+
+
+  template<typename T, typename U>
+  struct assert_equal_t 
+    {
+    static constexpr bool eq()
+      { return assert_equal_t<decltype(T::value), decltype(U::value)>::eq( T::value, U::value ); }
+      
+    static constexpr bool eq( T lh, U rh )
+      {
+  //       static_assert( lh == rh );
+      return lh == rh;
+      }
+    static constexpr bool value { T::value == U::value };
+    };
+
   //------------------------------------------------------------------------------------------------------
   //
   // type traits
   //
+
+  static_assert( is_fixed<fixed_t>{} );
+  static_assert( is_fixed<fixed_t const &>{} );
   static_assert( is_fixed_t<fixed_t>::value ); static_assert( is_fixed_t<fixed_t const &>::value );
   static_assert( is_double_t<double>::value ); static_assert( is_double_t<double const &>::value );
   static_assert( is_integral_t<int32_t>::value );
@@ -39,6 +71,19 @@ namespace fixedmath
   static_assert( is_integral_t<int64_t>::value );
   static_assert( std::is_signed<fixed_t>::value );
   static_assert( std::is_arithmetic<fixed_t>::value );
+  
+  static_assert( !is_arithmetic_and_not_fixed<fixed_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<uint8_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<uint16_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<uint32_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<uint64_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<int8_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<int16_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<int32_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<int64_t>::value );
+  static_assert( is_arithmetic_and_not_fixed<float>::value );
+  static_assert( is_arithmetic_and_not_fixed<double>::value );
+
   
   static_assert( arithmetic_and_one_is_fixed<float,fixed_t>{} );
   static_assert( arithmetic_and_one_is_fixed<fixed_t,fixed_t>{} );
