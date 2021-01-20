@@ -11,7 +11,7 @@ written from scratch fixed point math library in C++17
 * entire code including trigonometry functions is constexpr
 * fully header only library as everything is constexpr, see api interface [api](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixed_math.hpp) and [implementation](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/math.h)
 * unit tests are checked always during compilation time, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
-* functions that are complement to std math functionality are available in std namespace as overloads for fixed_t type
+* functions that are complement to std math functionality are available in std namespace as overloads for fixed_t type, will become optional
 
 ## version 1.0 Goals status
 
