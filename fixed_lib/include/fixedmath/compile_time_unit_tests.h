@@ -166,7 +166,17 @@ namespace fixedmath
   static_assert( 1 + 1_fix  == 2_fix );
   static_assert( 10.4 + 1_fix == 11.4 );
   static_assert( 10.5_fix + 10.2 == 20.7 );
+  static_assert( -10.5_fix + uint8_t(10) == -0.5_fix );
+  static_assert( -10.5_fix + uint16_t(10) == -0.5_fix );
+  static_assert( -10.5_fix + uint32_t(10) == -0.5_fix );
+  static_assert( -10.5_fix + uint64_t(10) == -0.5_fix );
+  static_assert( uint8_t(10) + -10.5_fix == -.5_fix );
+  static_assert( uint16_t(10) + -10.5_fix == -.5_fix );
+  static_assert( uint32_t(10) + -10.5_fix == -.5_fix );
+  static_assert( uint64_t(10) + -10.5_fix == -.5_fix );
   static_assert( -10_fix+ 1 == -9_fix );
+  static_assert( 10.5_fix + -10. == .5 );
+  static_assert( 10.5_fix + -10.f == .5_fix );
   
   static_assert( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );
@@ -199,6 +209,14 @@ namespace fixedmath
   static_assert( 2_fix - 1.  ==  2. - 1. );
   static_assert( -2_fix - 1.  ==  -2. - 1. );
   static_assert( -2_fix + 1.  ==  -2. + 1. );
+  static_assert( -10.5_fix - uint8_t(10) == -20.5_fix );
+  static_assert( -10.5_fix - uint16_t(10) == -20.5_fix );
+  static_assert( -10.5_fix - uint32_t(10) == -20.5_fix );
+  static_assert( -10.5_fix - uint64_t(10) == -20.5_fix );
+  static_assert( uint8_t(10) -10.5_fix == -.5_fix );
+  static_assert( uint16_t(10) -10.5_fix == -.5_fix );
+  static_assert( uint32_t(10) -10.5_fix == -.5_fix );
+  static_assert( uint64_t(10) -10.5_fix == -.5_fix );
   
   static_assert( test_resulting_type<fixed_t>( int64_t(1) - 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  - int64_t(1) ) );
