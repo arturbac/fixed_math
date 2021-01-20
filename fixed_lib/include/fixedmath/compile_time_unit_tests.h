@@ -39,6 +39,17 @@ namespace fixedmath
   static_assert( is_integral_t<int64_t>::value );
   static_assert( std::is_signed<fixed_t>::value );
   static_assert( std::is_arithmetic<fixed_t>::value );
+  
+  static_assert( arithmetic_and_one_is_fixed<float,fixed_t>{} );
+  static_assert( arithmetic_and_one_is_fixed<fixed_t,fixed_t>{} );
+  static_assert( arithmetic_and_one_is_fixed<double,fixed_t>{} );
+  static_assert( arithmetic_and_one_is_fixed<int64_t,fixed_t>{} );
+  static_assert( arithmetic_and_one_is_fixed<fixed_t,float>{} );
+  static_assert( arithmetic_and_one_is_fixed<fixed_t,double>{} );
+  static_assert( arithmetic_and_one_is_fixed<fixed_t,int64_t>{} );
+  static_assert( !arithmetic_and_one_is_fixed<int64_t,int64_t>{} );
+  static_assert( !arithmetic_and_one_is_fixed<float,double>{} );
+  
   //------------------------------------------------------------------------------------------------------
   //
   // integral_to_fixed unit tests
