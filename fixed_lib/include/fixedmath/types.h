@@ -39,9 +39,13 @@ namespace fixedmath
 {
   using fixed_internal = int64_t;
   
+#if defined(__GNUC__) || defined(__clang__)
   #define fixed_likely(x)    __builtin_expect(static_cast<bool>(x), 1)
   #define fixed_unlikely(x)  __builtin_expect(static_cast<bool>(x), 0)
-
+#else
+  #define fixed_likely(x)    ((x))
+  #define fixed_unlikely(x)  ((x))
+#endif
   //the idea behind carrier is to use it as carier of internal int64 value in format of fixed to distinguish it from int64 integral type.
   struct fix_carrier_t 
     { 
