@@ -48,7 +48,7 @@ namespace fixedmath
       public std::integral_constant<bool,
                   is_arithemetic_t<supported_type1>::value && 
                   is_arithemetic_t<supported_type2>::value && 
-                  ( is_fixed_t<supported_type1>::value || is_fixed_t<supported_type2>::value ) >::type
+                  ( is_fixed_t<supported_type1>::value || is_fixed_t<supported_type2>::value ) >
   {};
 
   template<typename supported_type1, typename supported_type2>
