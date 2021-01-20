@@ -23,7 +23,6 @@
 #pragma once
 
 #include "fixedmath/math.h"
-#include "fixedmath/compile_time_unit_tests.h"
 
 namespace fixedmath
 {
