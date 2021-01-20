@@ -56,8 +56,8 @@ namespace std
     static constexpr bool tinyness_before{};
     
     static constexpr value_type min() noexcept{ return fix_carrier_t{fixed_internal{1}}; };
-    static constexpr value_type lowest() noexcept{ return fix_carrier_t{fixed_internal{-0x80000000ll}}; };
-    static constexpr value_type max() noexcept { return fix_carrier_t{fixed_internal{0x7FFFFFFFll}}; }
+    static constexpr value_type lowest() noexcept{ return fix_carrier_t{fixed_internal{-0x7FFFFFFFFFFFFFFEll}}; };
+    static constexpr value_type max() noexcept { return fix_carrier_t{fixed_internal{0x7FFFFFFFFFFFFFFEll}}; }
     static constexpr value_type one() noexcept { return fix_carrier_t{fixed_internal{65536}}; }
     static constexpr value_type epsilon() noexcept { return fix_carrier_t{fixed_internal{1}}; }
     static constexpr value_type round_error() noexcept { return fix_carrier_t{fixed_internal{1}}; }

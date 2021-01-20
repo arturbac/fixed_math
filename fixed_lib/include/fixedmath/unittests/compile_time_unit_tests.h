@@ -157,7 +157,7 @@ namespace fixedmath::unittests
   static_assert( fixed_to_integral<int>(1.25_fix) == 1 );
   static_assert( fixed_to_integral<int>(100.25_fix) == 100 );
   static_assert( fixed_to_integral<int>(-100.25_fix) == -100 );
-  static_assert( fixed_to_integral<int>(limits__::max()) == (0x7FFFFFFFll>>16)+1 );
+  
   //------------------------------------------------------------------------------------------------------
   //
   // fixed_to_floating_point
@@ -234,6 +234,8 @@ namespace fixedmath::unittests
   static_assert( -10_fix+ 1 == -9_fix );
   static_assert( 10.5_fix + -10. == .5 );
   static_assert( 10.5_fix + -10.f == .5_fix );
+  static_assert( limits__::max() < limits__::quiet_NaN() );
+  static_assert( limits__::lowest() +1 != limits__::quiet_NaN() );
   
   static_assert( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );
@@ -274,6 +276,7 @@ namespace fixedmath::unittests
   static_assert( uint16_t(10) -10.5_fix == -.5_fix );
   static_assert( uint32_t(10) -10.5_fix == -.5_fix );
   static_assert( uint64_t(10) -10.5_fix == -.5_fix );
+  static_assert( limits__::max() -1 != limits__::quiet_NaN() );
   
   static_assert( test_resulting_type<fixed_t>( int64_t(1) - 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  - int64_t(1) ) );
