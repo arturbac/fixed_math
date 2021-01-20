@@ -13,6 +13,32 @@ written from scratch fixed point math library in C++17
 * unit tests are checked always during compilation time, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
 * functions that are complement to std math functionality could be optionaly imported to std namespace as overloads for fixed_t type *disabled by default*
 
+
+
+## installation
+
+this library is header only except tableraized trigonometric functions. So If you can use precise trigonometric functions You don't have to build anything.
+Just add fixed_lib/include to include path and #include fixed_math.hpp. If you want additional inprecise aproxymated functions compile project like any other ordinary CMake project. At this point it doesn't have any tuning parameters for CMake.
+
+## usage
+fixed_t is typename of fixed point arithmetic type with common operators like, +, -, * ..
+
+### Example
+
+```C++
+using fixedmath::fixed_t;
+using fixedmath::sqrt;
+
+//fixed and all functionality is constexpr so You can declare constants
+inline constexpr fixed_t foo_constant{ sqrt(3.15) };
+
+constexpr fixed_t my_function( fixed_t value )
+ {
+ using namespace fixedmath;
+ return foo_constant + sin(value) / (1.41_fix - 2*cos(value) / 4);
+ }
+```
+
 ## version 1.0 Goals status
 
 - [x] base arithemtic operations 
