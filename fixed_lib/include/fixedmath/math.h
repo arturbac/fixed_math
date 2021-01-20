@@ -207,14 +207,7 @@ namespace fixedmath
       {
       return abs( value ) == limits__::quiet_NaN();
       }
-}
-namespace std
-  {
-    using fixedmath::abs;
-    using fixedmath::isnan;
-  }
-namespace fixedmath
-{
+
   //------------------------------------------------------------------------------------------------------
   
   [[ gnu::const, gnu::always_inline ]]
@@ -584,14 +577,6 @@ namespace fixedmath
     return limits__::quiet_NaN();
     }
   
-}
-namespace std
-{
-  using fixedmath::ceil;
-}
-namespace fixedmath
-{
-
   //------------------------------------------------------------------------------------------------------
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t floor( fixed_t value ) noexcept
@@ -600,15 +585,6 @@ namespace fixedmath
     return value;
     }
     
-}
-namespace std
-{
-  using fixedmath::ceil;
-}
-
-namespace fixedmath
-{
-
   //------------------------------------------------------------------------------------------------------
   ///\brief converts angle 0 - 360 to radians.
   [[ nodiscard, gnu::const, gnu::always_inline ]]
@@ -724,15 +700,7 @@ namespace fixedmath
     else
       return sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_ ) );
     }
-}
-namespace std
-{
-  using fixedmath::sqrt;
-  using fixedmath::hypot;
-}
 
-namespace fixedmath
-{
   // for trigonometric functions maclurin taylor series are used
   // https://en.wikipedia.org/wiki/Taylor_series
   //------------------------------------------------------------------------------------------------------
@@ -823,13 +791,7 @@ namespace fixedmath
     fixed_internal result{ mul_<prec_>(x,( one__ - mul_<prec_>(x2,( one__ - mul_<prec_>(x2,( one__-x2/42))/20))/6)) };
     return as_fixed(result);
     }
-}
-namespace std
-{
-  using fixedmath::sin;
-}
-namespace fixedmath
-{
+
   //------------------------------------------------------------------------------------------------------
   ///\returns cosine of value in radians
   [[ nodiscard, gnu::const ]]
@@ -840,13 +802,7 @@ namespace fixedmath
     //as maclurin series give precise results for -pi/2 .. pi/2
     return sin( phi2 + rad );
     }
-}
-namespace std
-{
-  using fixedmath::cos;
-}
-namespace fixedmath
-{
+
   //------------------------------------------------------------------------------------------------------
   // tan
   // Bernoulli number B 2*n
@@ -942,13 +898,6 @@ namespace fixedmath
       return limits__::quiet_NaN();
     }
     
-}
-namespace std
-{
-  using fixedmath::tan;
-}
-namespace fixedmath
-{
   //------------------------------------------------------------------------------------------------------
   // atan
   // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
@@ -1047,13 +996,7 @@ namespace fixedmath
         return limits__::quiet_NaN();
       }
     }
-}
-namespace std
-{
-  using fixedmath::atan;
-}
-namespace fixedmath
-{
+
   namespace 
     {
 
