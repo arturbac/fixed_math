@@ -32,8 +32,8 @@
 
 #define FIXEDMATH_VERSION_MAJOR 0
 #define FIXEDMATH_VERSION_MINOR 9
-#define FIXEDMATH_VERSION_PATCH 0
-#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.0 beta"
+#define FIXEDMATH_VERSION_PATCH 1
+#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.1 beta"
 
 namespace fixedmath
 {
@@ -132,13 +132,13 @@ namespace fixedmath
   using is_arithemetic = typename is_arithemetic_t<supported_type>::type;
   
   template<typename supported_type>
-  struct is_arithemetic_and_not_fixed_t
+  struct is_arithmetic_and_not_fixed_t
     : public std::integral_constant<bool,
                   is_arithemetic_t<supported_type>::value && (!is_fixed<supported_type>{}) >::type
     {};
   
   template<typename supported_type>
-  using is_arithemetic_and_not_fixed = typename is_arithemetic_and_not_fixed_t<supported_type>::type;
+  using is_arithmetic_and_not_fixed = typename is_arithmetic_and_not_fixed_t<supported_type>::type;
   
   ///\brief constructs fixed from raw value in internal format
   constexpr fixed_t as_fixed( fixed_internal carried ) { return fix_carrier_t{carried}; }
@@ -147,7 +147,7 @@ namespace fixedmath
   constexpr fixed_t::fixed_t( arithmethic_type const & value )
     : v{ arithmetic_to_fixed(value).v }
     {
-    static_assert( is_arithemetic_and_not_fixed<arithmethic_type>{} );
+    static_assert( is_arithmetic_and_not_fixed<arithmethic_type>{} );
     }
     
   [[ gnu::const, gnu::always_inline ]]

@@ -27,21 +27,26 @@
 #include "utility_cxx20.h"
 #include "numbers.h"
 
-namespace 
-  {
-  extern fixedmath::fixed_internal angle_cos_tbl__[];
-  extern fixedmath::fixed_internal cos_tbl__[];
-  extern fixedmath::fixed_internal angle_sin_tbl__[];
-  extern fixedmath::fixed_internal tan_tbl__[];
-  extern fixedmath::fixed_internal acos_tbl__[];
-  
-  using limits__ = std::numeric_limits<fixedmath::fixed_t>;
-  using flimits__ = std::numeric_limits<float>;
-  using dlimits__ = std::numeric_limits<double>;
-  }
-  
+extern fixedmath::fixed_internal angle_cos_tbl__[];
+extern fixedmath::fixed_internal cos_tbl__[];
+extern fixedmath::fixed_internal angle_sin_tbl__[];
+extern fixedmath::fixed_internal tan_tbl__[];
+extern fixedmath::fixed_internal acos_tbl__[];
+
 namespace fixedmath
 {
+  namespace detail
+    {
+    extern fixedmath::fixed_internal angle_cos_tbl__[];
+    extern fixedmath::fixed_internal cos_tbl__[];
+    extern fixedmath::fixed_internal angle_sin_tbl__[];
+    extern fixedmath::fixed_internal tan_tbl__[];
+    extern fixedmath::fixed_internal acos_tbl__[];
+    
+    using limits__ = std::numeric_limits<fixedmath::fixed_t>;
+    using flimits__ = std::numeric_limits<float>;
+    using dlimits__ = std::numeric_limits<double>;
+    }
   // concepts
   template<typename supported_type1, typename supported_type2>
   struct arithmetic_and_one_is_fixed_t :
@@ -58,27 +63,27 @@ namespace fixedmath
   constexpr fixed_t operator -( fixed_t l ) noexcept { return fix_carrier_t{-l.v}; }
   
   //------------------------------------------------------------------------------------------------------
-  namespace 
-  {
-  template<int digits>
-  [[ gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal unsigned_shift_left_signed( fixed_internal value ) noexcept
+  namespace detail
     {
-    using unsigned_internal = std::make_unsigned<fixed_internal>::type;
-    return static_cast<fixed_internal>(
-          (static_cast<unsigned_internal>( value ) << digits)
-          | (static_cast<unsigned_internal>( value ) & ( unsigned_internal(1) << 63u))
-      );
+    template<int digits>
+    [[ gnu::const, gnu::always_inline ]]
+    constexpr fixed_internal unsigned_shift_left_signed( fixed_internal value ) noexcept
+      {
+      using unsigned_internal = std::make_unsigned<fixed_internal>::type;
+      return static_cast<fixed_internal>(
+            (static_cast<unsigned_internal>( value ) << digits)
+            | (static_cast<unsigned_internal>( value ) & ( unsigned_internal(1) << 63u))
+        );
+      }
+    template<int digits>
+    [[ gnu::const, gnu::always_inline ]]
+    constexpr fixed_internal unsigned_shift_left_unsigned( fixed_internal value ) noexcept
+      {
+      using unsigned_internal = std::make_unsigned<fixed_internal>::type;
+      return static_cast<fixed_internal>(
+            (static_cast<unsigned_internal>( value ) << digits));
+      }
     }
-  template<int digits>
-  [[ gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal unsigned_shift_left_unsigned( fixed_internal value ) noexcept
-    {
-    using unsigned_internal = std::make_unsigned<fixed_internal>::type;
-    return static_cast<fixed_internal>(
-          (static_cast<unsigned_internal>( value ) << digits));
-    }
-  }
   
   //------------------------------------------------------------------------------------------------------
   ///\brief Converts an integral to a fixed_t
@@ -88,20 +93,20 @@ namespace fixedmath
   constexpr fixed_t integral_to_fixed(integral_type value) noexcept
     { 
     static_assert( is_integral<integral_type>::value,"Must be integral type");
-    if( fixed_likely(cxx20::cmp_less(value, limits__::max_integral()) && 
-                     cxx20::cmp_greater(value, limits__::min_integral()) ) ) 
+    if( fixed_likely(cxx20::cmp_less(value, detail::limits__::max_integral()) && 
+                     cxx20::cmp_greater(value, detail::limits__::min_integral()) ) ) 
       {
       if constexpr ( std::is_unsigned<integral_type>::value )
-        return fix_carrier_t{unsigned_shift_left_unsigned<16>(value)};
+        return fix_carrier_t{detail::unsigned_shift_left_unsigned<16>(value)};
       else
-        return fix_carrier_t{unsigned_shift_left_signed<16>(value)};
+        return fix_carrier_t{detail::unsigned_shift_left_signed<16>(value)};
       }
     return quiet_NaN_result();
     }
   
   constexpr fixed_t operator"" _fix ( unsigned long long value )
     {
-    return integral_to_fixed( static_cast<int32_t>( value ));
+    return integral_to_fixed( static_cast<int64_t>( value ));
     }
     
 
@@ -116,8 +121,8 @@ namespace fixedmath
     static_assert( 
         std::is_floating_point<ft>::value && (!is_fixed<ft>{}), "must be floating point" );
     
-    if( fixed_likely( value < double(limits__::max_integral()) &&
-                      value > double(limits__::min_integral())) )
+    if( fixed_likely( value < double(detail::limits__::max_integral()) &&
+                      value > double(detail::limits__::min_integral())) )
       return fix_carrier_t( static_cast<fixed_internal>(value * 65536 + (value < ft(0) ? ft(-0.5) : ft(0.5) )) );
 
     return quiet_NaN_result();
@@ -158,7 +163,7 @@ namespace fixedmath
   
   //------------------------------------------------------------------------------------------------------
   //implicit convertion to double
-  [[ gnu::always_inline ]]
+  [[ nodiscard, gnu::always_inline ]]
   constexpr fixed_t::operator double() const noexcept
     {
     return fixed_to_floating_point<double>( *this );
@@ -167,7 +172,7 @@ namespace fixedmath
   template<typename arithmethic_type>
   constexpr arithmethic_type fixed_to_arithmetic( fixed_t value ) noexcept
     {
-    static_assert( is_arithemetic_and_not_fixed<arithmethic_type>{} );
+    static_assert( is_arithmetic_and_not_fixed<arithmethic_type>{} );
     if constexpr ( std::is_integral<arithmethic_type>::value )
       return fixed_to_integral<arithmethic_type>( value );
     else
@@ -175,7 +180,7 @@ namespace fixedmath
     }
     
   template<typename arithmethic_type>
-  [[ gnu::always_inline ]]
+  [[ nodiscard, gnu::always_inline ]]
   constexpr fixed_t::operator arithmethic_type() const noexcept
     {
     return fixed_to_arithmetic<arithmethic_type>( *this );
@@ -183,10 +188,10 @@ namespace fixedmath
   //------------------------------------------------------------------------------------------------------
   /// \fn arithmetic_to_fixed
   template<typename arithmethic_type>
-  [[ gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept
     {
-    static_assert( is_arithemetic_and_not_fixed<arithmethic_type>{} );
+    static_assert( is_arithmetic_and_not_fixed<arithmethic_type>{} );
     if constexpr( std::is_floating_point<arithmethic_type>::value )
       return floating_point_to_fixed( value );
     else
@@ -194,23 +199,23 @@ namespace fixedmath
     }
   //------------------------------------------------------------------------------------------------------
 
-    [[ gnu::const, gnu::always_inline ]]
-    constexpr fixed_t abs( fixed_t value ) noexcept
-      {
-      // cmp     x0, #0                          // =0
-      // cneg    x0, x0, mi
-      return as_fixed(value.v > 0 ? value.v : -value.v);
-      }
-    //------------------------------------------------------------------------------------------------------
-    [[ gnu::const, gnu::always_inline ]]
-    constexpr bool isnan( fixed_t value ) noexcept
-      {
-      return abs( value ) == limits__::quiet_NaN();
-      }
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr fixed_t abs( fixed_t value ) noexcept
+    {
+    // cmp     x0, #0                          // =0
+    // cneg    x0, x0, mi
+    return as_fixed(value.v > 0 ? value.v : -value.v);
+    }
+  //------------------------------------------------------------------------------------------------------
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr bool isnan( fixed_t value ) noexcept
+    {
+    return abs( value ) == detail::limits__::quiet_NaN();
+    }
 
   //------------------------------------------------------------------------------------------------------
   
-  [[ gnu::const, gnu::always_inline ]]
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t operator >> ( fixed_t l, int r ) noexcept
     { 
     if( fixed_likely(r >= 0 ) )
@@ -220,7 +225,7 @@ namespace fixedmath
     
   //------------------------------------------------------------------------------------------------------
   
-  [[ gnu::const, gnu::always_inline ]]
+  [[ gnu::const ]]
   constexpr fixed_t operator << ( fixed_t l, int r ) noexcept 
     { 
     using unsigned_fix_internal = std::make_unsigned<fixed_internal>::type;
@@ -240,7 +245,7 @@ namespace fixedmath
   operator & ( fixed_t l, fixed_t r ) noexcept { return fix_carrier_t{l.v & r.v}; }
 
   //------------------------------------------------------------------------------------------------------
-  namespace
+  namespace detail
     {
     ///\brief Returns the sum of two fixed_t point values.
     [[ gnu::const, gnu::always_inline ]]
@@ -308,9 +313,9 @@ namespace fixedmath
     static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
-      return promoted_double_addition( rh, lh );
+      return detail::promoted_double_addition( rh, lh );
     else
-      return promoted_fixed_addition( lh, rh );
+      return detail::promoted_fixed_addition( lh, rh );
     }
     
   template<typename supported_type>
@@ -324,7 +329,7 @@ namespace fixedmath
   constexpr auto operator + ( supported_type1 l, supported_type2 r ) noexcept { return fixed_addition(l,r); }
 
   //------------------------------------------------------------------------------------------------------
-  namespace
+  namespace detail
     {
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t fixed_substracti(fixed_t lh, fixed_t rh) noexcept
@@ -372,9 +377,9 @@ namespace fixedmath
     static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
-      return promoted_double_substract( lh, rh );
+      return detail::promoted_double_substract( lh, rh );
     else
-      return promoted_fixed_substract( lh, rh );
+      return detail::promoted_fixed_substract( lh, rh );
     }
   template<typename supported_type>
   [[ gnu::always_inline ]]
@@ -390,7 +395,7 @@ namespace fixedmath
 
   //------------------------------------------------------------------------------------------------------
   /// \brief Returns the product of two fixed_t point values.
-  namespace
+  namespace detail
     {
     constexpr bool check_multiply_result( fixed_t result )
       { 
@@ -454,11 +459,11 @@ namespace fixedmath
     static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
-      return promoted_double_multiply( lh, rh );
+      return detail::promoted_double_multiply( lh, rh );
     else if constexpr( is_integral<supported_type1>::value || is_integral<supported_type2>::value )
-      return fixed_multiply_scalar( lh, rh);
+      return detail::fixed_multiply_scalar( lh, rh);
     else
-      return promoted_fixed_multiply( lh, rh );
+      return detail::promoted_fixed_multiply( lh, rh );
     }
     
   template<typename supported_type>
@@ -477,7 +482,7 @@ namespace fixedmath
     }
 
   //------------------------------------------------------------------------------------------------------
-  namespace
+  namespace detail
     {
     constexpr bool check_division_result( fixed_t result )
       { 
@@ -530,7 +535,7 @@ namespace fixedmath
         if( fixed_likely( check_division_result(result)) )
           return result;
         }
-      return limits__::quiet_NaN(); //abort ?
+      return detail::limits__::quiet_NaN(); //abort ?
       }
     }
     
@@ -541,11 +546,11 @@ namespace fixedmath
     static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                             ,"Arguments must be supported arithmetic types");
     if constexpr( is_integral<supported_type2>::value )
-      return fixed_division_by_scalar( lh, rh );
+      return detail::fixed_division_by_scalar( lh, rh );
     else if constexpr ( is_double<supported_type1>::value || is_double<supported_type2>{} )
-      return promoted_double_division( lh, rh );
+      return detail::promoted_double_division( lh, rh );
     else
-      return promoted_fixed_division( lh, rh );
+      return detail::promoted_fixed_division( lh, rh );
     }
 
   template<typename supported_type>
@@ -574,7 +579,7 @@ namespace fixedmath
 
     if( value < as_fixed( 0x800000000000ll ) ) 
       return value;
-    return limits__::quiet_NaN();
+    return detail::limits__::quiet_NaN();
     }
   
   //------------------------------------------------------------------------------------------------------
@@ -592,7 +597,7 @@ namespace fixedmath
     {
     if( angle >= 0 && angle <= 360 )
       return integral_to_fixed(angle) * fixedmath::phi / 180;
-    return limits__::quiet_NaN(); 
+    return detail::limits__::quiet_NaN(); 
     }
 
   
@@ -602,7 +607,7 @@ namespace fixedmath
   [[nodiscard,FIXEDMATH_PUBLIC, deprecated]]
   fixed_t sqrt_aprox(fixed_t value) noexcept;
   
-  namespace 
+  namespace detail
     {
     ///\returns the highest power of 4 that is less than or equal to \param value
     [[ gnu::const, gnu::always_inline ]]
@@ -642,7 +647,7 @@ namespace fixedmath
 
     value.v <<= 16;
     
-    fixed_internal pwr4 { highest_pwr4_clz(value.v) };
+    fixed_internal pwr4 { detail::highest_pwr4_clz(value.v) };
     
     fixed_internal result{};
     while( pwr4 != 0 )
@@ -815,7 +820,7 @@ namespace fixedmath
   // 7 7/6
   // 8 -3617/510
   // 9 43867/798
-  namespace 
+  namespace detail
     {
     // { { 1 over 6 } { { left ( - 4 right ) ^ 1 left ( 1 - 4 ^ 1 right ) } over fact left ( 2 right ) } x + { - 1 over 30 } { { left ( - 4 right ) ^ 2 left ( 1 - 4 ^ 2 right ) } over fact left ( 2 cdot 2 right ) } x ^ left ( 2 cdot 2 - 1 right ) + { 1 over 42 } { { left ( - 4 right ) ^ 3 left ( 1 - 4 ^ 3 right ) } over fact left ( 2 cdot 3 right ) } x ^ left ( 2 cdot 3 - 1 right ) + { - 1 over 30 } cdot { { left ( - 4 right ) ^ 4 left ( 1 - 4 ^ 4 right ) } over fact left ( 2 cdot 4 right ) } x ^ left ( { 2 cdot 4 - 1 } right ) + { 5 over 66 } cdot { { left ( - 4 right ) ^ 5 left ( 1 - 4 ^ 5 right ) } over fact left ( 2 cdot 5 right ) } x ^ left ( { 2 cdot 5 - 1 } right ) + { - 691 over 2730 } cdot { { left ( - 4 right ) ^ 6 left ( 1 - 4 ^ 6 right ) } over fact left ( 2 cdot 6 right ) } x ^ left ( { 2 cdot 6 - 1 } right ) + { 7 over 6 } { { left ( - 4 right ) ^ 7 left ( 1 - 4 ^ 7 right ) } over fact left ( 2 cdot 7 right ) } x ^ left ( { 2 cdot 7 - 1 } right ) + { - 3617 over 510 } { { left ( - 4 right ) ^ 8 left ( 1 - 4 ^ 8 right ) } over fact left ( 2 cdot 8 right ) } x ^ left ( { 2 cdot 8 - 1 } right ) } 
     
@@ -883,21 +888,21 @@ namespace fixedmath
       sign_ = true;
       }
     //normalize the range to phi/2
-    x = tan_range(x);
+    x = detail::tan_range(x);
     
     if( fixed_likely( x != fixpidiv2.v ) )
       {
       fixed_internal res_tan {};
       if( x <= fixpidiv4.v )
-        res_tan = tan__<prec_+prec_inc>(x<<prec_inc)>>prec_inc;
+        res_tan = detail::tan__<prec_+prec_inc>(x<<prec_inc)>>prec_inc;
       else
-        res_tan = div_<prec_>( one_, tan__<prec_+prec_inc>( (fixpidiv2.v<<prec_inc) - (x<<prec_inc) )>>prec_inc );
+        res_tan = div_<prec_>( one_, detail::tan__<prec_+prec_inc>( (fixpidiv2.v<<prec_inc) - (x<<prec_inc) )>>prec_inc );
       if( sign_ )
         res_tan = -res_tan;
       return as_fixed(res_tan);
        }
     else
-      return limits__::quiet_NaN();
+      return detail::limits__::quiet_NaN();
     }
     
   //------------------------------------------------------------------------------------------------------
@@ -908,27 +913,30 @@ namespace fixedmath
   // { x left ( { 1 + x ^ 2 left ( { - 1 + { { 3 x ^ 2 } over 5 } - { { 3 x ^ 4 } over 7 } + { x ^ 6 over 3 } - { { 3 x ^ 8 } over 11 } } right ) :3 } right ) } 
   // { x left ( { 1 + x ^ 2 left ( { - 1 + x ^ 2 left ( { 3 + x ^ 2 left ( { - 15 + { { 7 cdot 5 x ^ 2 } over 3 } - { { 7 cdot 5 cdot 3 x ^ 4 } over 11 } } right ) :7 } right ) :5 } right ) :3 } right ) } 
   // { x left ( { 1 + x ^ 2 left ( { - 1 + x ^ 2 left ( { 3 + x ^ 2 left ( { - 15 + x ^ 2 left ( { 35 - { { 315 x ^ 2 } over 11 } } right ) :3 } right ) :7 } right ) :5 } right ) :3 } right ) } 
-  [[ nodiscard,gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal atan__( fixed_internal x ) noexcept
+  namespace detail
     {
-    constexpr int prec_ = 16;
-    //this has less error
-    fixed_internal x2 { mul_<prec_>(x, x) };
-    fixed_internal x3 { mul_<prec_>(x2, x) };
-    fixed_internal x5 { mul_<prec_>(x3, x2) };
-    fixed_internal x7 { mul_<prec_>(x5, x2) };
-    fixed_internal x9 { mul_<prec_>(x7, x2) };
-    fixed_internal x11 { mul_<prec_>(x9, x2) };
-    
-    return x - x3/3 + x5/5 - x7/7 + x9/9 - x11/11;
-    
-//     fixed_internal y0{ fix_<prec_>(35)-315*x2/11};
-//     fixed_internal y1{ fix_<prec_>(-15) + mul_<prec_>(x2,y0)/3 };
-//     fixed_internal y2{ fix_<prec_>(3) + mul_<prec_>(x2,y1)/7 };
-//     fixed_internal y3{ -one_+ mul_<prec_>(x2,y2)/5 };
-//     fixed_internal y4{ one_+ mul_<prec_>(x2,y3)/3 };
-//     return mul_<prec_>(x,y4);
-    }
+    [[ nodiscard,gnu::const, gnu::always_inline ]]
+    constexpr fixed_internal atan__( fixed_internal x ) noexcept
+      {
+      constexpr int prec_ = 16;
+      //this has less error
+      fixed_internal x2 { mul_<prec_>(x, x) };
+      fixed_internal x3 { mul_<prec_>(x2, x) };
+      fixed_internal x5 { mul_<prec_>(x3, x2) };
+      fixed_internal x7 { mul_<prec_>(x5, x2) };
+      fixed_internal x9 { mul_<prec_>(x7, x2) };
+      fixed_internal x11 { mul_<prec_>(x9, x2) };
+      
+      return x - x3/3 + x5/5 - x7/7 + x9/9 - x11/11;
+      
+  //     fixed_internal y0{ fix_<prec_>(35)-315*x2/11};
+  //     fixed_internal y1{ fix_<prec_>(-15) + mul_<prec_>(x2,y0)/3 };
+  //     fixed_internal y2{ fix_<prec_>(3) + mul_<prec_>(x2,y1)/7 };
+  //     fixed_internal y3{ -one_+ mul_<prec_>(x2,y2)/5 };
+  //     fixed_internal y4{ one_+ mul_<prec_>(x2,y3)/3 };
+  //     return mul_<prec_>(x,y4);
+      }
+    } 
     
   [[ nodiscard, gnu::const ]]
   constexpr fixed_t atan( fixed_t rad ) noexcept
@@ -961,15 +969,15 @@ namespace fixedmath
       }
     fixed_internal result{};
     if( x < _7o16 ) 
-      result = atan__( x );
+      result = detail::atan__( x );
     else if( x < _11o16 )
-      result = atan_7o16 + atan__( div_<prec_>(x - _7o16, one_ + mul_<prec_>(x,_7o16)) );
+      result = atan_7o16 + detail::atan__( div_<prec_>(x - _7o16, one_ + mul_<prec_>(x,_7o16)) );
     else if( x < _19o16 )
-      result = atan_11o16 + atan__( div_<prec_>(x - _11o16,one_ + mul_<prec_>(x,_11o16)) );
+      result = atan_11o16 + detail::atan__( div_<prec_>(x - _11o16,one_ + mul_<prec_>(x,_11o16)) );
     else if( x < _39o16 )
-      result = atan_19o16 + atan__( div_<prec_>(x - _19o16,one_ + mul_<prec_>(x,_19o16)) );
+      result = atan_19o16 + detail::atan__( div_<prec_>(x - _19o16,one_ + mul_<prec_>(x,_19o16)) );
     else
-      result = atan_39o16 + atan__( div_<prec_>(x - _39o16,one_ + mul_<prec_>(x,_39o16)) );
+      result = atan_39o16 + detail::atan__( div_<prec_>(x - _39o16,one_ + mul_<prec_>(x,_39o16)) );
     
     if( !sign_)
       return as_fixed(result);
@@ -995,11 +1003,11 @@ namespace fixedmath
       else if( y < 0_fix )
         return -fixpidiv2;
       else
-        return limits__::quiet_NaN();
+        return detail::limits__::quiet_NaN();
       }
     }
 
-  namespace 
+  namespace detail
     {
 
     template<int prec_>
@@ -1052,19 +1060,19 @@ namespace fixedmath
 
       if( x_ <= (0.60_fix).v )
         {
-        fixed_internal result{ asin__<prec>(x_<<ext_prec)>>ext_prec };
-        return set_sign( sign_, result );
+        fixed_internal result{ detail::asin__<prec>(x_<<ext_prec)>>ext_prec };
+        return detail::set_sign( sign_, result );
         }
       else 
         {
         // asin(x) = pi/2-2*asin(sqrt((1-x)/2))
         fixed_internal sqr { sqrt( as_fixed((_1 - x_)>>1)).v };
-        fixed_internal result{ fixpidiv2.v - (asin__<prec>(sqr <<ext_prec)>>(ext_prec-1)) };
-        return set_sign( sign_, result );
+        fixed_internal result{ fixpidiv2.v - (detail::asin__<prec>(sqr <<ext_prec)>>(ext_prec-1)) };
+        return detail::set_sign( sign_, result );
         }
       }
     else
-      return limits__::quiet_NaN();
+      return detail::limits__::quiet_NaN();
     }
   //------------------------------------------------------------------------------------------------------
   // acos |X| <= 1
@@ -1075,7 +1083,7 @@ namespace fixedmath
     if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
       return as_fixed( phi2.v - asin(x).v );
     else
-      return limits__::quiet_NaN();
+      return detail::limits__::quiet_NaN();
     }
     
   //------------------------------------------------------------------------------------------------------
