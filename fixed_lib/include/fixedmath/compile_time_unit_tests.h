@@ -194,7 +194,12 @@ namespace fixedmath
   static_assert( 0.2_fix - 1.2_fix  == -1_fix );
   static_assert( 3.2_fix - 1.2_fix  == 2_fix );
   static_assert( -4.2_fix - 1.2_fix  == -5.4_fix );
+  static_assert( -4.2_fix + 1.2_fix  == -3_fix );
   static_assert( 1_fix - 1.  ==  1. - 1. );
+  static_assert( 2_fix - 1.  ==  2. - 1. );
+  static_assert( -2_fix - 1.  ==  -2. - 1. );
+  static_assert( -2_fix + 1.  ==  -2. + 1. );
+  
   static_assert( test_resulting_type<fixed_t>( int64_t(1) - 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  - int64_t(1) ) );
   static_assert( test_resulting_type<fixed_t>( uint64_t(1) - 1_fix ) );
