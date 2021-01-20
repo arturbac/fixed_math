@@ -520,10 +520,9 @@ namespace fixedmath
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t ceil( fixed_t value ) noexcept
     {
-    value.v = (value.v + 0xffff) & ~((1<<16)-1);
-
-    if( value < as_fixed( 0x800000000000ll ) ) 
-      return value;
+    fixed_internal result { (value.v + 0xffff) & ~((1<<16ll)-1) };
+    if( value.v < result ) 
+      return as_fixed(result);
     return detail::limits__::quiet_NaN();
     }
   
