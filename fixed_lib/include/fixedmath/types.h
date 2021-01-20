@@ -74,7 +74,7 @@ namespace fixedmath
   constexpr integral_type fixed_to_integral ( fixed_t value ) noexcept;
   
   ///\brief hermetization of fixed value to avoid implicit conversions from int64, long long 
-  struct [[FIXEDMATH_PUBLIC]] fixed_t
+  struct fixed_t
     {
     fixed_internal v;
     

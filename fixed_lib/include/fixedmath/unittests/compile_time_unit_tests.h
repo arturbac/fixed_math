@@ -22,14 +22,15 @@
 
 #pragma once
 
-#include "limits.h"
-#include "math.h"
+#include "../limits.h"
+#include "../math.h"
 
 namespace fixedmath::unittests
 {
   using detail::limits__;
   using detail::flimits__;
   using detail::dlimits__;
+  using detail::arithmetic_and_one_is_fixed;
   
   #define make_const_value(x) const_val<decltype(x), x>
   #define static_assert_equal(x, y) static_assert( assert_equal_t< make_const_value( x ), make_const_value( y ) >::eq() )
