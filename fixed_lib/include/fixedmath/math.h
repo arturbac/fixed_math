@@ -1058,7 +1058,7 @@ namespace fixedmath
     {
 
     template<int prec_>
-    fixed_internal asin__( fixed_internal x )
+    constexpr fixed_internal asin__( fixed_internal x )
       {
       fixed_internal x2{ mul_<prec_>(x,x) };
         
@@ -1078,6 +1078,7 @@ namespace fixedmath
       
       return mul_<prec_>(x,y10);
       }
+      
     constexpr fixed_t set_sign( bool sign_, fixed_internal result )
       {
       if(!sign_)
