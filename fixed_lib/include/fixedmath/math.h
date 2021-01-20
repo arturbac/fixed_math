@@ -379,7 +379,7 @@ namespace fixedmath
     static_assert( arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
     if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
-      return promoted_double_substract( rh, lh );
+      return promoted_double_substract( lh, rh );
     else
       return promoted_fixed_substract( lh, rh );
     }
