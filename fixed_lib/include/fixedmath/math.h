@@ -609,12 +609,6 @@ namespace std
 namespace fixedmath
 {
 
-  [[deprecated]]
-  constexpr int32_t ffloor( fixed_t value ) noexcept
-    {
-    return fixed_to_integral<int32_t>(floor( value ));
-    }
-    
   //------------------------------------------------------------------------------------------------------
   ///\brief converts angle 0 - 360 to radians.
   [[ nodiscard, gnu::const, gnu::always_inline ]]
