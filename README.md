@@ -37,6 +37,25 @@ constexpr fixed_t my_function( fixed_t value )
  using namespace fixedmath;
  return foo_constant + sin(value) / (1.41_fix - 2*cos(value) / 4);
  }
+
+// converting to/from fixed_t
+// construction from other arithmetic types is explicit
+fixed_t val { 3.14 };
+fixed_t val { 3u };
+ 
+//- there is no implicit assignment from other types
+float some_float{};
+fixed_t some_fixed{};
+...
+some_fixed = fixed_t{some_float};
+ 
+//- converting to other arithmetic types coud be done with static cast and is explicit
+double some_double { static_cast<double>(some_fixed) };
+ 
+// for constant values postfix operator _fix may be used
+some_fixed = some_float * 2.45_fix; //operation with float is promoted to fixed_t
+some_double = 4.15 * some_fixed; //operation with double is promoted to double
+
 ```
 
 ## version 1.0 Goals status
