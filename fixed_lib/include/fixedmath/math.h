@@ -608,8 +608,13 @@ namespace fixedmath
   [[nodiscard,FIXEDMATH_PUBLIC,deprecated]]
   fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept;
 
+#if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO)
+  #define FIXED_MATH_HYPOT_CONSTEXPR constexpr
+#else
+  #define FIXED_MATH_HYPOT_CONSTEXPR inline
+#endif
   [[ nodiscard, gnu::const]]
-  constexpr fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept
+  FIXED_MATH_HYPOT_CONSTEXPR fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept
     {
     constexpr int prec_ = 16;
     //sqrt(X^2+Y^2) = sqrt( (X/D)^2+(Y/D)^2) * D
