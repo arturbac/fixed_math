@@ -18,6 +18,37 @@ namespace fixedmath::detail
           | (static_cast<unsigned_internal>( value ) & ( unsigned_internal(1) << 63u))
       );
     }
+    
+  template<int size>
+  struct signed_type_by_size {};
+  
+  template<>
+  struct signed_type_by_size<1> { using type = int8_t; };
+  
+  template<>
+  struct signed_type_by_size<2> { using type = int16_t; };
+  
+  template<>
+  struct signed_type_by_size<4> { using type = int32_t; };
+  
+  template<>
+  struct signed_type_by_size<8> { using type = int64_t; };
+  
+  template<>
+  struct signed_type_by_size<16> { using type = int64_t; };
+  
+  template<typename value_type>
+  constexpr auto promote_type_to_signed( value_type value )
+    {
+    if constexpr ( std::is_signed_v<value_type> )
+      return value;
+    else
+      {
+      using signed_type = typename signed_type_by_size<((sizeof(value_type)<<1))>::type;
+      return static_cast<signed_type>( value );
+      }
+    }
+    
   template<int digits>
   [[ gnu::const, gnu::always_inline ]]
   constexpr fixed_internal unsigned_shift_left_unsigned( fixed_internal value ) noexcept

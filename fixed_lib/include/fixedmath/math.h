@@ -406,7 +406,7 @@ namespace fixedmath
     constexpr fixed_t fixed_multiply_scalar (fixed_t lh, integral_type rh) noexcept
       {
       static_assert( is_integral<integral_type>::value,"Must be integral type");
-      fixed_t result { fix_carrier_t{ lh.v * static_cast<fixed_internal>(rh) }};
+      fixed_t result { fix_carrier_t{ lh.v * promote_type_to_signed(rh) }};
 
       if( fixed_likely( check_multiply_result(result)) )
         return result;
@@ -464,7 +464,6 @@ namespace fixedmath
       if( fixed_likely(y.v != 0) )
         {
         fixed_t result { as_fixed( (x << 16).v / y.v ) };
-        if( fixed_likely( check_division_result(result)) )
           return result;
         }
       return limits__::quiet_NaN(); //abort ?
@@ -499,8 +498,7 @@ namespace fixedmath
       static_assert( is_integral<supported_type>::value );
       if( fixed_likely(rh != 0) )
         {
-        fixed_t const result = as_fixed( lh.v / rh );
-        if( fixed_likely( check_division_result(result)) )
+        fixed_t const result = as_fixed( lh.v / promote_type_to_signed(rh) );
           return result;
         }
       return detail::limits__::quiet_NaN(); //abort ?
