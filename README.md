@@ -49,10 +49,9 @@ fixed_t is typename of fixed point arithmetic type with common operators like, +
 #include <fixedmath/fixed_math.hpp>
 
 using fixedmath::fixed_t;
-using fixedmath::sqrt;
 
-//fixed and all functionality is constexpr so You can declare constants
-inline constexpr fixed_t foo_constant{ sqrt(3.15) };
+//fixed and all functionality is constexpr so You can declare constants see features [1]
+inline constexpr fixed_t foo_constant{ fixedmath::tan( 15 * fixedmath::phi/180) };
 
 constexpr fixed_t my_function( fixed_t value )
  {
