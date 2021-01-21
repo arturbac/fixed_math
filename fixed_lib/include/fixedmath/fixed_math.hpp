@@ -112,9 +112,13 @@ namespace fixedmath
   ///\brief returns result of substraction of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2>
-  constexpr auto operator - ( supported_type1 lh, supported_type2 rh ) noexcept;
-  
+  template<typename supported_type>
+  constexpr auto operator - ( supported_type lh, fixed_t rh ) noexcept;
+  template<typename supported_type>
+  constexpr auto operator - ( fixed_t lh, supported_type rh ) noexcept;
+  ///\brief returns result of substraction of two arguments
+  constexpr auto operator - ( fixed_t lh, fixed_t rh ) noexcept;
+
   ///\brief returns result of multiplication of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double

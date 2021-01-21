@@ -336,10 +336,26 @@ namespace fixedmath
     return lh;
     } 
   
-  template<typename supported_type1, typename supported_type2>
   [[ gnu::const, gnu::always_inline ]]
-  constexpr auto operator - ( supported_type1 lh, supported_type2 rh ) noexcept { return fixed_substract(lh,rh); }
-
+  constexpr auto operator - ( fixed_t lh, fixed_t rh ) noexcept 
+    {
+    return fixed_substract(lh,rh);
+    }
+    
+  template<typename supported_type>
+  [[ gnu::const, gnu::always_inline ]]
+  constexpr auto operator - ( fixed_t lh, supported_type rh ) noexcept 
+    {
+    static_assert( is_arithmetic_and_not_fixed<supported_type>{});
+    return fixed_substract(lh,rh);
+    }
+  template<typename supported_type>
+  [[ gnu::const, gnu::always_inline ]]
+  constexpr auto operator - ( supported_type lh, fixed_t rh ) noexcept 
+    {
+    static_assert( is_arithmetic_and_not_fixed<supported_type>{});
+    return fixed_substract(lh,rh);
+    }
   //------------------------------------------------------------------------------------------------------
   /// \brief Returns the product of two fixed_t point values.
   namespace detail
