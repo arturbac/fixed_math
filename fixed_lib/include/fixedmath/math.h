@@ -136,7 +136,7 @@ namespace fixedmath
   //------------------------------------------------------------------------------------------------------
   template<typename arithmethic_type>
   [[ nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept
+  constexpr fixed_t make_fixed( arithmethic_type value ) noexcept
     {
     static_assert( is_arithmetic_and_not_fixed<arithmethic_type>{} );
     if constexpr( std::is_floating_point<arithmethic_type>::value )
@@ -144,6 +144,11 @@ namespace fixedmath
     else
       return integral_to_fixed(value);
     }
+    
+  template<typename arithmethic_type>
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept
+    { return make_fixed( value ); }
   //------------------------------------------------------------------------------------------------------
 
   [[ nodiscard, gnu::const, gnu::always_inline ]]
