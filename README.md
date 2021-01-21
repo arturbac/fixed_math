@@ -95,6 +95,8 @@ To check unit tests just #include <fixedmath/compile_time_unit_tests.h> in any o
 - [x] asin error  ~<= 0.0001
 - [    ] remove all old compat code that is compiled
 - [    ] cover all functionality with static_assert unit tests
+- [x] support clang/gcc c++17 compiler
+- [    ] support msvc c++17 compiler
 
 ## future goals
 
