@@ -360,6 +360,8 @@ namespace fixedmath::unittests
   static_assert( test_resulting_type<fixed_t>( 1_fix / 1.f ) );
   static_assert( test_resulting_type<double>( 1. / 1_fix ) );
   static_assert( test_resulting_type<double>( 1_fix / 1. ) );
+  
+#if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO)
   //------------------------------------------------------------------------------------------------------
   //
   // sqrt
@@ -399,7 +401,7 @@ namespace fixedmath::unittests
   static_assert( test_hypot(0.0125_fix,0.125_fix, 0.1256103515625000_fix));
   static_assert( test_hypot(1_fix,1_fix, 1.4141998291015625_fix));
   static_assert( test_hypot(0.5_fix,0.25_fix, 0.5590057373046875_fix));
-
+#endif
   //------------------------------------------------------------------------------------------------------
   //
   // ceil

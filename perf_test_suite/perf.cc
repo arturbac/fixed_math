@@ -1,5 +1,4 @@
 #include <fixedmath/fixed_math.hpp>
-#include <fixedmath/unittests/compile_time_unit_tests.h>
 #include <vector>
 #include <iostream>
 #include <random>

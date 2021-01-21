@@ -572,6 +572,7 @@ namespace fixedmath
   [[nodiscard,FIXEDMATH_PUBLIC, deprecated]]
   fixed_t sqrt_aprox(fixed_t value) noexcept;
     
+#if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO)
   ///\brief Square root by abacus algorithm
   [[ nodiscard, gnu::const]]
   constexpr fixed_t sqrt( fixed_t value ) noexcept
@@ -596,7 +597,14 @@ namespace fixedmath
       }
     return as_fixed(result);
     }
-  
+#else
+  [[ nodiscard, gnu::const]]
+  inline fixed_t sqrt( fixed_t value ) noexcept
+    {
+    fixed_internal result{ static_cast<fixed_internal>( std::sqrt( static_cast<float>(value.v*65536) ) )  };
+    return as_fixed(result);
+    }
+#endif
   [[nodiscard,FIXEDMATH_PUBLIC,deprecated]]
   fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept;
 
