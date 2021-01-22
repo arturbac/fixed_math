@@ -80,7 +80,9 @@ some_double = 4.15 * some_fixed; //operation with double is promoted to double
 ```
 ## unit tests
 
-To check unit tests just #include <fixedmath/compile_time_unit_tests.h> in any of Your source file.
+To check unit tests just #include <fixedmath/unittests/compile_time_unit_tests.h> in any of Your source file.
+or run them wit CMake/CTest "ninja/make test" as they are available in default CMakeConfiguration of source folder see ENABLE_UNIT_TESTS cmake feature i CMakeLists.txt
+
 
 ## version 1.0 goals status
 
