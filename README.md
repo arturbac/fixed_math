@@ -14,7 +14,7 @@ written from scratch fixed point math library in C++17
 * functions that are complement to std math functionality could be optionaly imported to std namespace as overloads for fixed_t type *disabled by default*
 
 
-\[1\] - By default used is std:sqrt as current cpus has hardware support for sqrt, but constexpr abacus algorithm could be use defining FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO which is slowe than cpu one
+\[1\] - By default is used std:sqrt as current cpu's has hardware support for sqrt, but constexpr abacus algorithm could be used defining FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO, which is slower than cpu one
 
 ### first performance comparisions of code 0.9.1
 At this point code wasn't been optimised, so results are from just from code written with quality only at this point in mind. Results are relative times of computing functions over bigtable of source values in function type (no value convertions)
