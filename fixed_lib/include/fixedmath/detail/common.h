@@ -46,6 +46,40 @@ namespace fixedmath::detail
   
   template<>
   struct signed_type_by_size<16> { using type = int64_t; };
+    
+  // concepts
+
+  template<typename supported_type>
+  inline constexpr bool is_fixed_v = std::is_same_v<cxx20::remove_cvref_t<supported_type>,fixed_t>;
+  
+  template<typename supported_type>
+  inline constexpr bool is_double_v = std::is_same_v<cxx20::remove_cvref_t<supported_type>,double>;
+  
+  template<typename supported_type>
+  inline constexpr bool is_integral_v = std::is_integral_v<cxx20::remove_cvref_t<supported_type>>;
+  
+  template<typename supported_type>
+  inline constexpr bool is_floating_point_v = std::is_floating_point_v<cxx20::remove_cvref_t<supported_type>>;
+    
+  template<typename supported_type>
+  inline constexpr bool is_arithemetic_v = std::integral_constant<bool,
+                  (std::is_integral_v<supported_type>) 
+                  || (std::is_floating_point_v<supported_type>)
+                  || is_fixed_v<supported_type>
+                    >::value;
+
+  template<typename supported_type>
+  inline constexpr bool is_arithmetic_and_not_fixed_v = std::integral_constant<bool,
+                  is_arithemetic_v<supported_type> && (!is_fixed_v<supported_type>)>::value;
+                  
+  template<typename supported_type1, typename supported_type2>
+  inline constexpr bool arithmetic_and_one_is_fixed_v = std::integral_constant<bool,
+                  is_arithemetic_v<supported_type1> && 
+                  is_arithemetic_v<supported_type2> && 
+                  ( is_fixed_v<supported_type1> || is_fixed_v<supported_type2> ) >::value;
+                  
+  template<typename supported_type1, typename supported_type2>
+  inline constexpr bool one_of_is_double_v = detail::is_double_v<supported_type1> || detail::is_double_v<supported_type2>;
   
   template<typename value_type>
   constexpr auto promote_type_to_signed( value_type value )
@@ -68,37 +102,6 @@ namespace fixedmath::detail
           (static_cast<unsigned_internal>( value ) << digits));
     }
     
-  // concepts
-
-  template<typename supported_type>
-  using is_fixed = typename std::integral_constant<bool,std::is_same<cxx20::remove_cvref_t<supported_type>,fixed_t>::value>::type;
-  
-  template<typename supported_type>
-  using is_double = typename std::integral_constant<bool,std::is_same<cxx20::remove_cvref_t<supported_type>,double>::value>::type;
-  
-  template<typename supported_type>
-  using is_integral = typename std::integral_constant<bool,std::is_integral<cxx20::remove_cvref_t<supported_type>>::value>::type;
-  
-  template<typename supported_type>
-  using is_floating_point = std::is_floating_point<supported_type>;
-    
-  template<typename supported_type>
-  using is_arithemetic = typename std::integral_constant<bool,
-                  (std::is_integral<supported_type>::value) 
-                  || (std::is_floating_point<supported_type>::value)
-                  || is_fixed<supported_type>{}
-                    >::type;
-  
-  template<typename supported_type>
-  using is_arithmetic_and_not_fixed_v = typename std::integral_constant<bool,
-                  is_arithemetic<supported_type>{} && (!is_fixed<supported_type>{})>::type;
-                  
-  template<typename supported_type1, typename supported_type2>
-  using arithmetic_and_one_is_fixed = typename std::integral_constant<bool,
-                  is_arithemetic<supported_type1>{} && 
-                  is_arithemetic<supported_type2>{} && 
-                  ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} ) >::type;
-                  
   ///\returns the highest power of 4 that is less than or equal to \param value
   [[ gnu::const, gnu::always_inline ]]
   constexpr fixed_internal highest_pwr4_clz( fixed_internal value )
