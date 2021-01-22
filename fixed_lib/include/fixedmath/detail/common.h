@@ -2,6 +2,16 @@
 
 #include "../types.h"
 
+#define FIXEDMATH_PUBLIC gnu::visibility("default")
+
+#if defined(__GNUC__) || defined(__clang__)
+  #define fixed_likely(x)    __builtin_expect(static_cast<bool>(x), 1)
+  #define fixed_unlikely(x)  __builtin_expect(static_cast<bool>(x), 0)
+#else
+  #define fixed_likely(x)    ((x))
+  #define fixed_unlikely(x)  ((x))
+#endif
+
 namespace fixedmath::detail
   {
   using limits__ = std::numeric_limits<fixedmath::fixed_t>;
@@ -59,11 +69,35 @@ namespace fixedmath::detail
     }
     
   // concepts
+
+  template<typename supported_type>
+  using is_fixed = typename std::integral_constant<bool,std::is_same<cxx20::remove_cvref_t<supported_type>,fixed_t>::value>::type;
+  
+  template<typename supported_type>
+  using is_double = typename std::integral_constant<bool,std::is_same<cxx20::remove_cvref_t<supported_type>,double>::value>::type;
+  
+  template<typename supported_type>
+  using is_integral = typename std::integral_constant<bool,std::is_integral<cxx20::remove_cvref_t<supported_type>>::value>::type;
+  
+  template<typename supported_type>
+  using is_floating_point = std::is_floating_point<supported_type>;
+    
+  template<typename supported_type>
+  using is_arithemetic = typename std::integral_constant<bool,
+                  (std::is_integral<supported_type>::value) 
+                  || (std::is_floating_point<supported_type>::value)
+                  || is_fixed<supported_type>{}
+                    >::type;
+  
+  template<typename supported_type>
+  using is_arithmetic_and_not_fixed_v = typename std::integral_constant<bool,
+                  is_arithemetic<supported_type>{} && (!is_fixed<supported_type>{})>::type;
+                  
   template<typename supported_type1, typename supported_type2>
   using arithmetic_and_one_is_fixed = typename std::integral_constant<bool,
-                  is_arithemetic_t<supported_type1>::value && 
-                  is_arithemetic_t<supported_type2>::value && 
-                  ( is_fixed_t<supported_type1>::value || is_fixed_t<supported_type2>::value ) >::type;
+                  is_arithemetic<supported_type1>{} && 
+                  is_arithemetic<supported_type2>{} && 
+                  ( is_fixed<supported_type1>{} || is_fixed<supported_type2>{} ) >::type;
                   
   ///\returns the highest power of 4 that is less than or equal to \param value
   [[ gnu::const, gnu::always_inline ]]

@@ -27,7 +27,6 @@
 #include <cmath>
 #include "utility_cxx20.h"
 
-#define FIXEDMATH_PUBLIC gnu::visibility("default")
 
 
 #define FIXEDMATH_VERSION_MAJOR 0
@@ -38,14 +37,7 @@
 namespace fixedmath
 {
   using fixed_internal = int64_t;
-  
-#if defined(__GNUC__) || defined(__clang__)
-  #define fixed_likely(x)    __builtin_expect(static_cast<bool>(x), 1)
-  #define fixed_unlikely(x)  __builtin_expect(static_cast<bool>(x), 0)
-#else
-  #define fixed_likely(x)    ((x))
-  #define fixed_unlikely(x)  ((x))
-#endif
+
   //the idea behind carrier is to use it as carier of internal int64 value in format of fixed to distinguish it from int64 integral type.
   struct fix_carrier_t 
     { 
@@ -96,63 +88,9 @@ namespace fixedmath
     explicit constexpr fixed_t( arithemtic_type const & value );
     };
 
-  template<typename supported_type>
-  struct is_fixed_t : 
-      public std::integral_constant<bool,std::is_same<cxx20::remove_cvref_t<supported_type>,fixed_t>::value>
-    {};
-  
-  template<typename supported_type>
-  struct is_double_t : 
-      public std::integral_constant<bool,std::is_same<cxx20::remove_cvref_t<supported_type>,double>::value>
-    {};
-    
-  template<typename supported_type>
-  struct is_integral_t : 
-      public std::integral_constant<bool,std::is_integral<cxx20::remove_cvref_t<supported_type>>::value>
-    {};
-  
-  template<typename supported_type>
-  using is_fixed = typename is_fixed_t<supported_type>::type;
-  
-  template<typename supported_type>
-  using is_double = typename is_double_t<supported_type>::type;
-  
-  template<typename supported_type>
-  using is_integral = typename is_integral_t<supported_type>::type;
-  
-  template<typename supported_type>
-  using is_floating_point = std::is_floating_point<supported_type>;
-  
-  template<typename supported_type>
-  struct is_arithemetic_t
-    : public std::integral_constant<bool,
-                  (std::is_integral<supported_type>::value) 
-                  || (std::is_floating_point<supported_type>::value)
-                  || is_fixed<supported_type>{}
-                    >::type
-    {};
-    
-  template<typename supported_type>
-  using is_arithemetic = typename is_arithemetic_t<supported_type>::type;
-  
-  template<typename supported_type>
-  struct is_arithmetic_and_not_fixed_t
-    : public std::integral_constant<bool,
-                  is_arithemetic_t<supported_type>::value && (!is_fixed<supported_type>{}) >::type
-    {};
-  
-  template<typename supported_type>
-  using is_arithmetic_and_not_fixed = typename is_arithmetic_and_not_fixed_t<supported_type>::type;
   
   ///\brief constructs fixed from raw value in internal format
   constexpr fixed_t as_fixed( fixed_internal carried ) { return fix_carrier_t{carried}; }
-  
-  template<typename arithmethic_type>
-  constexpr fixed_t::fixed_t( arithmethic_type const & value )
-    : v{ arithmetic_to_fixed(value).v }
-    {
-    static_assert( is_arithmetic_and_not_fixed<arithmethic_type>{} );
-    }
     
   [[ gnu::const, gnu::always_inline ]]
   inline bool constexpr

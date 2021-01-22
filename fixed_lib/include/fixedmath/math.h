@@ -30,7 +30,13 @@
 
 namespace fixedmath
 {
-
+  
+  template<typename arithmethic_type>
+  constexpr fixed_t::fixed_t( arithmethic_type const & value )
+    : v{ arithmetic_to_fixed(value).v }
+    {
+    static_assert( detail::is_arithmetic_and_not_fixed_v<arithmethic_type>{} );
+    }
   
   [[ gnu::const, gnu::always_inline ]]
   constexpr fixed_t operator -( fixed_t l ) noexcept { return fix_carrier_t{-l.v}; }
@@ -42,7 +48,7 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr fixed_t integral_to_fixed(integral_type value) noexcept
     { 
-    static_assert( is_integral<integral_type>::value,"Must be integral type");
+    static_assert( detail::is_integral<integral_type>{},"Must be integral type");
     if( fixed_likely(cxx20::cmp_less(value, detail::limits__::max_integral()) && 
                      cxx20::cmp_greater(value, detail::limits__::min_integral()) ) ) 
       {
@@ -68,7 +74,7 @@ namespace fixedmath
     { 
     using ft = floating_point_type;
     static_assert( 
-        std::is_floating_point<ft>::value && (!is_fixed<ft>{}), "must be floating point" );
+        std::is_floating_point<ft>::value && (!detail::is_fixed<ft>{}), "must be floating point" );
     
     if( fixed_likely( value < double(detail::limits__::max_integral()) &&
                       value > double(detail::limits__::min_integral())) )
@@ -88,7 +94,7 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr integral_type fixed_to_integral ( fixed_t value ) noexcept
     { 
-    static_assert( is_integral<integral_type>::value,"Must be integral type");
+    static_assert( detail::is_integral<integral_type>{},"Must be integral type");
     fixed_internal tmp{ ( value.v >> 16 ) + (( value.v & 0x8000) >> 15) };
     using al = std::numeric_limits<integral_type>;
     if( cxx20::cmp_greater_equal( tmp, al::min() ) && cxx20::cmp_less_equal( tmp, al::max() ) )
@@ -104,7 +110,7 @@ namespace fixedmath
     {
     using ft = floating_point_type;
     static_assert( 
-        std::is_floating_point<ft>::value && (!is_fixed<ft>{}), "must be floating point" );
+        std::is_floating_point<ft>::value && (!detail::is_fixed<ft>{}), "must be floating point" );
     
     return ft(value.v) / ft(65536);
     }
@@ -120,7 +126,7 @@ namespace fixedmath
   template<typename arithmethic_type>
   constexpr arithmethic_type fixed_to_arithmetic( fixed_t value ) noexcept
     {
-    static_assert( is_arithmetic_and_not_fixed<arithmethic_type>{} );
+    static_assert( detail::is_arithmetic_and_not_fixed_v<arithmethic_type>{} );
     if constexpr ( std::is_integral<arithmethic_type>::value )
       return fixed_to_integral<arithmethic_type>( value );
     else
@@ -138,7 +144,7 @@ namespace fixedmath
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr fixed_t make_fixed( arithmethic_type value ) noexcept
     {
-    static_assert( is_arithmetic_and_not_fixed<arithmethic_type>{} );
+    static_assert( detail::is_arithmetic_and_not_fixed_v<arithmethic_type>{} );
     if constexpr( std::is_floating_point<arithmethic_type>::value )
       return floating_point_to_fixed( value );
     else
@@ -221,7 +227,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr double promote_to_double( supported_type  value )
       {
-      if constexpr( is_double<supported_type>::value )
+      if constexpr( is_double<supported_type>{} )
         return value;
       else
         return fixed_to_floating_point<double>( value );
@@ -264,7 +270,7 @@ namespace fixedmath
     {
     static_assert( detail::arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
-    if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
+    if constexpr( detail::is_double<supported_type1>{} || detail::is_double<supported_type2>{} )
       return detail::promoted_double_addition( rh, lh );
     else
       return detail::promoted_fixed_addition( lh, rh );
@@ -328,7 +334,7 @@ namespace fixedmath
     {
     static_assert( detail::arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
-    if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
+    if constexpr( detail::is_double<supported_type1>{} || detail::is_double<supported_type2>{} )
       return detail::promoted_double_substract( lh, rh );
     else
       return detail::promoted_fixed_substract( lh, rh );
@@ -351,14 +357,14 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto operator - ( fixed_t lh, supported_type rh ) noexcept 
     {
-    static_assert( is_arithmetic_and_not_fixed<supported_type>{});
+    static_assert( detail::is_arithmetic_and_not_fixed_v<supported_type>{});
     return fixed_substract(lh,rh);
     }
   template<typename supported_type>
   [[ gnu::const, gnu::always_inline ]]
   constexpr auto operator - ( supported_type lh, fixed_t rh ) noexcept 
     {
-    static_assert( is_arithmetic_and_not_fixed<supported_type>{});
+    static_assert( detail::is_arithmetic_and_not_fixed_v<supported_type>{});
     return fixed_substract(lh,rh);
     }
   //------------------------------------------------------------------------------------------------------
@@ -405,7 +411,7 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t fixed_multiply_scalar (fixed_t lh, integral_type rh) noexcept
       {
-      static_assert( is_integral<integral_type>::value,"Must be integral type");
+      static_assert( is_integral<integral_type>{},"Must be integral type");
       fixed_t result { fix_carrier_t{ lh.v * promote_type_to_signed(rh) }};
 
       if( fixed_likely( check_multiply_result(result)) )
@@ -426,9 +432,9 @@ namespace fixedmath
     {
     static_assert( detail::arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                               ,"Arguments must be supported arithmetic types");
-    if constexpr( is_double<supported_type1>::value || is_double<supported_type2>::value )
+    if constexpr( detail::is_double<supported_type1>{} || detail::is_double<supported_type2>{} )
       return detail::promoted_double_multiply( lh, rh );
-    else if constexpr( is_integral<supported_type1>::value || is_integral<supported_type2>::value )
+    else if constexpr( detail::is_integral<supported_type1>{} || detail::is_integral<supported_type2>{} )
       return detail::fixed_multiply_scalar( lh, rh);
     else
       return detail::promoted_fixed_multiply( lh, rh );
@@ -464,6 +470,7 @@ namespace fixedmath
       if( fixed_likely(y.v != 0) )
         {
         fixed_t result { as_fixed( (x << 16).v / y.v ) };
+//         if( fixed_likely( check_division_result(result)) )
           return result;
         }
       return limits__::quiet_NaN(); //abort ?
@@ -495,10 +502,11 @@ namespace fixedmath
     [[ gnu::const, gnu::always_inline ]]
     constexpr fixed_t fixed_division_by_scalar(fixed_t lh, supported_type rh ) noexcept
       {
-      static_assert( is_integral<supported_type>::value );
+      static_assert( is_integral<supported_type>{} );
       if( fixed_likely(rh != 0) )
         {
         fixed_t const result = as_fixed( lh.v / promote_type_to_signed(rh) );
+//         if( fixed_likely( check_division_result(result)) )
           return result;
         }
       return detail::limits__::quiet_NaN(); //abort ?
@@ -511,9 +519,9 @@ namespace fixedmath
     {
     static_assert( detail::arithmetic_and_one_is_fixed<supported_type1,supported_type2>{}
                             ,"Arguments must be supported arithmetic types");
-    if constexpr( is_integral<supported_type2>::value )
+    if constexpr( detail::is_integral<supported_type2>{} )
       return detail::fixed_division_by_scalar( lh, rh );
-    else if constexpr ( is_double<supported_type1>::value || is_double<supported_type2>{} )
+    else if constexpr ( detail::is_double<supported_type1>{} || detail::is_double<supported_type2>{} )
       return detail::promoted_double_division( lh, rh );
     else
       return detail::promoted_fixed_division( lh, rh );
@@ -599,7 +607,7 @@ namespace fixedmath
   [[ nodiscard, gnu::const]]
   inline fixed_t sqrt( fixed_t value ) noexcept
     {
-    fixed_internal result{ static_cast<fixed_internal>( std::sqrt( static_cast<float>(value.v*65536) ) )  };
+    fixed_internal result{ static_cast<fixed_internal>( std::sqrt( static_cast<float>(value.v<<16) ) )  };
     return as_fixed(result);
     }
 #endif
