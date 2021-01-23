@@ -11,7 +11,6 @@ written from scratch fixed point math library in C++17
 * entire code including trigonometry functions is constexpr \[1\]
 * fully header only library as everything is constexpr, see api interface [api](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/fixed_math.hpp) and [implementation](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/math.h)
 * unit tests can be checked at compilation time just including header, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
-* functions that are complement to std math functionality could be optionaly imported to std namespace as overloads for fixed_t type *disabled by default*
 
 
 \[1\] - By default is used std:sqrt as current cpu's has hardware support for sqrt, but constexpr abacus algorithm could be used defining FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO, which is slower than cpu one
