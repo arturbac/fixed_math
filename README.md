@@ -40,6 +40,14 @@ atan | 90ms | 78 ms | 162 ms
 this library is header only except tabelarized trigonometric functions. So If you can use precise trigonometric functions You don't have to build anything.
 Just add fixed_lib/include to include path and #include <fixedmath/fixed_math.hpp>. If you want additional inprecise aproxymated functions compile project like any other ordinary CMake project. At this point it doesn't have any tuning parameters for CMake.
 
+## c++ compilers
+
+Thise are known to compile without errors, if You found any problem with c++17 compiler let me know as stl shoudn't be a problem
+ - clang version 11.0.1 + gcc-libstdc++ 10.2.0 \(main development platform\) on x86-64 and aarch64
+ - clang version 11.0.1 + llvm-libcxx on x86-64
+ - gcc 10.2.0 on x86-64
+ - clang version 10.0.1 x86-64
+ 
 ## usage
 fixed_t is typename of fixed point arithmetic type with common operators like, +, -, * ..
 
