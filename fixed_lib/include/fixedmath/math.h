@@ -168,7 +168,7 @@ namespace fixedmath
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr bool isnan( fixed_t value ) noexcept
     {
-    return abs( value ) == detail::limits__::quiet_NaN();
+    return abs( value ) == quiet_NaN_result();
     }
 
   //------------------------------------------------------------------------------------------------------
@@ -213,12 +213,12 @@ namespace fixedmath
       if( fixed_unlikely(result >= 0_fix) ) 
         {
         if( fixed_unlikely((lh < 0_fix ) && ( rh < 0_fix)) )
-          return -limits__::quiet_NaN();
+          return -quiet_NaN_result();
         }
       else 
         {
         if( fixed_unlikely((lh > 0_fix ) && ( rh > 0_fix )) ) 
-          return limits__::quiet_NaN();
+          return quiet_NaN_result();
         }
       return result;
       }
@@ -298,12 +298,12 @@ namespace fixedmath
       if(fixed_unlikely(result >= 0_fix)) 
         {
         if( fixed_unlikely((lh < 0_fix) && (rh > 0_fix)) ) 
-          return -limits__::quiet_NaN();
+          return -quiet_NaN_result();
         }
       else 
         {
         if( fixed_unlikely((lh > 0_fix) && (rh < 0_fix)) )
-          return limits__::quiet_NaN();
+          return quiet_NaN_result();
         }
 
       return result;
@@ -377,7 +377,7 @@ namespace fixedmath
       if( fixed_likely( check_multiply_result(result)) )
         return fix_carrier_t{ result.v >> 16 };
       
-      return limits__::quiet_NaN();
+      return quiet_NaN_result();
       }
     //double will promote fixed
     template<typename supported_type1, typename supported_type2>
@@ -408,7 +408,7 @@ namespace fixedmath
 
       if( fixed_likely( check_multiply_result(result)) )
         return result;
-      return limits__::quiet_NaN();
+      return quiet_NaN_result();
       }
     template<typename integral_type>
     [[ gnu::const, gnu::always_inline ]]
@@ -466,7 +466,7 @@ namespace fixedmath
 //         if( fixed_likely( check_division_result(result)) )
           return result;
         }
-      return limits__::quiet_NaN(); //abort ?
+      return quiet_NaN_result(); //abort ?
       }
 
     //floats will be promoted
@@ -502,7 +502,7 @@ namespace fixedmath
 //         if( fixed_likely( check_division_result(result)) )
           return result;
         }
-      return detail::limits__::quiet_NaN(); //abort ?
+      return quiet_NaN_result(); //abort ?
       }
     }
     
@@ -544,7 +544,7 @@ namespace fixedmath
     fixed_internal result { (value.v + 0xffff) & ~((1<<16ll)-1) };
     if( value.v < result ) 
       return as_fixed(result);
-    return detail::limits__::quiet_NaN();
+    return quiet_NaN_result();
     }
   
   //------------------------------------------------------------------------------------------------------
@@ -562,7 +562,7 @@ namespace fixedmath
     {
     if( angle >= 0 && angle <= 360 )
       return integral_to_fixed(angle) * fixedmath::phi / 180;
-    return detail::limits__::quiet_NaN(); 
+    return quiet_NaN_result(); 
     }
 
   
@@ -819,7 +819,7 @@ namespace fixedmath
       return as_fixed(res_tan);
        }
     else
-      return detail::limits__::quiet_NaN();
+      return quiet_NaN_result();
     }
     
   //------------------------------------------------------------------------------------------------------
@@ -924,7 +924,7 @@ namespace fixedmath
       else if( y < 0_fix )
         return -fixpidiv2;
       else
-        return detail::limits__::quiet_NaN();
+        return quiet_NaN_result();
       }
     }
 
@@ -990,7 +990,7 @@ namespace fixedmath
         }
       }
     else
-      return detail::limits__::quiet_NaN();
+      return quiet_NaN_result();
     }
   //------------------------------------------------------------------------------------------------------
   // acos |X| <= 1
@@ -1001,7 +1001,7 @@ namespace fixedmath
     if( fixed_likely( x >= -1_fix && x <= 1_fix ) )
       return as_fixed( phi2.v - asin(x).v );
     else
-      return detail::limits__::quiet_NaN();
+      return quiet_NaN_result();
     }
     
   //------------------------------------------------------------------------------------------------------
