@@ -703,11 +703,26 @@ namespace fixedmath
 
     //aprox valid for -phi/2 .. phi/2
     constexpr int prec_ = 16;
-    constexpr fixed_internal one__{ fixed_internal{1}<<prec_};
     fixed_internal x { rad.v };
-    
     fixed_internal x2{ mul_<prec_>(x,x) };
-    fixed_internal result{ mul_<prec_>(x,( one__ - mul_<prec_>(x2,( one__ - mul_<prec_>(x2,( one__-x2/42))/20))/6)) };
+#if 0
+    constexpr fixed_internal one__{ fixed_internal{1}<<prec_};
+    fixed_internal result{ mul_<prec_>(x,( one__ - mul_<prec_+1>(x2,( one__ - mul_<prec_+2>(x2,( one__-x2/42))/5))/3)) };
+#else
+  // reduce number of divisions
+  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 42 } } right ) cdot { 1 over 20 } } right ) { 1 over 6 } } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 2 } { 1 over 21 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over 21 } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
+  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over { 5 cdot 21 } } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
+  // { x left ( { 1 - x ^ 2 { 1 over { 3 cdot 5 cdot 21 } } left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) } 
+  // { x left ( { 3 cdot 5 cdot 21 - x ^ 2 left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) { 1 over { 3 cdot 5 cdot 21 } } } 
+  // { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) :315 } 
+  // { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 42 - x ^ 2 } right ) cdot { 1 over 8 } } right ) { 1 over 2 } } right ) :315 } 
+    constexpr fixed_internal _42{ fixed_internal{42}<<prec_};
+    constexpr fixed_internal _105{ fixed_internal{105}<<prec_};
+    constexpr fixed_internal _315{ fixed_internal{315}<<prec_};
+    fixed_internal result{ mul_<prec_>(x,( _315 - mul_<prec_+1>(x2,( _105 - mul_<prec_+3>(x2,(_42-x2))))))/315 };
+#endif
     return as_fixed(result);
     }
 
