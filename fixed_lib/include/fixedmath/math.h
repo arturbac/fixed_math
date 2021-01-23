@@ -719,9 +719,10 @@ namespace fixedmath
   // { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) :315 } 
   // { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 42 - x ^ 2 } right ) cdot { 1 over 8 } } right ) { 1 over 2 } } right ) :315 } 
     constexpr fixed_internal _42{ fixed_internal{42}<<prec_};
-    constexpr fixed_internal _105{ fixed_internal{105}<<prec_};
+    constexpr fixed_internal _105{ fixed_internal{105}<<(prec_+prec_+3)};
     constexpr fixed_internal _315{ fixed_internal{315}<<prec_};
-    fixed_internal result{ mul_<prec_>(x,( _315 - mul_<prec_+1>(x2,( _105 - mul_<prec_+3>(x2,(_42-x2))))))/315 };
+//     fixed_internal result{ mul_<prec_>(x,( _315 - mul_<prec_+1>(x2,( _105 - mul_<prec_+3>(x2,(_42-x2))))))/315 };
+    fixed_internal result{ mul_<prec_>(x,( _315 - mul_<prec_+1+prec_+3>(x2,( _105 - x2*(_42-x2)))))/315 };
 #endif
     return as_fixed(result);
     }
