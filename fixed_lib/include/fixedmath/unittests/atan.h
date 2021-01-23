@@ -11,7 +11,7 @@ namespace fixedmath
   //
   constexpr bool test_atan( fixed_t x, double expected )
     {
-    return std::abs(atan( x ) - expected ) < 0.000025 && std::abs(atan( -x ) - -expected ) < 0.000025;
+    return ut_abs(atan( x ) - expected ) < 0.000025 && ut_abs(atan( -x ) - -expected ) < 0.000025;
     }
   static_assert( test_atan( 1_fix/16,0.062418809995957));
   static_assert( test_atan( 3_fix/16,0.185347949995695));
@@ -33,7 +33,7 @@ namespace fixedmath
   
   constexpr bool test_atan2( fixed_t y, fixed_t x, double expected )
     {
-    return std::abs(atan2( y,x ) - expected ) < 0.0000253;
+    return ut_abs(atan2( y,x ) - expected ) < 0.0000253;
     }
   static_assert( test_atan2(-1/2_fix,-1/2_fix, -2.3561944901923448 ));
   

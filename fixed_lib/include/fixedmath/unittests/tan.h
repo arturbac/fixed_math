@@ -10,7 +10,7 @@ namespace fixedmath
   //
   constexpr bool test_tan( fixed_t x, double expected )
     {
-    return std::abs(tan( x ) - expected ) < 0.0001 && std::abs(tan( -x ) - -expected ) < 0.0001;
+    return ut_abs(tan( x ) - expected ) < 0.0001 && ut_abs(tan( -x ) - -expected ) < 0.0001;
     }
     
   static_assert(test_tan( phi /2 + phi /32 , -10.155854941143394 ));
