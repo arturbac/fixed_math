@@ -19,22 +19,28 @@ written from scratch fixed point math library in C++17
 At this point code wasn't been optimised, so results are from just from code written with quality only at this point in mind. Results are relative times of computing functions over bigtable of source values in function type (no value convertions)
 
 **Cortex-A73 - Snapdragon 865+**
-tag | function | fixed | float | double | status
-------|-----|-------|-------|--------|----
-0.9.1 | sin | 50 ms | 31 ms | 77 ms
-0.9.4 | sin | 30 ms | 31 ms | 77 ms | optimized
-0.9.1 | asin | 124 ms | 75 ms | 128 ms 
-0.9.1 | tan | 136 ms | 104 ms | 206 ms 
-0.9.1 | atan | 113 ms | 110 ms | 165 ms
+tag | function | fixed clang | fixed gcc | float | double | status
+------|-----|-------|-|------|--------|----
+0.9.1 | sin | 50 ms | | 31 ms | 77 ms
+0.9.4 | sin | 30 ms | 24ms |  31 ms | 77 ms | optimized
+0.9.1 | asin | 124 ms | |  75 ms | 128 ms 
+0.9.4 | asin | 63 ms | 54 ms | 75 ms | 127 ms 
+0.9.1 | tan | 136 ms | |  104 ms | 206 ms 
+0.9.4 | tan | 136 ms | 130 ms |  104 ms | 206 ms 
+0.9.1 | atan | 113 ms | |  110 ms | 165 ms
+0.9.4 | atan | 112 ms | 67 ms | 110 ms | 165 ms
 
 **Ryzen 9 - 3900X**
-tag | function | fixed | float | double | status
-----|-----|-------|-------|------------|------
-0.9.1 | sin | 27 ms | 22 ms | 75 ms |
-0.9.4 | sin | 20 ms | 21 ms | 74 ms | optimized
-0.9.1 | asin | 92 ms | 58 ms | 106 ms |
-0.9.1 | tan | 81 ms | 66 ms | 180 ms |
-0.9.1 | atan | 90 ms | 78 ms | 162 ms |
+tag | function | fixed clang | fixed gcc | float | double | status
+----|-----|-------|-----|--|------------|------
+0.9.1 | sin | 27 ms | | 22 ms | 75 ms |
+0.9.4 | sin | 20 ms | 18ms | 21 ms | 74 ms | optimized
+0.9.1 | asin | 92 ms | | 58 ms | 106 ms |
+0.9.4 | asin | 49 ms | 44 ms| 57 ms | 104 ms |
+0.9.1 | tan | 81 ms | | 66 ms | 180 ms |
+0.9.4 | tan | 78 ms | 88 ms | 67 ms | 176 ms |
+0.9.1 | atan | 90 ms | | 78 ms | 162 ms |
+0.9.4 | atan | 88 ms | 58ms | 77 ms | 161 ms |
 
 ## installation
 
