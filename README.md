@@ -27,7 +27,7 @@ tag | function | fixed | float | double | status
 0.9.1 | tan | 136 ms | 104 ms | 206 ms 
 0.9.1 | atan | 113 ms | 110 ms | 165 ms
 
-**Ryzen 9 - 3500X**
+**Ryzen 9 - 3900X**
 tag | function | fixed | float | double | status
 ----|-----|-------|-------|------------|------
 0.9.1 | sin | 27 ms | 22 ms | 75 ms |
