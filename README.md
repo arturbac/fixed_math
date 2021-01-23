@@ -46,7 +46,7 @@ Thise are known to compile without errors, if You found any problem with c++17 c
  - clang version 11.0.1 + gcc-libstdc++ 10.2.0 \(main development platform\) on x86-64 and aarch64
  - clang version 11.0.1 + llvm-libcxx on x86-64
  - gcc 10.2.0 on x86-64
- - clang version 10.0.1 x86-64
+ - clang version 10.0.1 x86-64 + gcc-libstdc++ 10.2.0
  
 ## usage
 fixed_t is typename of fixed point arithmetic type with common operators like, +, -, * ..
