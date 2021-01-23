@@ -42,7 +42,7 @@ Just add fixed_lib/include to include path and #include <fixedmath/fixed_math.hp
 
 ## c++ compilers
 
-Thise are known to compile without errors, if You found any problem with c++17 compiler let me know as stl shoudn't be a problem
+Thise are known to compile without errors, if You found any problem with c++17 compiler let me know and post issue as stl shoudn't be a problem
  - clang version 11.0.1 + gcc-libstdc++ 10.2.0 \(main development platform\) on x86-64 and aarch64
  - clang version 11.0.1 + llvm-libcxx on x86-64
  - gcc 10.2.0 on x86-64
@@ -98,19 +98,21 @@ or run them wit CMake/CTest "ninja/make test" as they are available in default C
 - [x] sqrt - abacus algorithm using CLZ ( CLZ is available on x86 and >=armv6, aarch64)  error ~<= 0.000015
 - [x] hypot - with normalization to suitable range, to avoid overflow and underflow
 - [x] sin, cos - error ~<= 0.0001
-- [    ] tan - error on normalized range |x| <= PI/4 ~<= 0.0001, PI/4 |x| <= PI/2 ~<=0.001 exept near 90deg ~<= 0.01
+- [x] tan - error on normalized range |x| <= PI/4 ~<= 0.0001, PI/4 |x| <= PI/2 ~<=0.001 exept near 90deg ~<= 0.01
 - [x] tan - improve calculations, limit tan__ to |x|<=pi/4
 - [x] atan, atan2 - error  ~<= 0.000035
 - [x] asin error  ~<= 0.0001
 - [    ] remove all old compat code that is compiled
 - [    ] cover all functionality with static_assert unit tests
-- [x] support clang/gcc c++17 compiler
+- [x] support clang, gcc c++17 compilers
 - [    ] support msvc c++17 compiler
+- [x] performance comparisions on arm64 and x86 with float/double arithemetic
+- [    ] dual licence project with MIT and BOOST licence
 
 ## future goals
 
-- [    ] more math functionality
-- [    ] performance comparisions on arm64 and x86 with float/double arithemetic
+- [    ] more math functionality, if somthing is missing in library that You need post issue and let me know about that.
+
 - [    ] more optimisations, calculation quality enchacments
 
 ## Feedback
