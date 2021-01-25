@@ -842,16 +842,14 @@ namespace fixedmath
   // atan
   // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
   //  { x - { x ^ 3 over 3 } + { x ^ 5 over 5 } - { x ^ 7 over 7 } + { x ^ 9 over 9 } - { x ^ 11 over 11 } } 
-  // { x left ( { 1 - { x ^ 2 over 3 } + { x ^ 4 over 5 } - { x ^ 6 over 7 } + { x ^ 8 over 9 } - { x ^ 10 over 11 } } right ) } 
-  // { x left ( { 1 + x ^ 2 left ( { - 1 + { { 3 x ^ 2 } over 5 } - { { 3 x ^ 4 } over 7 } + { x ^ 6 over 3 } - { { 3 x ^ 8 } over 11 } } right ) :3 } right ) } 
-  // { x left ( { 1 + x ^ 2 left ( { - 1 + x ^ 2 left ( { 3 + x ^ 2 left ( { - 15 + { { 7 cdot 5 x ^ 2 } over 3 } - { { 7 cdot 5 cdot 3 x ^ 4 } over 11 } } right ) :7 } right ) :5 } right ) :3 } right ) } 
-  // { x left ( { 1 + x ^ 2 left ( { - 1 + x ^ 2 left ( { 3 + x ^ 2 left ( { - 15 + x ^ 2 left ( { 35 - { { 315 x ^ 2 } over 11 } } right ) :3 } right ) :7 } right ) :5 } right ) :3 } right ) } 
+  // { { 1 over 11 } x left ( { 11 + x ^ 2 left ( { - { 11 over 3 }  + x ^ 2 left ( { { 11 over 5 } + x ^ 2 left ( { - { 11 over 7 } + x ^ 2 left ( { { 11 over 9 } - x ^ 2 } right ) } right ) } right ) } right ) } right ) } 
   namespace detail
     {
+#if 0
+    template<int prec_>
     [[ nodiscard,gnu::const, gnu::always_inline ]]
-    constexpr fixed_internal atan__( fixed_internal x ) noexcept
+    constexpr fixed_internal atan( fixed_internal x ) noexcept
       {
-      constexpr int prec_ = 16;
       //this has less error
       fixed_internal x2 { mul_<prec_>(x, x) };
       fixed_internal x3 { mul_<prec_>(x2, x) };
@@ -861,28 +859,49 @@ namespace fixedmath
       fixed_internal x11 { mul_<prec_>(x9, x2) };
       
       return x - x3/3 + x5/5 - x7/7 + x9/9 - x11/11;
+      }
+#else
+    //t=x*x
+    //1/11*x(11+t(-11/3+t(11/5+t(-11/7+t(11/9-t)))))
+    template<int prec_>
+    constexpr fixed_internal atan( fixed_internal x )
+      {
+      fixed_internal const t { mul_<prec_>(x,x)};
+      constexpr fixed_internal _11o9{ fix_<prec_>(11)/9 };
+      constexpr fixed_internal _11o7{ fix_<prec_>(11)/7 };
+      constexpr fixed_internal _11o5{ fix_<prec_>(11)/5 };
+      constexpr fixed_internal _11o3{ fix_<prec_>(11)/3 };
+      constexpr fixed_internal _11{ fix_<prec_>(11) };
       
-  //     fixed_internal y0{ fix_<prec_>(35)-315*x2/11};
-  //     fixed_internal y1{ fix_<prec_>(-15) + mul_<prec_>(x2,y0)/3 };
-  //     fixed_internal y2{ fix_<prec_>(3) + mul_<prec_>(x2,y1)/7 };
-  //     fixed_internal y3{ -one_+ mul_<prec_>(x2,y2)/5 };
-  //     fixed_internal y4{ one_+ mul_<prec_>(x2,y3)/3 };
-  //     return mul_<prec_>(x,y4);
+      fixed_internal y{ _11o9 - t };
+      y = -_11o7 + mul_<prec_>(t, y);
+      y =  _11o5 + mul_<prec_>(t, y);
+      y = -_11o3 + mul_<prec_>(t, y);
+      y =  _11 + mul_<prec_>(t, y);
+      return mul_<prec_>(x, y) / 11;
+      }
+#endif
+
+    //arctan (x) = arctan(c) + arctan((x - c) / (1 + x*c))
+    template<int prec_, fixed_internal atanc, fixed_internal c>
+    constexpr fixed_internal atan_sum( fixed_internal x )
+      {
+      constexpr fixed_internal one_{fix_<prec_>(1) };
+      return atanc + atan<prec_>( div_<prec_>(x - c, one_ + mul_<prec_>(x,c)) );
       }
     } 
     
   [[ nodiscard, gnu::const ]]
-  constexpr fixed_t atan( fixed_t rad ) noexcept
+  constexpr fixed_t atan( fixed_t value ) noexcept
     {
-    using detail::fix_;
-    using detail::atan__;
-    using detail::div_;
-    using detail::mul_;
+    using detail::atan;
+    using detail::atan_sum;
     //     arctan (-x) = -arctan(x)
     //     arctan (1/x) = 0.5 * pi - arctan(x) [x > 0]
     //     arctan (x) = arctan(c) + arctan((x - c) / (1 + x*c))
     //     arctan(x)' = 1/ (1+x^2)
     constexpr int prec_ = 16;
+    
     constexpr fixed_internal _7o16{ 28672 }; // 7/16
     constexpr fixed_internal atan_7o16 { 27028 }; // 27027,7307005264
 
@@ -894,10 +913,8 @@ namespace fixedmath
     
     constexpr fixed_internal _39o16 { 159744 }; // 19/16
     constexpr fixed_internal atan_39o16 { 77429 }; //77429,4473907736
-    
-    constexpr fixed_internal one_{fix_<prec_>(1) };
 
-    fixed_internal x { rad.v };
+    fixed_internal x { value.v };
     bool sign_ {};
     if( x < 0 )
       {
@@ -906,15 +923,15 @@ namespace fixedmath
       }
     fixed_internal result{};
     if( x < _7o16 ) 
-      result = atan__( x );
+      result = atan<prec_>( x );
     else if( x < _11o16 )
-      result = atan_7o16 + atan__( div_<prec_>(x - _7o16, one_ + mul_<prec_>(x,_7o16)) );
+      result = atan_sum<prec_, atan_7o16, _7o16>( x );
     else if( x < _19o16 )
-      result = atan_11o16 + atan__( div_<prec_>(x - _11o16,one_ + mul_<prec_>(x,_11o16)) );
+      result = atan_sum<prec_, atan_11o16, _11o16>( x );
     else if( x < _39o16 )
-      result = atan_19o16 + atan__( div_<prec_>(x - _19o16,one_ + mul_<prec_>(x,_19o16)) );
+      result = atan_sum<prec_, atan_19o16, _19o16>( x );
     else
-      result = atan_39o16 + atan__( div_<prec_>(x - _39o16,one_ + mul_<prec_>(x,_39o16)) );
+      result = atan_sum<prec_, atan_39o16, _39o16>( x );
     
     if( !sign_)
       return as_fixed(result);

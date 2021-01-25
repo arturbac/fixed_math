@@ -1,21 +1,21 @@
 Iterations:        1
-Instructions:      301
-Total Cycles:      426
-Total uOps:        301
+Instructions:      181
+Total Cycles:      315
+Total uOps:        181
 
 Dispatch Width:    3
-uOps Per Cycle:    0.71
-IPC:               0.71
-Block RThroughput: 228.0
+uOps Per Cycle:    0.57
+IPC:               0.57
+Block RThroughput: 203.0
 
 
-Cycles with backend pressure increase [ 17.84% ]
+Cycles with backend pressure increase [ 15.87% ]
 Throughput Bottlenecks: 
-  Resource Pressure       [ 3.05% ]
-  - A57UnitI  [ 0.47% ]
-  - A57UnitM  [ 2.58% ]
-  Data Dependencies:      [ 17.61% ]
-  - Register Dependencies [ 17.61% ]
+  Resource Pressure       [ 11.43% ]
+  - A57UnitI  [ 1.59% ]
+  - A57UnitM  [ 9.84% ]
+  Data Dependencies:      [ 8.89% ]
+  - Register Dependencies [ 8.89% ]
   - Memory Dependencies   [ 0.00% ]
 
 Critical sequence based on the simulation:
@@ -23,305 +23,185 @@ Critical sequence based on the simulation:
               Instruction                                 Dependency Information
         0.    b	_ZN9fixedmath4atanENS_7fixed_tE
         1.    cmp	x0, #0
-        2.    cneg	x8, x0, mi
-        3.    cmp	x8, #7, lsl #12
-        4.    b.ge	.LBB1_2
-        5.    mul	x9, x0, x0
-        6.    lsr	x9, x9, #16
-        7.    mul	x13, x9, x8
-        8.    mov	x10, #6148914691236517205
-        9.    lsr	x13, x13, #16
-        10.   mov	x11, #-3689348814741910324
-        11.   smulh	x10, x13, x10
-        12.   movk	x11, #52429
-        13.   mov	x12, #46811
-        14.   sub	x10, x10, x13
-        15.   mul	x13, x13, x9
-        16.   movk	x12, #56173, lsl #16
-        17.   umulh	x11, x13, x11
-        18.   lsr	x13, x13, #16
-        19.   movk	x12, #28086, lsl #32
-        20.   asr	x14, x10, #1
-        21.   mul	x13, x13, x9
-        22.   movk	x12, #46811, lsl #48
-        23.   add	x10, x14, x10, lsr #63
-        24.   mov	x14, #58255
-        25.   lsr	x13, x13, #16
-        26.   movk	x14, #36408, lsl #16
-        27.   add	x8, x10, x8
-        28.   mov	x10, #29789
-        29.   smulh	x12, x13, x12
-        30.   mul	x13, x13, x9
-        31.   movk	x14, #14563, lsl #32
-        32.   movk	x10, #17873, lsl #16
-        33.   add	x8, x8, x11, lsr #18
-        34.   lsr	x11, x13, #16
-        35.   movk	x14, #58254, lsl #48
- +----< 36.   movk	x10, #23831, lsl #32
- |      37.   mul	x9, x11, x9
- +----> 38.   movk	x10, #53620, lsl #48              ## REGISTER dependency:  x10
- |      39.   umulh	x13, x13, x14
- |      40.   asr	x14, x12, #1
- |      41.   lsr	x9, x9, #16
- |      42.   add	x11, x14, x12, lsr #63
- +----> 43.   smulh	x9, x9, x10                       ## REGISTER dependency:  x10
- |      44.   add	x8, x8, x11
- |      45.   asr	x10, x9, #1
- |      46.   add	x8, x8, x13, lsr #19
- +----> 47.   add	x9, x10, x9, lsr #63              ## REGISTER dependency:  x9
- +----> 48.   add	x8, x8, x9                        ## REGISTER dependency:  x9
- |      49.   cmp	x0, #0
- |      50.   cneg	x0, x8, lt
- |      51.   ret
- +----> 52.   cmp	x8, #11, lsl #12                  ## REGISTER dependency:  x8
- |      53.   b.ge	.LBB1_4
- |      54.   mov	w9, #28672
- |      55.   mov	x10, #-65536
- |      56.   mul	x9, x8, x9
- |      57.   movk	x10, #36864, lsl #16
- |      58.   lsr	x9, x9, #16
- |      59.   add	x8, x10, x8, lsl #16
- |      60.   add	x9, x9, #16, lsl #12
- |      61.   sdiv	x8, x8, x9
- |      62.   mul	x9, x8, x8
- |      63.   lsr	x9, x9, #16
- |      64.   mul	x10, x9, x8
- |      65.   mov	x11, #6148914691236517205
- |      66.   asr	x10, x10, #16
- |      67.   mov	x12, #7378697629483820646
- |      68.   mov	x13, #46811
- |      69.   mul	x14, x10, x9
- |      70.   smulh	x11, x10, x11
- |      71.   movk	x12, #26215
- |      72.   movk	x13, #56173, lsl #16
- |      73.   asr	x14, x14, #16
- |      74.   sub	x10, x11, x10
- |      75.   movk	x13, #28086, lsl #32
- |      76.   asr	x11, x10, #1
- |      77.   smulh	x12, x14, x12
- |      78.   mul	x14, x14, x9
- |      79.   movk	x13, #46811, lsl #48
- |      80.   add	x10, x11, x10, lsr #63
- |      81.   asr	x11, x12, #1
- |      82.   asr	x14, x14, #16
- |      83.   add	x11, x11, x12, lsr #63
- |      84.   mov	x12, #7282
- |      85.   add	x8, x8, x10
- |      86.   mov	x10, #29789
- |      87.   smulh	x13, x14, x13
- |      88.   mul	x14, x14, x9
- |      89.   movk	x12, #29127, lsl #16
- |      90.   movk	x10, #17873, lsl #16
- |      91.   asr	x14, x14, #16
- |      92.   movk	x12, #50972, lsl #32
- |      93.   movk	x10, #23831, lsl #32
- +----> 94.   mul	x9, x14, x9                       ## REGISTER dependency:  xzr
- |      95.   movk	x12, #7281, lsl #48
- |      96.   movk	x10, #53620, lsl #48
- |      97.   add	x8, x8, x11
- |      98.   asr	x11, x13, #1
- +----> 99.   asr	x9, x9, #16                       ## REGISTER dependency:  x9
- |      100.  add	x11, x11, x13, lsr #63
- |      101.  smulh	x12, x14, x12
- +----> 102.  smulh	x9, x9, x10                       ## REGISTER dependency:  x9
- |      103.  add	x12, x12, x12, lsr #63
- |      104.  add	x8, x8, x11
- |      105.  asr	x10, x9, #1
- |      106.  add	x8, x8, x12
- +----> 107.  add	x9, x10, x9, lsr #63              ## REGISTER dependency:  x9
- |      108.  add	x8, x8, x9
- |      109.  mov	w9, #27028
- +----> 110.  add	x8, x8, x9                        ## REGISTER dependency:  x9
- |      111.  cmp	x0, #0
- |      112.  cneg	x0, x8, lt
- |      113.  ret
- +----> 114.  cmp	x8, #19, lsl #12                  ## REGISTER dependency:  x8
- |      115.  b.ge	.LBB1_6
- |      116.  mov	w9, #45056
- |      117.  mov	x10, #-65536
- |      118.  mul	x9, x8, x9
- |      119.  movk	x10, #20480, lsl #16
- |      120.  lsr	x9, x9, #16
- |      121.  add	x8, x10, x8, lsl #16
- |      122.  add	x9, x9, #16, lsl #12
- |      123.  sdiv	x8, x8, x9
- |      124.  mul	x9, x8, x8
- |      125.  lsr	x9, x9, #16
- |      126.  mul	x10, x9, x8
- |      127.  mov	x11, #6148914691236517205
- |      128.  asr	x10, x10, #16
- +----> 129.  mov	x12, #7378697629483820646         ## REGISTER dependency:  xzr
- |      130.  mov	x13, #46811
- |      131.  mul	x14, x10, x9
- |      132.  smulh	x11, x10, x11
- +----> 133.  movk	x12, #26215                       ## REGISTER dependency:  x12
- |      134.  movk	x13, #56173, lsl #16
- |      135.  asr	x14, x14, #16
- |      136.  sub	x10, x11, x10
- |      137.  movk	x13, #28086, lsl #32
- |      138.  asr	x11, x10, #1
- +----> 139.  smulh	x12, x14, x12                     ## REGISTER dependency:  x12
- +----> 140.  mul	x14, x14, x9                      ## RESOURCE interference:  A57UnitM [ probability: 100% ]
- |      141.  movk	x13, #46811, lsl #48
- |      142.  add	x10, x11, x10, lsr #63
- |      143.  asr	x11, x12, #1
- +----> 144.  asr	x14, x14, #16                     ## REGISTER dependency:  x14
- |      145.  add	x11, x11, x12, lsr #63
- |      146.  mov	x12, #7282
- |      147.  add	x8, x8, x10
- |      148.  mov	x10, #29789
- +----> 149.  smulh	x13, x14, x13                     ## REGISTER dependency:  x14
- |      150.  mul	x14, x14, x9
- |      151.  movk	x12, #29127, lsl #16
- |      152.  movk	x10, #17873, lsl #16
- |      153.  asr	x14, x14, #16
- |      154.  movk	x12, #50972, lsl #32
- |      155.  movk	x10, #23831, lsl #32
- |      156.  mul	x9, x14, x9
- |      157.  movk	x12, #7281, lsl #48
- |      158.  movk	x10, #53620, lsl #48
- |      159.  add	x8, x8, x11
- |      160.  asr	x11, x13, #1
- |      161.  asr	x9, x9, #16
- +----> 162.  add	x11, x11, x13, lsr #63            ## REGISTER dependency:  x13
- +----> 163.  smulh	x12, x14, x12                     ## RESOURCE interference:  A57UnitM [ probability: 100% ]
- |      164.  smulh	x9, x9, x10
- +----> 165.  add	x12, x12, x12, lsr #63            ## REGISTER dependency:  x12
- |      166.  add	x8, x8, x11
- |      167.  asr	x10, x9, #1
- +----> 168.  add	x8, x8, x12                       ## REGISTER dependency:  x12
-        169.  add	x9, x10, x9, lsr #63
-        170.  add	x8, x8, x9
-        171.  mov	w9, #39472
-        172.  add	x8, x8, x9
-        173.  cmp	x0, #0
-        174.  cneg	x0, x8, lt
-        175.  ret
-        176.  mov	w9, #12288
-        177.  cmp	x8, #39, lsl #12
-        178.  movk	w9, #1, lsl #16
-        179.  b.ge	.LBB1_8
-        180.  mul	x9, x8, x9
-        181.  mov	x10, #-8589934592
-        182.  movk	x10, #53248, lsl #16
-        183.  lsr	x9, x9, #16
-        184.  add	x8, x10, x8, lsl #16
-        185.  add	x9, x9, #16, lsl #12
-        186.  sdiv	x8, x8, x9
-        187.  mul	x9, x8, x8
-        188.  lsr	x9, x9, #16
-        189.  mul	x10, x9, x8
-        190.  mov	x11, #6148914691236517205
-        191.  asr	x10, x10, #16
-        192.  mov	x12, #7378697629483820646
-        193.  mov	x13, #46811
-        194.  mul	x14, x10, x9
-        195.  smulh	x11, x10, x11
-        196.  movk	x12, #26215
-        197.  movk	x13, #56173, lsl #16
-        198.  asr	x14, x14, #16
-        199.  sub	x10, x11, x10
-        200.  movk	x13, #28086, lsl #32
-        201.  asr	x11, x10, #1
-        202.  smulh	x12, x14, x12
-        203.  mul	x14, x14, x9
-        204.  movk	x13, #46811, lsl #48
-        205.  add	x10, x11, x10, lsr #63
-        206.  asr	x11, x12, #1
-        207.  asr	x14, x14, #16
-        208.  add	x11, x11, x12, lsr #63
-        209.  mov	x12, #7282
-        210.  add	x8, x8, x10
-        211.  mov	x10, #29789
-        212.  smulh	x13, x14, x13
-        213.  mul	x14, x14, x9
-        214.  movk	x12, #29127, lsl #16
-        215.  movk	x10, #17873, lsl #16
-        216.  asr	x14, x14, #16
-        217.  movk	x12, #50972, lsl #32
-        218.  movk	x10, #23831, lsl #32
-        219.  mul	x9, x14, x9
-        220.  movk	x12, #7281, lsl #48
-        221.  movk	x10, #53620, lsl #48
-        222.  add	x8, x8, x11
-        223.  asr	x11, x13, #1
-        224.  asr	x9, x9, #16
-        225.  add	x11, x11, x13, lsr #63
-        226.  smulh	x12, x14, x12
-        227.  smulh	x9, x9, x10
-        228.  add	x12, x12, x12, lsr #63
-        229.  add	x8, x8, x11
-        230.  asr	x10, x9, #1
-        231.  add	x8, x8, x12
-        232.  add	x9, x10, x9, lsr #63
-        233.  add	x8, x8, x9
-        234.  mov	w9, #57076
-        235.  add	x8, x8, x9
-        236.  cmp	x0, #0
-        237.  cneg	x0, x8, lt
-        238.  ret
-        239.  mov	w10, #28672
-        240.  movk	w10, #2, lsl #16
-        241.  mov	x11, #2415919104
-        242.  movk	x11, #65533, lsl #32
-        243.  mul	x10, x8, x10
-        244.  movk	x11, #65535, lsl #48
-        245.  lsr	x10, x10, #16
-        246.  add	x8, x11, x8, lsl #16
-        247.  add	x10, x10, #16, lsl #12
-        248.  sdiv	x8, x8, x10
-        249.  mul	x10, x8, x8
-        250.  lsr	x10, x10, #16
-        251.  add	x9, x9, x8
-        252.  mul	x8, x10, x8
-        253.  mov	x12, #6148914691236517205
-        254.  asr	x8, x8, #16
-        255.  mov	x13, #7378697629483820646
-        256.  mov	x14, #46811
-        257.  mul	x11, x8, x10
-        258.  smulh	x12, x8, x12
-        259.  movk	x13, #26215
-        260.  movk	x14, #56173, lsl #16
-        261.  asr	x11, x11, #16
-        262.  sub	x8, x12, x8
-        263.  movk	x14, #28086, lsl #32
-        264.  asr	x12, x8, #1
-        265.  smulh	x13, x11, x13
-        266.  mul	x11, x11, x10
-        267.  movk	x14, #46811, lsl #48
-        268.  add	x8, x12, x8, lsr #63
-        269.  asr	x12, x13, #1
-        270.  asr	x11, x11, #16
-        271.  mov	x15, #7282
-        272.  add	x12, x12, x13, lsr #63
-        273.  mov	x13, #29789
-        274.  smulh	x14, x11, x14
-        275.  mul	x11, x11, x10
-        276.  movk	x15, #29127, lsl #16
-        277.  movk	x13, #17873, lsl #16
-        278.  add	x8, x9, x8
-        279.  asr	x9, x11, #16
-        280.  movk	x15, #50972, lsl #32
-        281.  movk	x13, #23831, lsl #32
-        282.  mul	x10, x9, x10
-        283.  movk	x15, #7281, lsl #48
-        284.  movk	x13, #53620, lsl #48
-        285.  asr	x11, x14, #1
-        286.  asr	x10, x10, #16
-        287.  add	x8, x8, x12
-        288.  add	x11, x11, x14, lsr #63
-        289.  smulh	x9, x9, x15
-        290.  smulh	x10, x10, x13
-        291.  add	x9, x9, x9, lsr #63
-        292.  add	x8, x8, x11
-        293.  asr	x11, x10, #1
-        294.  add	x10, x11, x10, lsr #63
-        295.  add	x8, x8, x9
-        296.  add	x8, x8, x10
-        297.  sub	x8, x8, #395
-        298.  cmp	x0, #0
-        299.  cneg	x0, x8, lt
-        300.  ret
+        2.    mov	x11, #-37449
+        3.    mov	x8, #-43690
+        4.    mov	w9, #13107
+        5.    cneg	x12, x0, mi
+        6.    mov	w10, #14563
+        7.    movk	x11, #65534, lsl #16
+        8.    movk	x8, #65532, lsl #16
+        9.    movk	w9, #2, lsl #16
+        10.   cmp	x12, #7, lsl #12
+        11.   movk	w10, #1, lsl #16
+        12.   b.ge	.LBB1_2
+        13.   mul	x13, x0, x0
+        14.   lsr	x13, x13, #16
+        15.   sub	x10, x10, x13
+        16.   mul	x10, x10, x13
+        17.   add	x10, x11, x10, asr #16
+        18.   mul	x10, x10, x13
+        19.   add	x9, x9, x10, asr #16
+        20.   mul	x9, x9, x13
+        21.   add	x8, x8, x9, asr #16
+        22.   mul	x8, x8, x13
+        23.   asr	x8, x8, #16
+        24.   mov	x9, #35747
+        25.   add	x8, x8, #176, lsl #12
+        26.   movk	x9, #47662, lsl #16
+        27.   mul	x8, x8, x12
+        28.   movk	x9, #41704, lsl #32
+        29.   asr	x8, x8, #16
+        30.   movk	x9, #11915, lsl #48
+        31.   smulh	x8, x8, x9
+        32.   asr	x9, x8, #1
+        33.   add	x8, x9, x8, lsr #63
+        34.   cmp	x0, #0
+        35.   cneg	x0, x8, lt
+        36.   ret
+ +----< 37.   cmp	x12, #11, lsl #12
+ |      38.   b.ge	.LBB1_4
+ |      39.   mov	w13, #28672
+ |      40.   mov	x14, #-65536
+ +----> 41.   mul	x13, x12, x13                     ## REGISTER dependency:  xzr
+ |      42.   movk	x14, #36864, lsl #16
+ +----> 43.   lsr	x13, x13, #16                     ## REGISTER dependency:  x13
+ |      44.   add	x12, x14, x12, lsl #16
+ +----> 45.   add	x13, x13, #16, lsl #12            ## REGISTER dependency:  x13
+ +----> 46.   sdiv	x12, x12, x13                     ## REGISTER dependency:  x13
+ +----> 47.   mul	x13, x12, x12                     ## REGISTER dependency:  x12
+ +----> 48.   lsr	x13, x13, #16                     ## REGISTER dependency:  x13
+ |      49.   sub	x10, x10, x13
+ |      50.   mul	x10, x10, x13
+ |      51.   add	x10, x11, x10, asr #16
+ +----> 52.   mul	x10, x10, x13                     ## REGISTER dependency:  x13
+ |      53.   add	x9, x9, x10, asr #16
+ |      54.   mul	x9, x9, x13
+ |      55.   add	x8, x8, x9, asr #16
+ |      56.   mul	x8, x8, x13
+ |      57.   mov	x14, #35747
+ |      58.   asr	x8, x8, #16
+ |      59.   movk	x14, #47662, lsl #16
+ |      60.   add	x8, x8, #176, lsl #12
+ |      61.   movk	x14, #41704, lsl #32
+ |      62.   mul	x8, x8, x12
+ |      63.   movk	x14, #11915, lsl #48
+ |      64.   asr	x8, x8, #16
+ |      65.   smulh	x8, x8, x14
+ |      66.   asr	x9, x8, #1
+ |      67.   add	x8, x9, x8, lsr #63
+ |      68.   mov	w9, #27028
+ |      69.   add	x8, x8, x9
+ |      70.   cmp	x0, #0
+ |      71.   cneg	x0, x8, lt
+ |      72.   ret
+ +----> 73.   sub	x13, x10, #2275                   ## REGISTER dependency:  x10
+ +----> 74.   cmp	x12, x13                          ## REGISTER dependency:  x13
+ |      75.   b.ge	.LBB1_6
+ |      76.   mov	w13, #45056
+ |      77.   mov	x14, #-65536
+ +----> 78.   mul	x13, x12, x13                     ## REGISTER dependency:  xzr
+ |      79.   movk	x14, #20480, lsl #16
+ +----> 80.   lsr	x13, x13, #16                     ## REGISTER dependency:  x13
+ |      81.   add	x12, x14, x12, lsl #16
+ +----> 82.   add	x13, x13, #16, lsl #12            ## REGISTER dependency:  x13
+ +----> 83.   sdiv	x12, x12, x13                     ## REGISTER dependency:  x13
+        84.   mul	x13, x12, x12
+        85.   lsr	x13, x13, #16
+        86.   sub	x10, x10, x13
+        87.   mul	x10, x10, x13
+        88.   add	x10, x11, x10, asr #16
+        89.   mul	x10, x10, x13
+        90.   add	x9, x9, x10, asr #16
+        91.   mul	x9, x9, x13
+        92.   add	x8, x8, x9, asr #16
+        93.   mul	x8, x8, x13
+        94.   mov	x14, #35747
+        95.   asr	x8, x8, #16
+        96.   movk	x14, #47662, lsl #16
+        97.   add	x8, x8, #176, lsl #12
+        98.   movk	x14, #41704, lsl #32
+        99.   mul	x8, x8, x12
+        100.  movk	x14, #11915, lsl #48
+        101.  asr	x8, x8, #16
+        102.  smulh	x8, x8, x14
+        103.  asr	x9, x8, #1
+        104.  add	x8, x9, x8, lsr #63
+        105.  mov	w9, #39472
+        106.  add	x8, x8, x9
+        107.  cmp	x0, #0
+        108.  cneg	x0, x8, lt
+        109.  ret
+        110.  cmp	x12, #39, lsl #12
+        111.  b.ge	.LBB1_8
+        112.  mul	x13, x12, x13
+        113.  mov	x14, #-8589934592
+        114.  movk	x14, #53248, lsl #16
+        115.  lsr	x13, x13, #16
+        116.  add	x12, x14, x12, lsl #16
+        117.  add	x13, x13, #16, lsl #12
+        118.  sdiv	x12, x12, x13
+        119.  mul	x13, x12, x12
+        120.  lsr	x13, x13, #16
+        121.  sub	x10, x10, x13
+        122.  mul	x10, x10, x13
+        123.  add	x10, x11, x10, asr #16
+        124.  mul	x10, x10, x13
+        125.  add	x9, x9, x10, asr #16
+        126.  mul	x9, x9, x13
+        127.  add	x8, x8, x9, asr #16
+        128.  mul	x8, x8, x13
+        129.  mov	x14, #35747
+        130.  asr	x8, x8, #16
+        131.  movk	x14, #47662, lsl #16
+        132.  add	x8, x8, #176, lsl #12
+        133.  movk	x14, #41704, lsl #32
+        134.  mul	x8, x8, x12
+        135.  movk	x14, #11915, lsl #48
+        136.  asr	x8, x8, #16
+        137.  smulh	x8, x8, x14
+        138.  asr	x9, x8, #1
+        139.  add	x8, x9, x8, lsr #63
+        140.  mov	w9, #57076
+        141.  add	x8, x8, x9
+        142.  cmp	x0, #0
+        143.  cneg	x0, x8, lt
+        144.  ret
+        145.  mov	w13, #28672
+        146.  movk	w13, #2, lsl #16
+        147.  mov	x14, #2415919104
+        148.  movk	x14, #65533, lsl #32
+        149.  mul	x13, x12, x13
+        150.  movk	x14, #65535, lsl #48
+        151.  lsr	x13, x13, #16
+        152.  add	x12, x14, x12, lsl #16
+        153.  add	x13, x13, #16, lsl #12
+        154.  sdiv	x12, x12, x13
+        155.  mul	x13, x12, x12
+        156.  lsr	x13, x13, #16
+        157.  sub	x14, x10, x13
+        158.  mul	x14, x14, x13
+        159.  add	x11, x11, x14, asr #16
+        160.  mul	x11, x11, x13
+        161.  add	x9, x9, x11, asr #16
+        162.  mul	x9, x9, x13
+        163.  add	x8, x8, x9, asr #16
+        164.  mul	x8, x8, x13
+        165.  asr	x8, x8, #16
+        166.  mov	x9, #35747
+        167.  add	x8, x8, #176, lsl #12
+        168.  movk	x9, #47662, lsl #16
+        169.  mul	x8, x8, x12
+        170.  movk	x9, #41704, lsl #32
+        171.  asr	x8, x8, #16
+        172.  movk	x9, #11915, lsl #48
+        173.  smulh	x8, x8, x9
+        174.  asr	x9, x8, #1
+        175.  add	x8, x9, x8, lsr #63
+        176.  add	x8, x10, x8
+        177.  sub	x8, x8, #2670
+        178.  cmp	x0, #0
+        179.  cneg	x0, x8, lt
+        180.  ret
 
 
 Instruction Info:
@@ -335,302 +215,182 @@ Instruction Info:
 [1]    [2]    [3]    [4]    [5]    [6]    Instructions:
  1      1     1.00                        b	_ZN9fixedmath4atanENS_7fixed_tE
  1      1     0.50                        cmp	x0, #0
- 1      1     0.50                        cneg	x8, x0, mi
- 1      1     0.50                        cmp	x8, #7, lsl #12
+ 1      1     0.50                        mov	x11, #-37449
+ 1      1     0.50                        mov	x8, #-43690
+ 1      1     0.50                        mov	w9, #13107
+ 1      1     0.50                        cneg	x12, x0, mi
+ 1      1     0.50                        mov	w10, #14563
+ 1      1     0.50                        movk	x11, #65534, lsl #16
+ 1      1     0.50                        movk	x8, #65532, lsl #16
+ 1      1     0.50                        movk	w9, #2, lsl #16
+ 1      1     0.50                        cmp	x12, #7, lsl #12
+ 1      1     0.50                        movk	w10, #1, lsl #16
  1      1     1.00                        b.ge	.LBB1_2
- 1      5     1.00                        mul	x9, x0, x0
- 1      1     0.50                        lsr	x9, x9, #16
- 1      5     1.00                        mul	x13, x9, x8
- 1      1     0.50                        mov	x10, #6148914691236517205
+ 1      5     1.00                        mul	x13, x0, x0
  1      1     0.50                        lsr	x13, x13, #16
- 1      1     0.50                        mov	x11, #-3689348814741910324
- 1      6     1.00                        smulh	x10, x13, x10
- 1      1     0.50                        movk	x11, #52429
- 1      1     0.50                        mov	x12, #46811
  1      1     0.50                        sub	x10, x10, x13
- 1      5     1.00                        mul	x13, x13, x9
- 1      1     0.50                        movk	x12, #56173, lsl #16
- 1      6     1.00                        umulh	x11, x13, x11
- 1      1     0.50                        lsr	x13, x13, #16
- 1      1     0.50                        movk	x12, #28086, lsl #32
- 1      1     0.50                        asr	x14, x10, #1
- 1      5     1.00                        mul	x13, x13, x9
- 1      1     0.50                        movk	x12, #46811, lsl #48
- 1      2     1.00                        add	x10, x14, x10, lsr #63
- 1      1     0.50                        mov	x14, #58255
- 1      1     0.50                        lsr	x13, x13, #16
- 1      1     0.50                        movk	x14, #36408, lsl #16
- 1      1     0.50                        add	x8, x10, x8
- 1      1     0.50                        mov	x10, #29789
- 1      6     1.00                        smulh	x12, x13, x12
- 1      5     1.00                        mul	x13, x13, x9
- 1      1     0.50                        movk	x14, #14563, lsl #32
- 1      1     0.50                        movk	x10, #17873, lsl #16
- 1      2     1.00                        add	x8, x8, x11, lsr #18
- 1      1     0.50                        lsr	x11, x13, #16
- 1      1     0.50                        movk	x14, #58254, lsl #48
- 1      1     0.50                        movk	x10, #23831, lsl #32
- 1      5     1.00                        mul	x9, x11, x9
- 1      1     0.50                        movk	x10, #53620, lsl #48
- 1      6     1.00                        umulh	x13, x13, x14
- 1      1     0.50                        asr	x14, x12, #1
- 1      1     0.50                        lsr	x9, x9, #16
- 1      2     1.00                        add	x11, x14, x12, lsr #63
- 1      6     1.00                        smulh	x9, x9, x10
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x10, x9, #1
- 1      2     1.00                        add	x8, x8, x13, lsr #19
- 1      2     1.00                        add	x9, x10, x9, lsr #63
- 1      1     0.50                        add	x8, x8, x9
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x10, x11, x10, asr #16
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x9, x9, x10, asr #16
+ 1      5     1.00                        mul	x9, x9, x13
+ 1      2     1.00                        add	x8, x8, x9, asr #16
+ 1      5     1.00                        mul	x8, x8, x13
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      1     0.50                        mov	x9, #35747
+ 1      1     0.50                        add	x8, x8, #176, lsl #12
+ 1      1     0.50                        movk	x9, #47662, lsl #16
+ 1      5     1.00                        mul	x8, x8, x12
+ 1      1     0.50                        movk	x9, #41704, lsl #32
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      1     0.50                        movk	x9, #11915, lsl #48
+ 1      6     1.00                        smulh	x8, x8, x9
+ 1      1     0.50                        asr	x9, x8, #1
+ 1      2     1.00                        add	x8, x9, x8, lsr #63
  1      1     0.50                        cmp	x0, #0
  1      1     0.50                        cneg	x0, x8, lt
  1      1     1.00                  U     ret
- 1      1     0.50                        cmp	x8, #11, lsl #12
+ 1      1     0.50                        cmp	x12, #11, lsl #12
  1      1     1.00                        b.ge	.LBB1_4
- 1      1     0.50                        mov	w9, #28672
- 1      1     0.50                        mov	x10, #-65536
- 1      5     1.00                        mul	x9, x8, x9
- 1      1     0.50                        movk	x10, #36864, lsl #16
- 1      1     0.50                        lsr	x9, x9, #16
- 1      2     1.00                        add	x8, x10, x8, lsl #16
- 1      1     0.50                        add	x9, x9, #16, lsl #12
- 1      35    35.00                       sdiv	x8, x8, x9
- 1      5     1.00                        mul	x9, x8, x8
- 1      1     0.50                        lsr	x9, x9, #16
- 1      5     1.00                        mul	x10, x9, x8
- 1      1     0.50                        mov	x11, #6148914691236517205
- 1      1     0.50                        asr	x10, x10, #16
- 1      1     0.50                        mov	x12, #7378697629483820646
- 1      1     0.50                        mov	x13, #46811
- 1      5     1.00                        mul	x14, x10, x9
- 1      6     1.00                        smulh	x11, x10, x11
- 1      1     0.50                        movk	x12, #26215
- 1      1     0.50                        movk	x13, #56173, lsl #16
- 1      1     0.50                        asr	x14, x14, #16
- 1      1     0.50                        sub	x10, x11, x10
- 1      1     0.50                        movk	x13, #28086, lsl #32
- 1      1     0.50                        asr	x11, x10, #1
- 1      6     1.00                        smulh	x12, x14, x12
- 1      5     1.00                        mul	x14, x14, x9
- 1      1     0.50                        movk	x13, #46811, lsl #48
- 1      2     1.00                        add	x10, x11, x10, lsr #63
- 1      1     0.50                        asr	x11, x12, #1
- 1      1     0.50                        asr	x14, x14, #16
- 1      2     1.00                        add	x11, x11, x12, lsr #63
- 1      1     0.50                        mov	x12, #7282
- 1      1     0.50                        add	x8, x8, x10
- 1      1     0.50                        mov	x10, #29789
- 1      6     1.00                        smulh	x13, x14, x13
- 1      5     1.00                        mul	x14, x14, x9
- 1      1     0.50                        movk	x12, #29127, lsl #16
- 1      1     0.50                        movk	x10, #17873, lsl #16
- 1      1     0.50                        asr	x14, x14, #16
- 1      1     0.50                        movk	x12, #50972, lsl #32
- 1      1     0.50                        movk	x10, #23831, lsl #32
- 1      5     1.00                        mul	x9, x14, x9
- 1      1     0.50                        movk	x12, #7281, lsl #48
- 1      1     0.50                        movk	x10, #53620, lsl #48
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x11, x13, #1
- 1      1     0.50                        asr	x9, x9, #16
- 1      2     1.00                        add	x11, x11, x13, lsr #63
- 1      6     1.00                        smulh	x12, x14, x12
- 1      6     1.00                        smulh	x9, x9, x10
- 1      2     1.00                        add	x12, x12, x12, lsr #63
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x10, x9, #1
- 1      1     0.50                        add	x8, x8, x12
- 1      2     1.00                        add	x9, x10, x9, lsr #63
- 1      1     0.50                        add	x8, x8, x9
+ 1      1     0.50                        mov	w13, #28672
+ 1      1     0.50                        mov	x14, #-65536
+ 1      5     1.00                        mul	x13, x12, x13
+ 1      1     0.50                        movk	x14, #36864, lsl #16
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      2     1.00                        add	x12, x14, x12, lsl #16
+ 1      1     0.50                        add	x13, x13, #16, lsl #12
+ 1      35    35.00                       sdiv	x12, x12, x13
+ 1      5     1.00                        mul	x13, x12, x12
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      1     0.50                        sub	x10, x10, x13
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x10, x11, x10, asr #16
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x9, x9, x10, asr #16
+ 1      5     1.00                        mul	x9, x9, x13
+ 1      2     1.00                        add	x8, x8, x9, asr #16
+ 1      5     1.00                        mul	x8, x8, x13
+ 1      1     0.50                        mov	x14, #35747
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      1     0.50                        movk	x14, #47662, lsl #16
+ 1      1     0.50                        add	x8, x8, #176, lsl #12
+ 1      1     0.50                        movk	x14, #41704, lsl #32
+ 1      5     1.00                        mul	x8, x8, x12
+ 1      1     0.50                        movk	x14, #11915, lsl #48
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      6     1.00                        smulh	x8, x8, x14
+ 1      1     0.50                        asr	x9, x8, #1
+ 1      2     1.00                        add	x8, x9, x8, lsr #63
  1      1     0.50                        mov	w9, #27028
  1      1     0.50                        add	x8, x8, x9
  1      1     0.50                        cmp	x0, #0
  1      1     0.50                        cneg	x0, x8, lt
  1      1     1.00                  U     ret
- 1      1     0.50                        cmp	x8, #19, lsl #12
+ 1      1     0.50                        sub	x13, x10, #2275
+ 1      1     0.50                        cmp	x12, x13
  1      1     1.00                        b.ge	.LBB1_6
- 1      1     0.50                        mov	w9, #45056
- 1      1     0.50                        mov	x10, #-65536
- 1      5     1.00                        mul	x9, x8, x9
- 1      1     0.50                        movk	x10, #20480, lsl #16
- 1      1     0.50                        lsr	x9, x9, #16
- 1      2     1.00                        add	x8, x10, x8, lsl #16
- 1      1     0.50                        add	x9, x9, #16, lsl #12
- 1      35    35.00                       sdiv	x8, x8, x9
- 1      5     1.00                        mul	x9, x8, x8
- 1      1     0.50                        lsr	x9, x9, #16
- 1      5     1.00                        mul	x10, x9, x8
- 1      1     0.50                        mov	x11, #6148914691236517205
- 1      1     0.50                        asr	x10, x10, #16
- 1      1     0.50                        mov	x12, #7378697629483820646
- 1      1     0.50                        mov	x13, #46811
- 1      5     1.00                        mul	x14, x10, x9
- 1      6     1.00                        smulh	x11, x10, x11
- 1      1     0.50                        movk	x12, #26215
- 1      1     0.50                        movk	x13, #56173, lsl #16
- 1      1     0.50                        asr	x14, x14, #16
- 1      1     0.50                        sub	x10, x11, x10
- 1      1     0.50                        movk	x13, #28086, lsl #32
- 1      1     0.50                        asr	x11, x10, #1
- 1      6     1.00                        smulh	x12, x14, x12
- 1      5     1.00                        mul	x14, x14, x9
- 1      1     0.50                        movk	x13, #46811, lsl #48
- 1      2     1.00                        add	x10, x11, x10, lsr #63
- 1      1     0.50                        asr	x11, x12, #1
- 1      1     0.50                        asr	x14, x14, #16
- 1      2     1.00                        add	x11, x11, x12, lsr #63
- 1      1     0.50                        mov	x12, #7282
- 1      1     0.50                        add	x8, x8, x10
- 1      1     0.50                        mov	x10, #29789
- 1      6     1.00                        smulh	x13, x14, x13
- 1      5     1.00                        mul	x14, x14, x9
- 1      1     0.50                        movk	x12, #29127, lsl #16
- 1      1     0.50                        movk	x10, #17873, lsl #16
- 1      1     0.50                        asr	x14, x14, #16
- 1      1     0.50                        movk	x12, #50972, lsl #32
- 1      1     0.50                        movk	x10, #23831, lsl #32
- 1      5     1.00                        mul	x9, x14, x9
- 1      1     0.50                        movk	x12, #7281, lsl #48
- 1      1     0.50                        movk	x10, #53620, lsl #48
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x11, x13, #1
- 1      1     0.50                        asr	x9, x9, #16
- 1      2     1.00                        add	x11, x11, x13, lsr #63
- 1      6     1.00                        smulh	x12, x14, x12
- 1      6     1.00                        smulh	x9, x9, x10
- 1      2     1.00                        add	x12, x12, x12, lsr #63
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x10, x9, #1
- 1      1     0.50                        add	x8, x8, x12
- 1      2     1.00                        add	x9, x10, x9, lsr #63
- 1      1     0.50                        add	x8, x8, x9
+ 1      1     0.50                        mov	w13, #45056
+ 1      1     0.50                        mov	x14, #-65536
+ 1      5     1.00                        mul	x13, x12, x13
+ 1      1     0.50                        movk	x14, #20480, lsl #16
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      2     1.00                        add	x12, x14, x12, lsl #16
+ 1      1     0.50                        add	x13, x13, #16, lsl #12
+ 1      35    35.00                       sdiv	x12, x12, x13
+ 1      5     1.00                        mul	x13, x12, x12
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      1     0.50                        sub	x10, x10, x13
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x10, x11, x10, asr #16
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x9, x9, x10, asr #16
+ 1      5     1.00                        mul	x9, x9, x13
+ 1      2     1.00                        add	x8, x8, x9, asr #16
+ 1      5     1.00                        mul	x8, x8, x13
+ 1      1     0.50                        mov	x14, #35747
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      1     0.50                        movk	x14, #47662, lsl #16
+ 1      1     0.50                        add	x8, x8, #176, lsl #12
+ 1      1     0.50                        movk	x14, #41704, lsl #32
+ 1      5     1.00                        mul	x8, x8, x12
+ 1      1     0.50                        movk	x14, #11915, lsl #48
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      6     1.00                        smulh	x8, x8, x14
+ 1      1     0.50                        asr	x9, x8, #1
+ 1      2     1.00                        add	x8, x9, x8, lsr #63
  1      1     0.50                        mov	w9, #39472
  1      1     0.50                        add	x8, x8, x9
  1      1     0.50                        cmp	x0, #0
  1      1     0.50                        cneg	x0, x8, lt
  1      1     1.00                  U     ret
- 1      1     0.50                        mov	w9, #12288
- 1      1     0.50                        cmp	x8, #39, lsl #12
- 1      1     0.50                        movk	w9, #1, lsl #16
+ 1      1     0.50                        cmp	x12, #39, lsl #12
  1      1     1.00                        b.ge	.LBB1_8
- 1      5     1.00                        mul	x9, x8, x9
- 1      1     0.50                        mov	x10, #-8589934592
- 1      1     0.50                        movk	x10, #53248, lsl #16
- 1      1     0.50                        lsr	x9, x9, #16
- 1      2     1.00                        add	x8, x10, x8, lsl #16
- 1      1     0.50                        add	x9, x9, #16, lsl #12
- 1      35    35.00                       sdiv	x8, x8, x9
- 1      5     1.00                        mul	x9, x8, x8
- 1      1     0.50                        lsr	x9, x9, #16
- 1      5     1.00                        mul	x10, x9, x8
- 1      1     0.50                        mov	x11, #6148914691236517205
- 1      1     0.50                        asr	x10, x10, #16
- 1      1     0.50                        mov	x12, #7378697629483820646
- 1      1     0.50                        mov	x13, #46811
- 1      5     1.00                        mul	x14, x10, x9
- 1      6     1.00                        smulh	x11, x10, x11
- 1      1     0.50                        movk	x12, #26215
- 1      1     0.50                        movk	x13, #56173, lsl #16
- 1      1     0.50                        asr	x14, x14, #16
- 1      1     0.50                        sub	x10, x11, x10
- 1      1     0.50                        movk	x13, #28086, lsl #32
- 1      1     0.50                        asr	x11, x10, #1
- 1      6     1.00                        smulh	x12, x14, x12
- 1      5     1.00                        mul	x14, x14, x9
- 1      1     0.50                        movk	x13, #46811, lsl #48
- 1      2     1.00                        add	x10, x11, x10, lsr #63
- 1      1     0.50                        asr	x11, x12, #1
- 1      1     0.50                        asr	x14, x14, #16
- 1      2     1.00                        add	x11, x11, x12, lsr #63
- 1      1     0.50                        mov	x12, #7282
- 1      1     0.50                        add	x8, x8, x10
- 1      1     0.50                        mov	x10, #29789
- 1      6     1.00                        smulh	x13, x14, x13
- 1      5     1.00                        mul	x14, x14, x9
- 1      1     0.50                        movk	x12, #29127, lsl #16
- 1      1     0.50                        movk	x10, #17873, lsl #16
- 1      1     0.50                        asr	x14, x14, #16
- 1      1     0.50                        movk	x12, #50972, lsl #32
- 1      1     0.50                        movk	x10, #23831, lsl #32
- 1      5     1.00                        mul	x9, x14, x9
- 1      1     0.50                        movk	x12, #7281, lsl #48
- 1      1     0.50                        movk	x10, #53620, lsl #48
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x11, x13, #1
- 1      1     0.50                        asr	x9, x9, #16
- 1      2     1.00                        add	x11, x11, x13, lsr #63
- 1      6     1.00                        smulh	x12, x14, x12
- 1      6     1.00                        smulh	x9, x9, x10
- 1      2     1.00                        add	x12, x12, x12, lsr #63
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x10, x9, #1
- 1      1     0.50                        add	x8, x8, x12
- 1      2     1.00                        add	x9, x10, x9, lsr #63
- 1      1     0.50                        add	x8, x8, x9
+ 1      5     1.00                        mul	x13, x12, x13
+ 1      1     0.50                        mov	x14, #-8589934592
+ 1      1     0.50                        movk	x14, #53248, lsl #16
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      2     1.00                        add	x12, x14, x12, lsl #16
+ 1      1     0.50                        add	x13, x13, #16, lsl #12
+ 1      35    35.00                       sdiv	x12, x12, x13
+ 1      5     1.00                        mul	x13, x12, x12
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      1     0.50                        sub	x10, x10, x13
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x10, x11, x10, asr #16
+ 1      5     1.00                        mul	x10, x10, x13
+ 1      2     1.00                        add	x9, x9, x10, asr #16
+ 1      5     1.00                        mul	x9, x9, x13
+ 1      2     1.00                        add	x8, x8, x9, asr #16
+ 1      5     1.00                        mul	x8, x8, x13
+ 1      1     0.50                        mov	x14, #35747
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      1     0.50                        movk	x14, #47662, lsl #16
+ 1      1     0.50                        add	x8, x8, #176, lsl #12
+ 1      1     0.50                        movk	x14, #41704, lsl #32
+ 1      5     1.00                        mul	x8, x8, x12
+ 1      1     0.50                        movk	x14, #11915, lsl #48
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      6     1.00                        smulh	x8, x8, x14
+ 1      1     0.50                        asr	x9, x8, #1
+ 1      2     1.00                        add	x8, x9, x8, lsr #63
  1      1     0.50                        mov	w9, #57076
  1      1     0.50                        add	x8, x8, x9
  1      1     0.50                        cmp	x0, #0
  1      1     0.50                        cneg	x0, x8, lt
  1      1     1.00                  U     ret
- 1      1     0.50                        mov	w10, #28672
- 1      1     0.50                        movk	w10, #2, lsl #16
- 1      1     0.50                        mov	x11, #2415919104
- 1      1     0.50                        movk	x11, #65533, lsl #32
- 1      5     1.00                        mul	x10, x8, x10
- 1      1     0.50                        movk	x11, #65535, lsl #48
- 1      1     0.50                        lsr	x10, x10, #16
- 1      2     1.00                        add	x8, x11, x8, lsl #16
- 1      1     0.50                        add	x10, x10, #16, lsl #12
- 1      35    35.00                       sdiv	x8, x8, x10
- 1      5     1.00                        mul	x10, x8, x8
- 1      1     0.50                        lsr	x10, x10, #16
- 1      1     0.50                        add	x9, x9, x8
- 1      5     1.00                        mul	x8, x10, x8
- 1      1     0.50                        mov	x12, #6148914691236517205
+ 1      1     0.50                        mov	w13, #28672
+ 1      1     0.50                        movk	w13, #2, lsl #16
+ 1      1     0.50                        mov	x14, #2415919104
+ 1      1     0.50                        movk	x14, #65533, lsl #32
+ 1      5     1.00                        mul	x13, x12, x13
+ 1      1     0.50                        movk	x14, #65535, lsl #48
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      2     1.00                        add	x12, x14, x12, lsl #16
+ 1      1     0.50                        add	x13, x13, #16, lsl #12
+ 1      35    35.00                       sdiv	x12, x12, x13
+ 1      5     1.00                        mul	x13, x12, x12
+ 1      1     0.50                        lsr	x13, x13, #16
+ 1      1     0.50                        sub	x14, x10, x13
+ 1      5     1.00                        mul	x14, x14, x13
+ 1      2     1.00                        add	x11, x11, x14, asr #16
+ 1      5     1.00                        mul	x11, x11, x13
+ 1      2     1.00                        add	x9, x9, x11, asr #16
+ 1      5     1.00                        mul	x9, x9, x13
+ 1      2     1.00                        add	x8, x8, x9, asr #16
+ 1      5     1.00                        mul	x8, x8, x13
  1      1     0.50                        asr	x8, x8, #16
- 1      1     0.50                        mov	x13, #7378697629483820646
- 1      1     0.50                        mov	x14, #46811
- 1      5     1.00                        mul	x11, x8, x10
- 1      6     1.00                        smulh	x12, x8, x12
- 1      1     0.50                        movk	x13, #26215
- 1      1     0.50                        movk	x14, #56173, lsl #16
- 1      1     0.50                        asr	x11, x11, #16
- 1      1     0.50                        sub	x8, x12, x8
- 1      1     0.50                        movk	x14, #28086, lsl #32
- 1      1     0.50                        asr	x12, x8, #1
- 1      6     1.00                        smulh	x13, x11, x13
- 1      5     1.00                        mul	x11, x11, x10
- 1      1     0.50                        movk	x14, #46811, lsl #48
- 1      2     1.00                        add	x8, x12, x8, lsr #63
- 1      1     0.50                        asr	x12, x13, #1
- 1      1     0.50                        asr	x11, x11, #16
- 1      1     0.50                        mov	x15, #7282
- 1      2     1.00                        add	x12, x12, x13, lsr #63
- 1      1     0.50                        mov	x13, #29789
- 1      6     1.00                        smulh	x14, x11, x14
- 1      5     1.00                        mul	x11, x11, x10
- 1      1     0.50                        movk	x15, #29127, lsl #16
- 1      1     0.50                        movk	x13, #17873, lsl #16
- 1      1     0.50                        add	x8, x9, x8
- 1      1     0.50                        asr	x9, x11, #16
- 1      1     0.50                        movk	x15, #50972, lsl #32
- 1      1     0.50                        movk	x13, #23831, lsl #32
- 1      5     1.00                        mul	x10, x9, x10
- 1      1     0.50                        movk	x15, #7281, lsl #48
- 1      1     0.50                        movk	x13, #53620, lsl #48
- 1      1     0.50                        asr	x11, x14, #1
- 1      1     0.50                        asr	x10, x10, #16
- 1      1     0.50                        add	x8, x8, x12
- 1      2     1.00                        add	x11, x11, x14, lsr #63
- 1      6     1.00                        smulh	x9, x9, x15
- 1      6     1.00                        smulh	x10, x10, x13
- 1      2     1.00                        add	x9, x9, x9, lsr #63
- 1      1     0.50                        add	x8, x8, x11
- 1      1     0.50                        asr	x11, x10, #1
- 1      2     1.00                        add	x10, x11, x10, lsr #63
- 1      1     0.50                        add	x8, x8, x9
- 1      1     0.50                        add	x8, x8, x10
- 1      1     0.50                        sub	x8, x8, #395
+ 1      1     0.50                        mov	x9, #35747
+ 1      1     0.50                        add	x8, x8, #176, lsl #12
+ 1      1     0.50                        movk	x9, #47662, lsl #16
+ 1      5     1.00                        mul	x8, x8, x12
+ 1      1     0.50                        movk	x9, #41704, lsl #32
+ 1      1     0.50                        asr	x8, x8, #16
+ 1      1     0.50                        movk	x9, #11915, lsl #48
+ 1      6     1.00                        smulh	x8, x8, x9
+ 1      1     0.50                        asr	x9, x8, #1
+ 1      2     1.00                        add	x8, x9, x8, lsr #63
+ 1      1     0.50                        add	x8, x10, x8
+ 1      1     0.50                        sub	x8, x8, #2670
  1      1     0.50                        cmp	x0, #0
  1      1     0.50                        cneg	x0, x8, lt
  1      1     1.00                  U     ret
@@ -649,308 +409,188 @@ Resources:
 
 Resource pressure per iteration:
 [0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    
-10.00  99.00  100.00  -     228.00  -      -      -     
+10.00  52.00  52.00   -     203.00  -      -      -     
 
 Resource pressure by instruction:
 [0]    [1.0]  [1.1]  [2]    [3]    [4]    [5]    [6]    Instructions:
 1.00    -      -      -      -      -      -      -     b	_ZN9fixedmath4atanENS_7fixed_tE
  -      -     1.00    -      -      -      -      -     cmp	x0, #0
- -     1.00    -      -      -      -      -      -     cneg	x8, x0, mi
- -      -     1.00    -      -      -      -      -     cmp	x8, #7, lsl #12
+ -     1.00    -      -      -      -      -      -     mov	x11, #-37449
+ -      -     1.00    -      -      -      -      -     mov	x8, #-43690
+ -     1.00    -      -      -      -      -      -     mov	w9, #13107
+ -      -     1.00    -      -      -      -      -     cneg	x12, x0, mi
+ -     1.00    -      -      -      -      -      -     mov	w10, #14563
+ -      -     1.00    -      -      -      -      -     movk	x11, #65534, lsl #16
+ -     1.00    -      -      -      -      -      -     movk	x8, #65532, lsl #16
+ -     1.00    -      -      -      -      -      -     movk	w9, #2, lsl #16
+ -      -     1.00    -      -      -      -      -     cmp	x12, #7, lsl #12
+ -      -     1.00    -      -      -      -      -     movk	w10, #1, lsl #16
 1.00    -      -      -      -      -      -      -     b.ge	.LBB1_2
- -      -      -      -     1.00    -      -      -     mul	x9, x0, x0
- -      -     1.00    -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     mul	x13, x9, x8
- -     1.00    -      -      -      -      -      -     mov	x10, #6148914691236517205
+ -      -      -      -     1.00    -      -      -     mul	x13, x0, x0
  -     1.00    -      -      -      -      -      -     lsr	x13, x13, #16
- -      -     1.00    -      -      -      -      -     mov	x11, #-3689348814741910324
- -      -      -      -     1.00    -      -      -     smulh	x10, x13, x10
- -     1.00    -      -      -      -      -      -     movk	x11, #52429
- -      -     1.00    -      -      -      -      -     mov	x12, #46811
- -      -     1.00    -      -      -      -      -     sub	x10, x10, x13
- -      -      -      -     1.00    -      -      -     mul	x13, x13, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #56173, lsl #16
- -      -      -      -     1.00    -      -      -     umulh	x11, x13, x11
- -     1.00    -      -      -      -      -      -     lsr	x13, x13, #16
- -      -     1.00    -      -      -      -      -     movk	x12, #28086, lsl #32
- -      -     1.00    -      -      -      -      -     asr	x14, x10, #1
- -      -      -      -     1.00    -      -      -     mul	x13, x13, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #46811, lsl #48
- -      -      -      -     1.00    -      -      -     add	x10, x14, x10, lsr #63
- -     1.00    -      -      -      -      -      -     mov	x14, #58255
+ -     1.00    -      -      -      -      -      -     sub	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x10, x11, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x9, x9, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x9, x9, x13
+ -      -      -      -     1.00    -      -      -     add	x8, x8, x9, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x13
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -     1.00    -      -      -      -      -      -     mov	x9, #35747
+ -     1.00    -      -      -      -      -      -     add	x8, x8, #176, lsl #12
+ -      -     1.00    -      -      -      -      -     movk	x9, #47662, lsl #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x12
+ -      -     1.00    -      -      -      -      -     movk	x9, #41704, lsl #32
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -      -     1.00    -      -      -      -      -     movk	x9, #11915, lsl #48
+ -      -      -      -     1.00    -      -      -     smulh	x8, x8, x9
+ -      -     1.00    -      -      -      -      -     asr	x9, x8, #1
+ -      -      -      -     1.00    -      -      -     add	x8, x9, x8, lsr #63
+ -     1.00    -      -      -      -      -      -     cmp	x0, #0
+ -     1.00    -      -      -      -      -      -     cneg	x0, x8, lt
+1.00    -      -      -      -      -      -      -     ret
+ -      -     1.00    -      -      -      -      -     cmp	x12, #11, lsl #12
+1.00    -      -      -      -      -      -      -     b.ge	.LBB1_4
+ -     1.00    -      -      -      -      -      -     mov	w13, #28672
+ -      -     1.00    -      -      -      -      -     mov	x14, #-65536
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x13
+ -     1.00    -      -      -      -      -      -     movk	x14, #36864, lsl #16
  -      -     1.00    -      -      -      -      -     lsr	x13, x13, #16
- -      -     1.00    -      -      -      -      -     movk	x14, #36408, lsl #16
- -     1.00    -      -      -      -      -      -     add	x8, x10, x8
- -     1.00    -      -      -      -      -      -     mov	x10, #29789
- -      -      -      -     1.00    -      -      -     smulh	x12, x13, x12
- -      -      -      -     1.00    -      -      -     mul	x13, x13, x9
- -      -     1.00    -      -      -      -      -     movk	x14, #14563, lsl #32
- -     1.00    -      -      -      -      -      -     movk	x10, #17873, lsl #16
- -      -      -      -     1.00    -      -      -     add	x8, x8, x11, lsr #18
- -     1.00    -      -      -      -      -      -     lsr	x11, x13, #16
- -      -     1.00    -      -      -      -      -     movk	x14, #58254, lsl #48
- -     1.00    -      -      -      -      -      -     movk	x10, #23831, lsl #32
- -      -      -      -     1.00    -      -      -     mul	x9, x11, x9
- -      -     1.00    -      -      -      -      -     movk	x10, #53620, lsl #48
- -      -      -      -     1.00    -      -      -     umulh	x13, x13, x14
- -      -     1.00    -      -      -      -      -     asr	x14, x12, #1
- -     1.00    -      -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     add	x11, x14, x12, lsr #63
- -      -      -      -     1.00    -      -      -     smulh	x9, x9, x10
- -      -     1.00    -      -      -      -      -     add	x8, x8, x11
- -      -     1.00    -      -      -      -      -     asr	x10, x9, #1
- -      -      -      -     1.00    -      -      -     add	x8, x8, x13, lsr #19
- -      -      -      -     1.00    -      -      -     add	x9, x10, x9, lsr #63
+ -      -      -      -     1.00    -      -      -     add	x12, x14, x12, lsl #16
+ -      -     1.00    -      -      -      -      -     add	x13, x13, #16, lsl #12
+ -      -      -      -     35.00   -      -      -     sdiv	x12, x12, x13
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x12
+ -     1.00    -      -      -      -      -      -     lsr	x13, x13, #16
+ -      -     1.00    -      -      -      -      -     sub	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x10, x11, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x9, x9, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x9, x9, x13
+ -      -      -      -     1.00    -      -      -     add	x8, x8, x9, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x13
+ -     1.00    -      -      -      -      -      -     mov	x14, #35747
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -     1.00    -      -      -      -      -      -     movk	x14, #47662, lsl #16
+ -     1.00    -      -      -      -      -      -     add	x8, x8, #176, lsl #12
+ -      -     1.00    -      -      -      -      -     movk	x14, #41704, lsl #32
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x12
+ -     1.00    -      -      -      -      -      -     movk	x14, #11915, lsl #48
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -      -      -      -     1.00    -      -      -     smulh	x8, x8, x14
+ -     1.00    -      -      -      -      -      -     asr	x9, x8, #1
+ -      -      -      -     1.00    -      -      -     add	x8, x9, x8, lsr #63
+ -      -     1.00    -      -      -      -      -     mov	w9, #27028
  -      -     1.00    -      -      -      -      -     add	x8, x8, x9
  -      -     1.00    -      -      -      -      -     cmp	x0, #0
  -     1.00    -      -      -      -      -      -     cneg	x0, x8, lt
 1.00    -      -      -      -      -      -      -     ret
- -      -     1.00    -      -      -      -      -     cmp	x8, #11, lsl #12
-1.00    -      -      -      -      -      -      -     b.ge	.LBB1_4
- -     1.00    -      -      -      -      -      -     mov	w9, #28672
- -      -     1.00    -      -      -      -      -     mov	x10, #-65536
- -      -      -      -     1.00    -      -      -     mul	x9, x8, x9
- -     1.00    -      -      -      -      -      -     movk	x10, #36864, lsl #16
- -     1.00    -      -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     add	x8, x10, x8, lsl #16
- -     1.00    -      -      -      -      -      -     add	x9, x9, #16, lsl #12
- -      -      -      -     35.00   -      -      -     sdiv	x8, x8, x9
- -      -      -      -     1.00    -      -      -     mul	x9, x8, x8
- -      -     1.00    -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     mul	x10, x9, x8
- -      -     1.00    -      -      -      -      -     mov	x11, #6148914691236517205
- -     1.00    -      -      -      -      -      -     asr	x10, x10, #16
- -     1.00    -      -      -      -      -      -     mov	x12, #7378697629483820646
- -     1.00    -      -      -      -      -      -     mov	x13, #46811
- -      -      -      -     1.00    -      -      -     mul	x14, x10, x9
- -      -      -      -     1.00    -      -      -     smulh	x11, x10, x11
- -      -     1.00    -      -      -      -      -     movk	x12, #26215
- -      -     1.00    -      -      -      -      -     movk	x13, #56173, lsl #16
- -     1.00    -      -      -      -      -      -     asr	x14, x14, #16
- -      -     1.00    -      -      -      -      -     sub	x10, x11, x10
- -      -     1.00    -      -      -      -      -     movk	x13, #28086, lsl #32
- -      -     1.00    -      -      -      -      -     asr	x11, x10, #1
- -      -      -      -     1.00    -      -      -     smulh	x12, x14, x12
- -      -      -      -     1.00    -      -      -     mul	x14, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x13, #46811, lsl #48
- -      -      -      -     1.00    -      -      -     add	x10, x11, x10, lsr #63
- -      -     1.00    -      -      -      -      -     asr	x11, x12, #1
- -     1.00    -      -      -      -      -      -     asr	x14, x14, #16
- -      -      -      -     1.00    -      -      -     add	x11, x11, x12, lsr #63
- -     1.00    -      -      -      -      -      -     mov	x12, #7282
- -      -     1.00    -      -      -      -      -     add	x8, x8, x10
- -      -     1.00    -      -      -      -      -     mov	x10, #29789
- -      -      -      -     1.00    -      -      -     smulh	x13, x14, x13
- -      -      -      -     1.00    -      -      -     mul	x14, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #29127, lsl #16
- -      -     1.00    -      -      -      -      -     movk	x10, #17873, lsl #16
- -      -     1.00    -      -      -      -      -     asr	x14, x14, #16
- -     1.00    -      -      -      -      -      -     movk	x12, #50972, lsl #32
- -      -     1.00    -      -      -      -      -     movk	x10, #23831, lsl #32
- -      -      -      -     1.00    -      -      -     mul	x9, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #7281, lsl #48
- -      -     1.00    -      -      -      -      -     movk	x10, #53620, lsl #48
- -      -     1.00    -      -      -      -      -     add	x8, x8, x11
- -     1.00    -      -      -      -      -      -     asr	x11, x13, #1
- -      -     1.00    -      -      -      -      -     asr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     add	x11, x11, x13, lsr #63
- -      -      -      -     1.00    -      -      -     smulh	x12, x14, x12
- -      -      -      -     1.00    -      -      -     smulh	x9, x9, x10
- -      -      -      -     1.00    -      -      -     add	x12, x12, x12, lsr #63
- -      -     1.00    -      -      -      -      -     add	x8, x8, x11
- -      -     1.00    -      -      -      -      -     asr	x10, x9, #1
- -     1.00    -      -      -      -      -      -     add	x8, x8, x12
- -      -      -      -     1.00    -      -      -     add	x9, x10, x9, lsr #63
- -     1.00    -      -      -      -      -      -     add	x8, x8, x9
- -     1.00    -      -      -      -      -      -     mov	w9, #27028
- -     1.00    -      -      -      -      -      -     add	x8, x8, x9
- -     1.00    -      -      -      -      -      -     cmp	x0, #0
- -     1.00    -      -      -      -      -      -     cneg	x0, x8, lt
-1.00    -      -      -      -      -      -      -     ret
- -      -     1.00    -      -      -      -      -     cmp	x8, #19, lsl #12
+ -     1.00    -      -      -      -      -      -     sub	x13, x10, #2275
+ -     1.00    -      -      -      -      -      -     cmp	x12, x13
 1.00    -      -      -      -      -      -      -     b.ge	.LBB1_6
- -     1.00    -      -      -      -      -      -     mov	w9, #45056
- -      -     1.00    -      -      -      -      -     mov	x10, #-65536
- -      -      -      -     1.00    -      -      -     mul	x9, x8, x9
- -      -     1.00    -      -      -      -      -     movk	x10, #20480, lsl #16
- -     1.00    -      -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     add	x8, x10, x8, lsl #16
- -      -     1.00    -      -      -      -      -     add	x9, x9, #16, lsl #12
- -      -      -      -     35.00   -      -      -     sdiv	x8, x8, x9
- -      -      -      -     1.00    -      -      -     mul	x9, x8, x8
- -     1.00    -      -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     mul	x10, x9, x8
- -      -     1.00    -      -      -      -      -     mov	x11, #6148914691236517205
- -      -     1.00    -      -      -      -      -     asr	x10, x10, #16
- -     1.00    -      -      -      -      -      -     mov	x12, #7378697629483820646
- -     1.00    -      -      -      -      -      -     mov	x13, #46811
- -      -      -      -     1.00    -      -      -     mul	x14, x10, x9
- -      -      -      -     1.00    -      -      -     smulh	x11, x10, x11
- -      -     1.00    -      -      -      -      -     movk	x12, #26215
- -      -     1.00    -      -      -      -      -     movk	x13, #56173, lsl #16
- -      -     1.00    -      -      -      -      -     asr	x14, x14, #16
- -     1.00    -      -      -      -      -      -     sub	x10, x11, x10
- -     1.00    -      -      -      -      -      -     movk	x13, #28086, lsl #32
- -      -     1.00    -      -      -      -      -     asr	x11, x10, #1
- -      -      -      -     1.00    -      -      -     smulh	x12, x14, x12
- -      -      -      -     1.00    -      -      -     mul	x14, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x13, #46811, lsl #48
- -      -      -      -     1.00    -      -      -     add	x10, x11, x10, lsr #63
- -      -     1.00    -      -      -      -      -     asr	x11, x12, #1
- -     1.00    -      -      -      -      -      -     asr	x14, x14, #16
- -      -      -      -     1.00    -      -      -     add	x11, x11, x12, lsr #63
- -      -     1.00    -      -      -      -      -     mov	x12, #7282
- -     1.00    -      -      -      -      -      -     add	x8, x8, x10
- -     1.00    -      -      -      -      -      -     mov	x10, #29789
- -      -      -      -     1.00    -      -      -     smulh	x13, x14, x13
- -      -      -      -     1.00    -      -      -     mul	x14, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #29127, lsl #16
- -      -     1.00    -      -      -      -      -     movk	x10, #17873, lsl #16
- -     1.00    -      -      -      -      -      -     asr	x14, x14, #16
- -     1.00    -      -      -      -      -      -     movk	x12, #50972, lsl #32
- -      -     1.00    -      -      -      -      -     movk	x10, #23831, lsl #32
- -      -      -      -     1.00    -      -      -     mul	x9, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #7281, lsl #48
- -      -     1.00    -      -      -      -      -     movk	x10, #53620, lsl #48
- -     1.00    -      -      -      -      -      -     add	x8, x8, x11
- -      -     1.00    -      -      -      -      -     asr	x11, x13, #1
- -      -     1.00    -      -      -      -      -     asr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     add	x11, x11, x13, lsr #63
- -      -      -      -     1.00    -      -      -     smulh	x12, x14, x12
- -      -      -      -     1.00    -      -      -     smulh	x9, x9, x10
- -      -      -      -     1.00    -      -      -     add	x12, x12, x12, lsr #63
- -      -     1.00    -      -      -      -      -     add	x8, x8, x11
- -     1.00    -      -      -      -      -      -     asr	x10, x9, #1
- -      -     1.00    -      -      -      -      -     add	x8, x8, x12
- -      -      -      -     1.00    -      -      -     add	x9, x10, x9, lsr #63
- -      -     1.00    -      -      -      -      -     add	x8, x8, x9
+ -     1.00    -      -      -      -      -      -     mov	w13, #45056
+ -      -     1.00    -      -      -      -      -     mov	x14, #-65536
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x13
+ -     1.00    -      -      -      -      -      -     movk	x14, #20480, lsl #16
+ -     1.00    -      -      -      -      -      -     lsr	x13, x13, #16
+ -      -      -      -     1.00    -      -      -     add	x12, x14, x12, lsl #16
+ -      -     1.00    -      -      -      -      -     add	x13, x13, #16, lsl #12
+ -      -      -      -     35.00   -      -      -     sdiv	x12, x12, x13
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x12
+ -      -     1.00    -      -      -      -      -     lsr	x13, x13, #16
+ -     1.00    -      -      -      -      -      -     sub	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x10, x11, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x9, x9, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x9, x9, x13
+ -      -      -      -     1.00    -      -      -     add	x8, x8, x9, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x13
+ -      -     1.00    -      -      -      -      -     mov	x14, #35747
+ -     1.00    -      -      -      -      -      -     asr	x8, x8, #16
+ -     1.00    -      -      -      -      -      -     movk	x14, #47662, lsl #16
+ -      -     1.00    -      -      -      -      -     add	x8, x8, #176, lsl #12
+ -      -     1.00    -      -      -      -      -     movk	x14, #41704, lsl #32
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x12
+ -     1.00    -      -      -      -      -      -     movk	x14, #11915, lsl #48
+ -     1.00    -      -      -      -      -      -     asr	x8, x8, #16
+ -      -      -      -     1.00    -      -      -     smulh	x8, x8, x14
+ -      -     1.00    -      -      -      -      -     asr	x9, x8, #1
+ -      -      -      -     1.00    -      -      -     add	x8, x9, x8, lsr #63
  -      -     1.00    -      -      -      -      -     mov	w9, #39472
  -     1.00    -      -      -      -      -      -     add	x8, x8, x9
+ -      -     1.00    -      -      -      -      -     cmp	x0, #0
+ -      -     1.00    -      -      -      -      -     cneg	x0, x8, lt
+1.00    -      -      -      -      -      -      -     ret
+ -     1.00    -      -      -      -      -      -     cmp	x12, #39, lsl #12
+1.00    -      -      -      -      -      -      -     b.ge	.LBB1_8
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x13
+ -      -     1.00    -      -      -      -      -     mov	x14, #-8589934592
+ -     1.00    -      -      -      -      -      -     movk	x14, #53248, lsl #16
+ -      -     1.00    -      -      -      -      -     lsr	x13, x13, #16
+ -      -      -      -     1.00    -      -      -     add	x12, x14, x12, lsl #16
+ -     1.00    -      -      -      -      -      -     add	x13, x13, #16, lsl #12
+ -      -      -      -     35.00   -      -      -     sdiv	x12, x12, x13
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x12
+ -      -     1.00    -      -      -      -      -     lsr	x13, x13, #16
+ -     1.00    -      -      -      -      -      -     sub	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x10, x11, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x10, x10, x13
+ -      -      -      -     1.00    -      -      -     add	x9, x9, x10, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x9, x9, x13
+ -      -      -      -     1.00    -      -      -     add	x8, x8, x9, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x13
+ -     1.00    -      -      -      -      -      -     mov	x14, #35747
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -      -     1.00    -      -      -      -      -     movk	x14, #47662, lsl #16
+ -     1.00    -      -      -      -      -      -     add	x8, x8, #176, lsl #12
+ -     1.00    -      -      -      -      -      -     movk	x14, #41704, lsl #32
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x12
+ -      -     1.00    -      -      -      -      -     movk	x14, #11915, lsl #48
+ -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
+ -      -      -      -     1.00    -      -      -     smulh	x8, x8, x14
+ -     1.00    -      -      -      -      -      -     asr	x9, x8, #1
+ -      -      -      -     1.00    -      -      -     add	x8, x9, x8, lsr #63
+ -     1.00    -      -      -      -      -      -     mov	w9, #57076
+ -      -     1.00    -      -      -      -      -     add	x8, x8, x9
  -     1.00    -      -      -      -      -      -     cmp	x0, #0
  -     1.00    -      -      -      -      -      -     cneg	x0, x8, lt
 1.00    -      -      -      -      -      -      -     ret
- -      -     1.00    -      -      -      -      -     mov	w9, #12288
- -      -     1.00    -      -      -      -      -     cmp	x8, #39, lsl #12
- -     1.00    -      -      -      -      -      -     movk	w9, #1, lsl #16
-1.00    -      -      -      -      -      -      -     b.ge	.LBB1_8
- -      -      -      -     1.00    -      -      -     mul	x9, x8, x9
- -      -     1.00    -      -      -      -      -     mov	x10, #-8589934592
- -      -     1.00    -      -      -      -      -     movk	x10, #53248, lsl #16
- -     1.00    -      -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     add	x8, x10, x8, lsl #16
- -      -     1.00    -      -      -      -      -     add	x9, x9, #16, lsl #12
- -      -      -      -     35.00   -      -      -     sdiv	x8, x8, x9
- -      -      -      -     1.00    -      -      -     mul	x9, x8, x8
- -     1.00    -      -      -      -      -      -     lsr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     mul	x10, x9, x8
- -     1.00    -      -      -      -      -      -     mov	x11, #6148914691236517205
- -      -     1.00    -      -      -      -      -     asr	x10, x10, #16
- -     1.00    -      -      -      -      -      -     mov	x12, #7378697629483820646
- -      -     1.00    -      -      -      -      -     mov	x13, #46811
- -      -      -      -     1.00    -      -      -     mul	x14, x10, x9
- -      -      -      -     1.00    -      -      -     smulh	x11, x10, x11
- -      -     1.00    -      -      -      -      -     movk	x12, #26215
- -     1.00    -      -      -      -      -      -     movk	x13, #56173, lsl #16
- -     1.00    -      -      -      -      -      -     asr	x14, x14, #16
- -      -     1.00    -      -      -      -      -     sub	x10, x11, x10
- -     1.00    -      -      -      -      -      -     movk	x13, #28086, lsl #32
- -     1.00    -      -      -      -      -      -     asr	x11, x10, #1
- -      -      -      -     1.00    -      -      -     smulh	x12, x14, x12
- -      -      -      -     1.00    -      -      -     mul	x14, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x13, #46811, lsl #48
- -      -      -      -     1.00    -      -      -     add	x10, x11, x10, lsr #63
- -     1.00    -      -      -      -      -      -     asr	x11, x12, #1
- -      -     1.00    -      -      -      -      -     asr	x14, x14, #16
- -      -      -      -     1.00    -      -      -     add	x11, x11, x12, lsr #63
- -     1.00    -      -      -      -      -      -     mov	x12, #7282
- -      -     1.00    -      -      -      -      -     add	x8, x8, x10
- -      -     1.00    -      -      -      -      -     mov	x10, #29789
- -      -      -      -     1.00    -      -      -     smulh	x13, x14, x13
- -      -      -      -     1.00    -      -      -     mul	x14, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #29127, lsl #16
- -      -     1.00    -      -      -      -      -     movk	x10, #17873, lsl #16
- -      -     1.00    -      -      -      -      -     asr	x14, x14, #16
- -     1.00    -      -      -      -      -      -     movk	x12, #50972, lsl #32
- -      -     1.00    -      -      -      -      -     movk	x10, #23831, lsl #32
- -      -      -      -     1.00    -      -      -     mul	x9, x14, x9
- -     1.00    -      -      -      -      -      -     movk	x12, #7281, lsl #48
- -     1.00    -      -      -      -      -      -     movk	x10, #53620, lsl #48
- -     1.00    -      -      -      -      -      -     add	x8, x8, x11
- -     1.00    -      -      -      -      -      -     asr	x11, x13, #1
- -     1.00    -      -      -      -      -      -     asr	x9, x9, #16
- -      -      -      -     1.00    -      -      -     add	x11, x11, x13, lsr #63
- -      -      -      -     1.00    -      -      -     smulh	x12, x14, x12
- -      -      -      -     1.00    -      -      -     smulh	x9, x9, x10
- -      -      -      -     1.00    -      -      -     add	x12, x12, x12, lsr #63
- -      -     1.00    -      -      -      -      -     add	x8, x8, x11
- -     1.00    -      -      -      -      -      -     asr	x10, x9, #1
- -      -     1.00    -      -      -      -      -     add	x8, x8, x12
- -      -      -      -     1.00    -      -      -     add	x9, x10, x9, lsr #63
- -      -     1.00    -      -      -      -      -     add	x8, x8, x9
- -      -     1.00    -      -      -      -      -     mov	w9, #57076
- -     1.00    -      -      -      -      -      -     add	x8, x8, x9
- -     1.00    -      -      -      -      -      -     cmp	x0, #0
- -      -     1.00    -      -      -      -      -     cneg	x0, x8, lt
-1.00    -      -      -      -      -      -      -     ret
- -      -     1.00    -      -      -      -      -     mov	w10, #28672
- -      -     1.00    -      -      -      -      -     movk	w10, #2, lsl #16
- -     1.00    -      -      -      -      -      -     mov	x11, #2415919104
- -     1.00    -      -      -      -      -      -     movk	x11, #65533, lsl #32
- -      -      -      -     1.00    -      -      -     mul	x10, x8, x10
- -      -     1.00    -      -      -      -      -     movk	x11, #65535, lsl #48
- -      -     1.00    -      -      -      -      -     lsr	x10, x10, #16
- -      -      -      -     1.00    -      -      -     add	x8, x11, x8, lsl #16
- -     1.00    -      -      -      -      -      -     add	x10, x10, #16, lsl #12
- -      -      -      -     35.00   -      -      -     sdiv	x8, x8, x10
- -      -      -      -     1.00    -      -      -     mul	x10, x8, x8
- -     1.00    -      -      -      -      -      -     lsr	x10, x10, #16
- -      -     1.00    -      -      -      -      -     add	x9, x9, x8
- -      -      -      -     1.00    -      -      -     mul	x8, x10, x8
- -      -     1.00    -      -      -      -      -     mov	x12, #6148914691236517205
- -      -     1.00    -      -      -      -      -     asr	x8, x8, #16
- -     1.00    -      -      -      -      -      -     mov	x13, #7378697629483820646
- -     1.00    -      -      -      -      -      -     mov	x14, #46811
- -      -      -      -     1.00    -      -      -     mul	x11, x8, x10
- -      -      -      -     1.00    -      -      -     smulh	x12, x8, x12
- -      -     1.00    -      -      -      -      -     movk	x13, #26215
- -     1.00    -      -      -      -      -      -     movk	x14, #56173, lsl #16
- -     1.00    -      -      -      -      -      -     asr	x11, x11, #16
- -      -     1.00    -      -      -      -      -     sub	x8, x12, x8
- -      -     1.00    -      -      -      -      -     movk	x14, #28086, lsl #32
- -     1.00    -      -      -      -      -      -     asr	x12, x8, #1
- -      -      -      -     1.00    -      -      -     smulh	x13, x11, x13
- -      -      -      -     1.00    -      -      -     mul	x11, x11, x10
- -      -     1.00    -      -      -      -      -     movk	x14, #46811, lsl #48
- -      -      -      -     1.00    -      -      -     add	x8, x12, x8, lsr #63
- -     1.00    -      -      -      -      -      -     asr	x12, x13, #1
- -      -     1.00    -      -      -      -      -     asr	x11, x11, #16
- -      -     1.00    -      -      -      -      -     mov	x15, #7282
- -      -      -      -     1.00    -      -      -     add	x12, x12, x13, lsr #63
- -     1.00    -      -      -      -      -      -     mov	x13, #29789
- -      -      -      -     1.00    -      -      -     smulh	x14, x11, x14
- -      -      -      -     1.00    -      -      -     mul	x11, x11, x10
- -      -     1.00    -      -      -      -      -     movk	x15, #29127, lsl #16
- -     1.00    -      -      -      -      -      -     movk	x13, #17873, lsl #16
- -      -     1.00    -      -      -      -      -     add	x8, x9, x8
- -      -     1.00    -      -      -      -      -     asr	x9, x11, #16
- -      -     1.00    -      -      -      -      -     movk	x15, #50972, lsl #32
- -     1.00    -      -      -      -      -      -     movk	x13, #23831, lsl #32
- -      -      -      -     1.00    -      -      -     mul	x10, x9, x10
- -     1.00    -      -      -      -      -      -     movk	x15, #7281, lsl #48
- -     1.00    -      -      -      -      -      -     movk	x13, #53620, lsl #48
- -     1.00    -      -      -      -      -      -     asr	x11, x14, #1
- -     1.00    -      -      -      -      -      -     asr	x10, x10, #16
- -     1.00    -      -      -      -      -      -     add	x8, x8, x12
- -      -      -      -     1.00    -      -      -     add	x11, x11, x14, lsr #63
- -      -      -      -     1.00    -      -      -     smulh	x9, x9, x15
- -      -      -      -     1.00    -      -      -     smulh	x10, x10, x13
- -      -      -      -     1.00    -      -      -     add	x9, x9, x9, lsr #63
- -      -     1.00    -      -      -      -      -     add	x8, x8, x11
- -     1.00    -      -      -      -      -      -     asr	x11, x10, #1
- -      -      -      -     1.00    -      -      -     add	x10, x11, x10, lsr #63
- -      -     1.00    -      -      -      -      -     add	x8, x8, x9
- -      -     1.00    -      -      -      -      -     add	x8, x8, x10
- -     1.00    -      -      -      -      -      -     sub	x8, x8, #395
- -     1.00    -      -      -      -      -      -     cmp	x0, #0
- -      -     1.00    -      -      -      -      -     cneg	x0, x8, lt
+ -      -     1.00    -      -      -      -      -     mov	w13, #28672
+ -     1.00    -      -      -      -      -      -     movk	w13, #2, lsl #16
+ -      -     1.00    -      -      -      -      -     mov	x14, #2415919104
+ -     1.00    -      -      -      -      -      -     movk	x14, #65533, lsl #32
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x13
+ -      -     1.00    -      -      -      -      -     movk	x14, #65535, lsl #48
+ -      -     1.00    -      -      -      -      -     lsr	x13, x13, #16
+ -      -      -      -     1.00    -      -      -     add	x12, x14, x12, lsl #16
+ -     1.00    -      -      -      -      -      -     add	x13, x13, #16, lsl #12
+ -      -      -      -     35.00   -      -      -     sdiv	x12, x12, x13
+ -      -      -      -     1.00    -      -      -     mul	x13, x12, x12
+ -     1.00    -      -      -      -      -      -     lsr	x13, x13, #16
+ -      -     1.00    -      -      -      -      -     sub	x14, x10, x13
+ -      -      -      -     1.00    -      -      -     mul	x14, x14, x13
+ -      -      -      -     1.00    -      -      -     add	x11, x11, x14, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x11, x11, x13
+ -      -      -      -     1.00    -      -      -     add	x9, x9, x11, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x9, x9, x13
+ -      -      -      -     1.00    -      -      -     add	x8, x8, x9, asr #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x13
+ -     1.00    -      -      -      -      -      -     asr	x8, x8, #16
+ -     1.00    -      -      -      -      -      -     mov	x9, #35747
+ -      -     1.00    -      -      -      -      -     add	x8, x8, #176, lsl #12
+ -      -     1.00    -      -      -      -      -     movk	x9, #47662, lsl #16
+ -      -      -      -     1.00    -      -      -     mul	x8, x8, x12
+ -     1.00    -      -      -      -      -      -     movk	x9, #41704, lsl #32
+ -     1.00    -      -      -      -      -      -     asr	x8, x8, #16
+ -      -     1.00    -      -      -      -      -     movk	x9, #11915, lsl #48
+ -      -      -      -     1.00    -      -      -     smulh	x8, x8, x9
+ -      -     1.00    -      -      -      -      -     asr	x9, x8, #1
+ -      -      -      -     1.00    -      -      -     add	x8, x9, x8, lsr #63
+ -     1.00    -      -      -      -      -      -     add	x8, x10, x8
+ -      -     1.00    -      -      -      -      -     sub	x8, x8, #2670
+ -      -     1.00    -      -      -      -      -     cmp	x0, #0
+ -     1.00    -      -      -      -      -      -     cneg	x0, x8, lt
 1.00    -      -      -      -      -      -      -     ret
