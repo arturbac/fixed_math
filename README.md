@@ -28,7 +28,6 @@ tag | function | fixed clang | fixed gcc | float | double | status
 0.9.1 | tan | 136 ms | |  104 ms | 206 ms 
 0.9.4 | tan | 136 ms | 130 ms |  104 ms | 206 ms 
 0.9.1 | atan | 113 ms | |  110 ms | 165 ms
-0.9.4 | atan | 112 ms | 67 ms | 110 ms | 165 ms
 0.9.5 | atan | 80 ms | 65 ms | 110 ms | 165 ms
 
 **Ryzen 9 - 3900X**
@@ -41,7 +40,6 @@ tag | function | fixed clang | fixed gcc | float | double | status
 0.9.1 | tan | 81 ms | | 66 ms | 180 ms |
 0.9.4 | tan | 78 ms | 88 ms | 67 ms | 176 ms |
 0.9.1 | atan | 90 ms | | 78 ms | 162 ms |
-0.9.4 | atan | 88 ms | 58ms | 77 ms | 161 ms |
 0.9.5 | atan | 64 ms | 55ms | 77 ms | 161 ms |
 
 ## installation
