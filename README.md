@@ -29,6 +29,7 @@ tag | function | fixed clang | fixed gcc | float | double | status
 0.9.4 | tan | 136 ms | 130 ms |  104 ms | 206 ms 
 0.9.1 | atan | 113 ms | |  110 ms | 165 ms
 0.9.4 | atan | 112 ms | 67 ms | 110 ms | 165 ms
+0.9.5 | atan | 80 ms | 65 ms | 110 ms | 165 ms
 
 **Ryzen 9 - 3900X**
 tag | function | fixed clang | fixed gcc | float | double | status
@@ -41,6 +42,7 @@ tag | function | fixed clang | fixed gcc | float | double | status
 0.9.4 | tan | 78 ms | 88 ms | 67 ms | 176 ms |
 0.9.1 | atan | 90 ms | | 78 ms | 162 ms |
 0.9.4 | atan | 88 ms | 58ms | 77 ms | 161 ms |
+0.9.5 | atan | 64 ms | 55ms | 77 ms | 161 ms |
 
 ## installation
 
@@ -107,7 +109,7 @@ or run them wit CMake/CTest "ninja/make test" as they are available in default C
 - [x] sin, cos - error ~<= 0.0001
 - [x] tan - error on normalized range |x| <= PI/4 ~<= 0.0001, PI/4 |x| <= PI/2 ~<=0.001 exept near 90deg ~<= 0.01
 - [x] tan - improve calculations, limit tan__ to |x|<=pi/4
-- [x] atan, atan2 - error  ~<= 0.000035
+- [x] atan, atan2 - error  ~<= 0.00005
 - [x] asin error  ~<= 0.0001
 - [    ] remove all old compat code that is compiled
 - [    ] cover all functionality with static_assert unit tests
