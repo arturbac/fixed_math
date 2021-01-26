@@ -62,6 +62,7 @@ fixed_t is typename of fixed point arithmetic type with common operators like, +
 
 ```C++
 #include <fixedmath/fixed_math.hpp>
+#include <fixedmath/iostream.h>
 
 using fixedmath::fixed_t;
 
@@ -91,6 +92,8 @@ double some_double { static_cast<double>(some_fixed) };
 // for constant values postfix operator _fix may be used
 some_fixed = some_float * 2.45_fix; //operation with float is promoted to fixed_t
 some_double = 4.15 * some_fixed; //operation with double is promoted to double
+
+std::cout << some_fixed;
 
 ```
 ## unit tests
