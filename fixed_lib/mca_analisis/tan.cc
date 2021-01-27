@@ -1,4 +1,4 @@
-#include "../include/fixed_math.hpp"
+#include "../include/fixedmath/fixed_math.hpp"
 
 using fixedmath::fixed_t;
 

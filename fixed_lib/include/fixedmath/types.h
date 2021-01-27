@@ -65,9 +65,6 @@ namespace fixedmath
     {
     fixed_internal v;
     
-    //making double implicit causes invalid comparisions with implicit double convertion
-    explicit constexpr operator double() const noexcept;
-    
     template<typename floating_or_integral_type>
     explicit constexpr operator floating_or_integral_type() const noexcept;
     

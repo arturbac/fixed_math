@@ -30,6 +30,8 @@
 
 namespace fixedmath
 {
+  template<typename arithmethic_type>
+  constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept;
   
   template<typename arithmethic_type>
   constexpr fixed_t::fixed_t( arithmethic_type const & value )
@@ -116,13 +118,7 @@ namespace fixedmath
     }
 
   //------------------------------------------------------------------------------------------------------
-  //implicit convertion to double
-  [[ nodiscard, gnu::always_inline ]]
-  constexpr fixed_t::operator double() const noexcept
-    {
-    return fixed_to_floating_point<double>( *this );
-    }
-  
+
   template<typename arithmethic_type>
   constexpr arithmethic_type fixed_to_arithmetic( fixed_t value ) noexcept
     {
@@ -965,7 +961,7 @@ namespace fixedmath
     {
 
     template<int prec_>
-    constexpr fixed_internal asin__( fixed_internal x )
+    constexpr fixed_internal asin( fixed_internal x )
       {
       fixed_internal x2{ mul_<prec_>(x,x) };
         
@@ -994,7 +990,7 @@ namespace fixedmath
   constexpr fixed_t asin( fixed_t x ) noexcept
     {
     using detail::set_sign;
-    using detail::asin__;
+    using detail::asin;
     
     fixed_internal x_{x.v};
     bool sign_ {};
@@ -1011,14 +1007,14 @@ namespace fixedmath
 
       if( x_ <= (0.60_fix).v )
         {
-        fixed_internal result{ asin__<prec>(x_<<ext_prec)>>ext_prec };
+        fixed_internal result{ asin<prec>(x_<<ext_prec)>>ext_prec };
         return set_sign( sign_, result );
         }
       else 
         {
         // asin(x) = pi/2-2*asin(sqrt((1-x)/2))
         fixed_internal sqr { sqrt( as_fixed((_1 - x_)>>1)).v };
-        fixed_internal result{ fixpidiv2.v - (asin__<prec>(sqr <<ext_prec)>>(ext_prec-1)) };
+        fixed_internal result{ fixpidiv2.v - (asin<prec>(sqr <<ext_prec)>>(ext_prec-1)) };
         return set_sign( sign_, result );
         }
       }
