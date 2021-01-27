@@ -54,7 +54,16 @@ Thise are known to compile without errors, if You found any problem with c++17 c
  - clang version 11.0.1 + llvm-libcxx on x86-64
  - gcc 10.2.0 on x86-64
  - clang version 10.0.1 x86-64 + gcc-libstdc++ 10.2.0
+ - limitied msvc19 support \*
  
+ \*  msvc problems
+  - constexpresions evaulated at compile time are causing compiler crash like one below in code block, this is really riduculus.
+  - there is no eficient easy way to calculate clz at compile time and runtime whith single code, as msvc doesn't have support for constexpr clz like clang or gcc with builtin. Implementation of countl_zero in msvc c++20 is somehow like a joke, different code will be exceuted at constexpr evaluation, different at runtime ... Thats not a way I implement code. So for c++17 msvc compile mode is simply a loop constexpr from msvc stl used, or for c++20 mode when available std::countl_zero. I'm not going to write broken implementations of countl_zero that can work differently at runtime compared to compile time and thus pass all bugs uncatched in unit tests.
+  
+  ```
+  1>D:\projects\fixed_math\fixed_lib\include\fixedmath\unittests\addition.h(19,43): fatal error C1001: Wewnętrzny błšd kompilatora.
+  1 > (plik kompilatora d : \A01\_work\2\s\src\vctools\Compiler\CxxFE\sl\p1\c\constexpr\constexpr.cpp, wiersz 6887)
+  ```
 ## usage
 fixed_t is typename of fixed point arithmetic type with common operators like, +, -, * ..
 
@@ -115,7 +124,7 @@ or run them wit CMake/CTest "ninja/make test" as they are available in default C
 - [    ] remove all old compat code that is compiled
 - [    ] cover all functionality with static_assert unit tests
 - [x] support clang, gcc c++17 compilers
-- [    ] support msvc c++17 compiler
+- [x] support msvc c++17 compiler, partial see notes for compilers tested in \"c++ compilers\"
 - [x] performance comparisions on arm64 and x86 with float/double arithemetic
 - [    ] dual licence project with MIT and BOOST licence
 
