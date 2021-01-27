@@ -22,7 +22,7 @@ namespace fixedmath
   static_assert( -1_fix == -limits__::one());
   static_assert( as_fixed(0x80000000LL) == 32768_fix);
   static_assert( as_fixed(0) == 0_fix);
-  static_assert( as_fixed(1l<<32) == 65536_fix );
+  static_assert( as_fixed(1ll<<32) == 65536_fix );
   
   //------------------------------------------------------------------------------------------------------
   //

@@ -37,6 +37,7 @@
 namespace fixedmath
 {
   using fixed_internal = int64_t;
+  using fixed_internal_unsigned = uint64_t;
 
   //the idea behind carrier is to use it as carier of internal int64 value in format of fixed to distinguish it from int64 integral type.
   struct fix_carrier_t 
@@ -55,12 +56,6 @@ namespace fixedmath
     };
   
   struct fixed_t;
-
-  template<typename integral_type>
-  constexpr fixed_t integral_to_fixed(integral_type value) noexcept;
-  
-  template<typename arithmethic_type>
-  constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept;
   
   template<typename integral_type>
   constexpr integral_type fixed_to_integral ( fixed_t value ) noexcept;

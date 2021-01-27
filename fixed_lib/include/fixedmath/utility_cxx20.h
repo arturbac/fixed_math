@@ -76,36 +76,57 @@ namespace cxx20
   
   template<typename _Tp>
   struct remove_cvref { using type = remove_cvref_t<_Tp>; };
-  
+
+
   template<typename T>
   constexpr int countl_zero(T value ) noexcept
     {
-    static_assert(std::is_integral<T>::value && sizeof(T)<=8);
-    if constexpr( sizeof(T) < 4 )
+    static_assert(std::is_unsigned_v<T>);
+    static_assert(std::is_integral<T>::value && sizeof(T) <= 8);
+#if defined(_MSC_VER)
+  #if _HAS_CXX20
+      return std::countl_zero(value);
+  #else
+      //msvc c++17 naive loop implementation
+      return std::_Countl_zero_fallback(value);
+  #endif
+#else
+    if constexpr (sizeof(T) < 4)
       {
-      int lz{ __builtin_clz( value ) };
+      int lz{ __builtin_clz(value) };
       return lz - 8 * (sizeof(int) - sizeof(T));
       }
-    else if constexpr( sizeof(T) == 4 )
-      return __builtin_clz( value );
-    else if constexpr( sizeof(T) == 8 )
+    else if constexpr (sizeof(T) == 4)
+      return __builtin_clz(value);
+    else if constexpr (sizeof(T) == 8)
       {
-      if constexpr( sizeof(long) == 4 )
-        return __builtin_clzll( value );
+      if constexpr (sizeof(long) == 4)
+        return __builtin_clzll(value);
       else
-        return __builtin_clzl( value );
+        return __builtin_clzl(value);
       }
+#endif
     }
-  static_assert( countl_zero( uint8_t(1)) == 8 - 1 );
-  static_assert( countl_zero( uint16_t(1)) == 16 - 1 );
-  static_assert( countl_zero(1) == 32 - 1 );
-  static_assert( countl_zero(2) == 32 - 2 );
-  static_assert( countl_zero(4) == 32 - 3 );
-  static_assert( countl_zero(int64_t(4)) == 64 - 3 );
-  
+
+  static_assert( countl_zero(uint8_t(1)) == 8 - 1 );
+  static_assert( countl_zero(uint16_t(1)) == 16 - 1 );
+  static_assert(countl_zero(uint32_t{ 1 }) == 32 - 1);
+  static_assert( countl_zero(uint32_t{ 2 }) == 32 - 2 );
+  static_assert( countl_zero(uint32_t{ 4 }) == 32 - 3 );
+  static_assert( countl_zero(uint64_t(4)) == 64 - 3 );
+
   template<typename T>
   constexpr int countr_zero(T value ) noexcept
     {
+    static_assert(std::is_unsigned_v<T>);
+#if defined(_MSC_VER)
+#if _HAS_CXX20
+    return std::countr_zero(value);
+#else
+    return std::_Countr_zero(value);
+#endif
+#else
+    
     static_assert(std::is_integral<T>::value && sizeof(T)<=8);
     if constexpr( sizeof(T) < 4 )
       {
@@ -121,5 +142,6 @@ namespace cxx20
       else
         return __builtin_ctz( value );
       }
+#endif
     }
   }

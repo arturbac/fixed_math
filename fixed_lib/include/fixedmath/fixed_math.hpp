@@ -21,7 +21,8 @@
 // SOFTWARE.
 
 #pragma once
-
+#include "types.h"
+#include "limits.h"
 #include "math.h"
 
 namespace fixedmath

@@ -104,7 +104,7 @@ namespace fixedmath::detail
     
   ///\returns the highest power of 4 that is less than or equal to \param value
   [[ gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal highest_pwr4_clz( fixed_internal value )
+  constexpr fixed_internal highest_pwr4_clz( fixed_internal_unsigned value )
     {
     if( fixed_likely( value != 0 ) )
       {
@@ -120,10 +120,10 @@ namespace fixedmath::detail
     }
     
   [[ gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal highest_pwr4( fixed_internal value )
+  constexpr fixed_internal highest_pwr4( fixed_internal_unsigned value )
     {
     // one starts at the highest power of four <= than the argument.
-    fixed_internal pwr4 { 1ll << 62 }; // second-to-top bit set
+    fixed_internal_unsigned pwr4 { 1ll << 62 }; // second-to-top bit set
     
     while (pwr4 > value)
       pwr4 >>= 2;

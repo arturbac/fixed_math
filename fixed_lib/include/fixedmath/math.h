@@ -841,8 +841,8 @@ namespace fixedmath
   //------------------------------------------------------------------------------------------------------
   // atan
   // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
-  //  { x - { x ^ 3 over 3 } + { x ^ 5 over 5 } - { x ^ 7 over 7 } + { x ^ 9 over 9 } - { x ^ 11 over 11 } } 
-  // { { 1 over 11 } x left ( { 11 + x ^ 2 left ( { - { 11 over 3 }  + x ^ 2 left ( { { 11 over 5 } + x ^ 2 left ( { - { 11 over 7 } + x ^ 2 left ( { { 11 over 9 } - x ^ 2 } right ) } right ) } right ) } right ) } right ) } 
+  //  { x - { x ^ 3 over 3 } + { x ^ 5 over 5 } - { x ^ 7 over 7 } + { x ^ 9 over 9 } - { x ^ 11 over 11 } }
+  // { { 1 over 11 } x left ( { 11 + x ^ 2 left ( { - { 11 over 3 } + x ^ 2 left ( { { 11 over 5 } + x ^ 2 left ( { - { 11 over 7 } + x ^ 2 left ( { { 11 over 9 } - x ^ 2 } right ) } right ) } right ) } right ) } right ) }
   namespace detail
     {
 #if 0
