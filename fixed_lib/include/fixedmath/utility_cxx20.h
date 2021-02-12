@@ -23,7 +23,10 @@
 #pragma once
 #include <type_traits>
 #include <cstdint>
-
+#include <limits>
+#if __cplusplus > 201703L
+#include <bit>
+#endif
 namespace cxx20
 {
 
@@ -90,20 +93,29 @@ namespace cxx20
       //msvc c++17 naive loop implementation
       return std::_Countl_zero_fallback(value);
   #endif
+#elif __cplusplus > 201703L
+    return std::countl_zero( value );
 #else
-    if constexpr (sizeof(T) < 4)
+    constexpr auto number_digits { std::numeric_limits<T>::digits };
+
+    if (value == 0)
+      return number_digits;
+    else
       {
-      int lz{ __builtin_clz(value) };
-      return lz - 8 * (sizeof(int) - sizeof(T));
-      }
-    else if constexpr (sizeof(T) == 4)
-      return __builtin_clz(value);
-    else if constexpr (sizeof(T) == 8)
-      {
-      if constexpr (sizeof(long) == 4)
-        return __builtin_clzll(value);
-      else
-        return __builtin_clzl(value);
+      if constexpr (sizeof(T) < 4)
+        {
+        int lz{ __builtin_clz(value) };
+        return lz - 8 * (sizeof(int) - sizeof(T));
+        }
+      else if constexpr (sizeof(T) == 4)
+        return __builtin_clz(value);
+      else if constexpr (sizeof(T) == 8)
+        {
+        if constexpr (sizeof(long) == 4)
+          return __builtin_clzll(value);
+        else
+          return __builtin_clzl(value);
+        }
       }
 #endif
     }
@@ -125,22 +137,32 @@ namespace cxx20
 #else
     return std::_Countr_zero(value);
 #endif
-#else
     
+#elif __cplusplus > 201703L
+    return std::countr_zero( value );
+#else
     static_assert(std::is_integral<T>::value && sizeof(T)<=8);
-    if constexpr( sizeof(T) < 4 )
+    
+    constexpr auto number_digits { std::numeric_limits<T>::digits };
+
+    if (value == 0)
+      return number_digits;
+    else
       {
-      int lz{ __builtin_ctz( value ) };
-      return lz - 8 * (sizeof(int) - sizeof(T));
-      }
-    else if constexpr( sizeof(T) == 4 )
-      return __builtin_ctz( value );
-    else if constexpr( sizeof(T) == 8 )
-      {
-      if constexpr( sizeof(long) == 4 )
+      if constexpr( sizeof(T) < 4 )
+        {
+        int lz{ __builtin_ctz( value ) };
+        return lz - 8 * (sizeof(int) - sizeof(T));
+        }
+      else if constexpr( sizeof(T) == 4 )
         return __builtin_ctz( value );
-      else
-        return __builtin_ctz( value );
+      else if constexpr( sizeof(T) == 8 )
+        {
+        if constexpr( sizeof(long) == 4 )
+          return __builtin_ctz( value );
+        else
+          return __builtin_ctz( value );
+        }
       }
 #endif
     }
