@@ -628,9 +628,10 @@ namespace fixedmath
       uhi = ulo;
       ulo = static_cast<uint64_t>(lh.v);
       }
-
+    if( fixed_unlikely(uhi == 0) )
+      return 0_fix;
     //check hi for overflow and shift right with d
-    if( uhi >= (1ull<<30) )
+    else if( uhi >= (1ull<<30) )
       {
       int rshbits{ 48 - cxx20::countl_zero( uhi ) };
       uhi >>= rshbits;
