@@ -597,8 +597,7 @@ namespace fixedmath
   [[ nodiscard, gnu::const]]
   inline fixed_t sqrt( fixed_t value ) noexcept
     {
-    fixed_internal result{ static_cast<fixed_internal>( std::sqrt( static_cast<double>(value) / 65536. ) )  };
-    return as_fixed(result);
+    return floating_point_to_fixed(std::sqrt( fixed_to_floating_point<double>(value)));
     }
 #endif
   [[nodiscard,FIXEDMATH_PUBLIC,deprecated]]
