@@ -51,8 +51,8 @@ namespace fixedmath
   constexpr fixed_t integral_to_fixed(integral_type value) noexcept
     { 
     static_assert( detail::is_integral_v<integral_type>,"Must be integral type");
-    if( fixed_likely(cxx20::cmp_less(value, detail::limits__::max_integral()) && 
-                     cxx20::cmp_greater(value, detail::limits__::min_integral()) ) ) 
+    if( fixed_likely(cxx20::cmp_less_equal(value, detail::limits__::max_integral()) && 
+                     cxx20::cmp_greater_equal(value, detail::limits__::min_integral()) ) ) 
       {
       if constexpr ( std::is_unsigned<integral_type>::value )
         return fix_carrier_t{detail::unsigned_shift_left_unsigned<16>(value)};
