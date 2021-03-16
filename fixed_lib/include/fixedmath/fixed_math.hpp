@@ -21,9 +21,20 @@
 // SOFTWARE.
 
 #pragma once
+
+#if defined(_MSC_VER)
+__pragma( warning (push) )
+__pragma( warning(disable : 5030) ) //unknown attribute
+__pragma( warning(disable : 4554) ) //false positive about order of execution >>
+
+#endif
 #include "types.h"
 #include "limits.h"
 #include "math.h"
+
+#if defined(_MSC_VER)
+__pragma( warning (pop) )
+#endif
 
 namespace fixedmath
 {
