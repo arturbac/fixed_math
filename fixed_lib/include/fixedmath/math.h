@@ -640,7 +640,7 @@ namespace fixedmath
     //else check lo for underflow and shift left with d
     else if( ulo < (1<<16) )
       {
-      int lshbits{ 16 - cxx20::countr_zero( uhi ) };
+      int lshbits{ std::max(16 - cxx20::countr_zero( uhi ),0) };
       uhi <<= lshbits;
       ulo <<= lshbits;
       return as_fixed( sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_) ).v  >> lshbits);

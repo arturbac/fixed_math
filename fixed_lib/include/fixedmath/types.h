@@ -31,8 +31,8 @@
 
 #define FIXEDMATH_VERSION_MAJOR 0
 #define FIXEDMATH_VERSION_MINOR 9
-#define FIXEDMATH_VERSION_PATCH 7
-#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.7 beta"
+#define FIXEDMATH_VERSION_PATCH 8
+#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.8 beta"
 
 namespace fixedmath
 {
