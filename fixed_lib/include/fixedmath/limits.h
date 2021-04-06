@@ -65,7 +65,7 @@ namespace std
     static constexpr value_type quiet_NaN() noexcept { return fix_carrier_t{fixed_internal{0x7FFFFFFFFFFFFFFFll}}; }
     
     static constexpr int32_t max_integral() noexcept { return 2147483647; }
-    static constexpr int32_t min_integral() noexcept{ return -2147483648; };
+    static constexpr int32_t min_integral() noexcept{ return -2147483647; };
     };
 
 }
