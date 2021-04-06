@@ -97,7 +97,7 @@ namespace fixedmath
   constexpr integral_type fixed_to_integral ( fixed_t value ) noexcept
     { 
     static_assert( detail::is_integral_v<integral_type>,"Must be integral type");
-    fixed_internal tmp{ ( value.v >> 16 ) + (( value.v & 0x8000) >> 15) };
+    fixed_internal tmp{ ( value.v >> 16 ) /*+ (( value.v & 0x8000) >> 15)*/ };
     using al = std::numeric_limits<integral_type>;
     if( cxx20::cmp_greater_equal( tmp, al::min() ) && cxx20::cmp_less_equal( tmp, al::max() ) )
       return static_cast<integral_type>( tmp );

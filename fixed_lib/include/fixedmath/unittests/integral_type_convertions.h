@@ -31,6 +31,7 @@ namespace fixedmath
   static_assert( fixed_to_integral<int>(0.25_fix) == 0 );
   static_assert( fixed_to_integral<int>(1.25_fix) == 1 );
   static_assert( fixed_to_integral<int>(100.25_fix) == 100 );
-  static_assert( fixed_to_integral<int>(-100.25_fix) == -100 );
+  static_assert( fixed_to_integral<int>(100.55_fix) == 100 );
+  static_assert( fixed_to_integral<unsigned>(100.55_fix) == 100 );
   
 }
