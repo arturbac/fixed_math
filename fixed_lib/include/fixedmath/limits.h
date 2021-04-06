@@ -36,6 +36,7 @@ namespace std
     using fixed_internal = fixedmath::fixed_internal;
     using fix_carrier_t = fixedmath::fix_carrier_t;
     
+    static constexpr bool is_integer { false };
     static constexpr bool is_specialized { true };
     static constexpr bool is_signed { true };
     static constexpr bool is_exact{ true };
