@@ -27,6 +27,7 @@
 #include "utility_cxx20.h"
 #include "numbers.h"
 #include "detail/common.h"
+#include <algorithm>
 
 namespace fixedmath
 {
