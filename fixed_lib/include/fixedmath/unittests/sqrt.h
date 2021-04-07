@@ -32,7 +32,9 @@ namespace fixedmath
   static_assert( test_hypot(-14.991608_fix,-0.837158_fix, 15.0149536132812500_fix));
   static_assert( test_hypot(-0.774933_fix,-4.295090_fix, 4.3644256591796875_fix));
   static_assert( test_hypot(-20.245346_fix,-0.909424_fix, 20.2657470703125_fix));
-    
+  static_assert( test_hypot(14.9916076660156250_fix,0_fix, 14.9916076660156250_fix));
+  static_assert( test_hypot(0_fix, 14.9916076660156250_fix, 14.9916076660156250_fix));
+  
   static_assert( test_hypot(as_fixed(1ul<<30),as_fixed(1<<0ul), 16384_fix) );
   static_assert( test_hypot(as_fixed(1ul<<33),as_fixed(1ul<<31), 135104_fix) );
   static_assert( test_hypot(as_fixed(1ul<<32),as_fixed(1ul<<31), 73270_fix));
