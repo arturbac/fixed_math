@@ -27,16 +27,16 @@ namespace fixedmath
   static_assert( floor(-0.25_fix) == -1_fix );
   static_assert( floor(0.25_fix) == 0_fix );
   static_assert( floor(0.95_fix) == 0_fix );
-  static_assert_equal( (floor(1.25_fix)).v , (1_fix).v );
-  static_assert_equal( (floor(-1.25_fix)).v , (-2_fix).v );
+  static_assert( floor(1.25_fix) == 1_fix );
+  static_assert( floor(-1.25_fix) == -2_fix );
   
   //------------------------------------------------------------------------------------------------------
   //
   // angle_to_radians
   //
-  static_assert_equal( (angle_to_radians(0)).v , (0_fix).v );
-  static_assert_equal( (angle_to_radians(180)).v , (3.1415926536_fix).v );
-  static_assert_equal( (angle_to_radians(180)).v , phi.v );
-  static_assert_equal( (angle_to_radians(90)).v , (phi/2).v );
-  static_assert_equal( (angle_to_radians(45)).v , (phi/4).v );
+  static_assert( angle_to_radians(0) == 0_fix );
+  static_assert( angle_to_radians(180) == 3.1415926536_fix );
+  static_assert( angle_to_radians(180) == phi );
+  static_assert( angle_to_radians(90) == phi/2 );
+  static_assert( angle_to_radians(45) == phi/4 );
 }
