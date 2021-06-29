@@ -50,7 +50,8 @@ Just add fixed_lib/include to include path and #include <fixedmath/fixed_math.hp
 ## c++ compilers
 
 Thise are known to compile without errors, if You found any problem with c++17 compiler let me know and post issue as stl shoudn't be a problem
- - clang version 11.0.1 + gcc-libstdc++ 10.2.0 \(main development platform\) on x86-64 and aarch64
+ - clang version 12.0.0 + llvm-libcxx \(main development platform\) on freebsd 13 x86-64
+ - clang version 11.0.1 + gcc-libstdc++ 10.2.0 \(main development platform\) on gentoo linux x86-64 and aarch64
  - clang version 11.0.1 + llvm-libcxx on x86-64
  - gcc 10.2.0 on x86-64
  - clang version 10.0.1 x86-64 + gcc-libstdc++ 10.2.0
