@@ -27,8 +27,8 @@ namespace fixedmath::detail
     }
     
   template<typename value_type,
-    typename = std::enable_if_t<detail::is_integral_v<value_type>
-                              && std::is_unsigned_v<value_type>>
+    typename = std::enable_if_t<is_integral_v<value_type>
+                              && is_unsigned_v<value_type>>
     >
   [[nodiscard, gnu::const, gnu::always_inline ]]
   constexpr auto promote_integral_unsigned_to_signed( value_type value )
@@ -41,7 +41,7 @@ namespace fixedmath::detail
   [[nodiscard, gnu::const, gnu::always_inline ]]
   constexpr auto promote_type_to_signed( value_type value )
     {
-    if constexpr ( std::is_signed_v<value_type> )
+    if constexpr ( detail::is_signed_v<value_type> )
       return value;
     else
       return promote_integral_unsigned_to_signed( value );

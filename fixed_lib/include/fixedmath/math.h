@@ -57,7 +57,7 @@ namespace fixedmath
     if( fixed_likely(cxx20::cmp_less_equal(value, detail::limits__::max_integral()) && 
                      cxx20::cmp_greater_equal(value, detail::limits__::min_integral()) ) ) 
       {
-      if constexpr ( std::is_unsigned<integral_type>::value )
+      if constexpr ( detail::is_unsigned_v<integral_type> )
         return fix_carrier_t{detail::unsigned_shift_left_unsigned<16>(value)};
       else
         return fix_carrier_t{detail::unsigned_shift_left_signed<16>(value)};

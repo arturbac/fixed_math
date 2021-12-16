@@ -20,7 +20,7 @@ constexpr bool addition_unit_tests() noexcept
   static_assert( 1_fix + 1_fix  == 2_fix );
   static_assert( 10.4_fix + 1_fix == 11.4_fix );
   static_assert( -10_fix+ 1_fix == -9_fix );
-
+ 
   static_assert( 0_fix + 1  == 1_fix );
   static_assert( 1 + 1_fix  == 2_fix );
   static_assert( 10.4 + 1_fix == 11.4 );
@@ -60,6 +60,13 @@ constexpr bool addition_unit_tests() noexcept
   static_assert( test_resulting_type<fixed_t>( 1_fix  + 1.f ) );
   static_assert( test_resulting_type<double>( 1. + 1_fix ) );
   static_assert( test_resulting_type<double>( 1_fix  + 1. ) );
+  
+  constexpr auto i1 = 1_fix;
+  constexpr auto i2 = 10_fix;
+  auto const & i1r { i1 };
+  auto const & i2r { i2 };
+  if( i1r + i2r != 11_fix )
+    return false;
   
   return true;
   }
