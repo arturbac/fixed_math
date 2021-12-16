@@ -129,7 +129,7 @@ or run them wit CMake/CTest "ninja/make test" as they are available in default C
 - [x] support clang, gcc c++17 compilers
 - [x] support msvc c++17 compiler, partial see notes for compilers tested in \"c++ compilers\"
 - [x] performance comparisions on arm64 and x86 with float/double arithemetic
-- [x] dual licence project with MIT and Boost Software License licence
+- [x] dual licence project with MIT Licence and Boost Software License
 
 ## release notes
 ### version 0.9.10
@@ -146,6 +146,6 @@ or run them wit CMake/CTest "ninja/make test" as they are available in default C
 
 If you think you have found a bug, please file an issue via issue submission [form](https://github.com/arturbac/fixed_math/issues). Include the relevant information to reproduce the bug for example as static_assert( expression ), if it is important also the compiler version and target architecture. Feature requests and contributions can be filed as issues or pull requests.
 
-## License
+## Licence
 
 This library is available to anybody free of charge, under the terms of MIT License or Boost Software License - Version 1.0 (see LICENSE.md).
