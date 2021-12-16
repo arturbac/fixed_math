@@ -4,6 +4,9 @@
 
 namespace fixedmath
 {
+[[nodiscard]]
+constexpr bool integral_type_convertions_unit_tests() noexcept
+  {
   //------------------------------------------------------------------------------------------------------
   //
   // integral_to_fixed unit tests
@@ -33,5 +36,7 @@ namespace fixedmath
   static_assert( fixed_to_integral<int>(100.25_fix) == 100 );
   static_assert( fixed_to_integral<int>(100.55_fix) == 100 );
   static_assert( fixed_to_integral<unsigned>(100.55_fix) == 100 );
-  
+  return true;
+  }
+  static_assert(integral_type_convertions_unit_tests());
 }

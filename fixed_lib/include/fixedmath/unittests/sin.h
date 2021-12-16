@@ -4,10 +4,6 @@
 
 namespace fixedmath
 {
-  //------------------------------------------------------------------------------------------------------
-  //
-  // sin
-  //
   constexpr bool test_sin( fixed_t x, fixed_t expected )
     {
     return abs(sin( x ) - expected ) < 0.0001_fix &&
@@ -16,6 +12,21 @@ namespace fixedmath
       abs(sin( x + 4*phi ) - expected ) < 0.0001_fix;
     }
     
+  constexpr bool test_cos( fixed_t x, fixed_t expected )
+    {
+    return abs(cos( x ) - expected ) < 0.0001_fix &&
+      abs(cos( x + 2*phi ) - expected ) < 0.0001_fix &&
+      abs(cos( x - 2*phi ) - expected ) < 0.0001_fix &&
+      abs(cos( x + 4*phi ) - expected ) < 0.0001_fix;
+    }
+[[nodiscard]]
+constexpr bool sin_unit_tests() noexcept
+  {
+  //------------------------------------------------------------------------------------------------------
+  //
+  // sin
+  //
+
   static_assert( test_sin( phi + phi/2 ,  -0.9998626708984375_fix ));
   static_assert( test_sin( phi + phi/4 ,  -0.7071075439453125_fix ));
   static_assert( test_sin( phi,            0_fix ));
@@ -59,13 +70,7 @@ namespace fixedmath
   //
   // cos
   //
-  constexpr bool test_cos( fixed_t x, fixed_t expected )
-    {
-    return abs(cos( x ) - expected ) < 0.0001_fix &&
-      abs(cos( x + 2*phi ) - expected ) < 0.0001_fix &&
-      abs(cos( x - 2*phi ) - expected ) < 0.0001_fix &&
-      abs(cos( x + 4*phi ) - expected ) < 0.0001_fix;
-    }
+
   static_assert( test_cos( 2 * phi,           0.9998474121093750_fix ));
   static_assert( test_cos( phi,              -0.9998626708984375_fix ));
   static_assert( test_cos( phi /2 + phi/4,   -0.7071075439453125_fix ));
@@ -82,4 +87,8 @@ namespace fixedmath
   static_assert( test_cos( -phi,             -0.9998626708984375_fix ));
   static_assert( test_cos( 2 * -phi,         0.9998474121093750_fix ));
   
+  return true;
+  }
+  
+  static_assert(sin_unit_tests());
 }

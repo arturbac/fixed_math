@@ -4,6 +4,9 @@
 
 namespace fixedmath
 {
+[[nodiscard]]
+constexpr bool fixed_construction_unit_tests() noexcept
+  {
   //------------------------------------------------------------------------------------------------------
   // fixed explicit arithemtic type constructor
   //
@@ -24,5 +27,9 @@ namespace fixedmath
   static_assert( fixed_t{ 4096ll }  == 4096_fix );
   static_assert( fixed_t{ -4096ll }  == -4096_fix );
   static_assert( fixed_t{ 4096llu } == 4096_fix );
-
+  
+  return true;
+  }
+  
+  static_assert(fixed_construction_unit_tests());
 }

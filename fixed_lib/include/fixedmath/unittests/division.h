@@ -8,6 +8,9 @@ namespace fixedmath
   //
   // fixed_division
   //
+[[nodiscard]]
+constexpr bool division_unit_tests() noexcept
+  {
   static_assert( 1_fix / 1_fix  == 1_fix );
   static_assert( -1_fix / 1_fix  == -1_fix );
   static_assert( 1_fix / -1_fix  == -1_fix );
@@ -65,5 +68,9 @@ namespace fixedmath
   static_assert( test_resulting_type<double>( 1. / 1_fix ) );
   static_assert( test_resulting_type<double>( 1_fix / 1. ) );
   
+  return true;
+  }
+  
+  static_assert(division_unit_tests());
 }
 

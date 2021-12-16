@@ -4,6 +4,9 @@
 
 namespace fixedmath
 {
+[[nodiscard]]
+constexpr bool multiplication_unit_tests() noexcept
+  {
   //------------------------------------------------------------------------------------------------------
   //
   // fixed_multiply
@@ -53,4 +56,8 @@ namespace fixedmath
   static_assert( test_resulting_type<double>( 1. * 1_fix ) );
   static_assert( test_resulting_type<double>( 1_fix * 1. ) );
   
+  return true;
+  }
+  
+  static_assert(multiplication_unit_tests());
 }

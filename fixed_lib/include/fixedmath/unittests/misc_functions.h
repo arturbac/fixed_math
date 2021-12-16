@@ -4,6 +4,9 @@
 
 namespace fixedmath
 {
+[[nodiscard]]
+constexpr bool misc_functions_unit_tests() noexcept
+  {
   //------------------------------------------------------------------------------------------------------
   //
   // ceil
@@ -39,4 +42,9 @@ namespace fixedmath
   static_assert( angle_to_radians(180) == phi );
   static_assert( angle_to_radians(90) == phi/2 );
   static_assert( angle_to_radians(45) == phi/4 );
+  
+  return true;
+  }
+  
+  static_assert(misc_functions_unit_tests());
 }

@@ -8,6 +8,9 @@ namespace fixedmath
   //
   // fixed_substract
   //
+[[nodiscard]]
+constexpr bool substraction_unit_tests() noexcept
+  {
   static_assert( 0.2_fix - 1.2_fix  == -1_fix );
   static_assert( 3.2_fix - 1.2_fix  == 2_fix );
   static_assert( -4.2_fix - 1.2_fix  == -5.4_fix );
@@ -45,4 +48,8 @@ namespace fixedmath
   static_assert( test_resulting_type<fixed_t>( 1_fix - 1.f ) );
   static_assert( test_resulting_type<double>( 1. - 1_fix ) );
   static_assert( test_resulting_type<double>( 1_fix  - 1. ) );
+  
+  return true;
+  }
+  static_assert(substraction_unit_tests());
 }

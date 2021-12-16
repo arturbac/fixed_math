@@ -4,7 +4,9 @@
 
 namespace fixedmath
 {
-
+[[nodiscard]]
+constexpr bool floating_point_type_convertions_unit_tests() noexcept
+  {
   //------------------------------------------------------------------------------------------------------
   //
   // floating_point_to_fixed unit tests
@@ -63,5 +65,8 @@ namespace fixedmath
   static_assert( fixed_to_floating_point<double>(floating_point_to_fixed(-0.25f)) == -0.25 );
   static_assert( fixed_to_floating_point<double>(floating_point_to_fixed(-0.5f)) == -0.5 );
   static_assert( fixed_to_floating_point<double>(floating_point_to_fixed(-0.75f)) == -0.75 );
+  return true;
+  }
   
+  static_assert(floating_point_type_convertions_unit_tests());
 }

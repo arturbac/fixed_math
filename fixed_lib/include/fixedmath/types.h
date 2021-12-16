@@ -21,91 +21,91 @@
 // SOFTWARE.
 
 #pragma once
-#include <cstdint>
-#include <type_traits>
-#include <limits>
-#include <cmath>
-#include "utility_cxx20.h"
 
-
+#include "detail/type_traits.h"
 
 #define FIXEDMATH_VERSION_MAJOR 0
 #define FIXEDMATH_VERSION_MINOR 9
-#define FIXEDMATH_VERSION_PATCH 9
-#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.9 beta"
+#define FIXEDMATH_VERSION_PATCH 10
+#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.10"
 
 namespace fixedmath
 {
-  using fixed_internal = int64_t;
-  using fixed_internal_unsigned = uint64_t;
-
   //the idea behind carrier is to use it as carier of internal int64 value in format of fixed to distinguish it from int64 integral type.
   struct fix_carrier_t 
     { 
-    fixed_internal v;
+    fixed_internal v {};
     
-    constexpr fix_carrier_t() : v{}{}
+    constexpr fix_carrier_t() = default;
+    
+    constexpr fix_carrier_t( fix_carrier_t && ) = default;
     constexpr fix_carrier_t( fix_carrier_t const & ) = default;
+    constexpr fix_carrier_t & operator=( fix_carrier_t && ) = default;
     constexpr fix_carrier_t & operator=( fix_carrier_t const & ) = default;
   
-    template<typename input_type>
+    template<typename input_type,
+      typename = std::enable_if_t<std::is_same_v<fixed_internal, input_type>>
+      >
     explicit constexpr fix_carrier_t( input_type const & value) : v{value}
-      {
-      static_assert( std::is_same<fixed_internal, input_type>::value, "cast allowed only for internal type" );
-      }
+      {}
+      
+    ~fix_carrier_t() = default;
     };
-  
-  struct fixed_t;
-  
-  template<typename integral_type>
-  constexpr integral_type fixed_to_integral ( fixed_t value ) noexcept;
-  
+
   ///\brief hermetization of fixed value to avoid implicit conversions from int64, long long 
   struct fixed_t
     {
-    fixed_internal v;
+    fixed_internal v {};
     
-    template<typename floating_or_integral_type>
-    explicit constexpr operator floating_or_integral_type() const noexcept;
+    template<typename arithmethic_type,
+      typename = std::enable_if_t<detail::is_arithmetic_and_not_fixed_v<arithmethic_type>>
+      >
+    explicit constexpr operator arithmethic_type() const noexcept;
     
-    constexpr fixed_t() : v{}{}
+    constexpr fixed_t() = default;
     
+    constexpr fixed_t( fixed_t && ) = default;
     constexpr fixed_t( fixed_t const & ) = default;
     
+    constexpr fixed_t & operator=( fixed_t && ) = default;
     constexpr fixed_t & operator=( fixed_t const & ) = default;
     
     constexpr fixed_t( fix_carrier_t value) : v{ value.v }{}
     
-    template<typename arithemtic_type>
-    explicit constexpr fixed_t( arithemtic_type const & value );
+    template<typename arithmethic_type,
+      typename = std::enable_if_t<detail::is_arithmetic_and_not_fixed_v<arithmethic_type>>
+      >
+    explicit constexpr fixed_t( arithmethic_type const & value );
+    
+    ~fixed_t() = default;
     };
 
   
   ///\brief constructs fixed from raw value in internal format
   constexpr fixed_t as_fixed( fixed_internal carried ) { return fix_carrier_t{carried}; }
     
-  [[ gnu::const, gnu::always_inline ]]
-  inline bool constexpr
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr bool
   operator != ( fixed_t l, fixed_t r ) noexcept { return l.v != r.v; }
   
-  [[ gnu::const, gnu::always_inline ]]
-  inline bool constexpr
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr bool
   operator == ( fixed_t l, fixed_t r ) noexcept { return l.v == r.v; }
   
-  [[ gnu::const, gnu::always_inline ]]
-  inline bool constexpr
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr bool
   operator > ( fixed_t l, fixed_t r ) noexcept { return l.v > r.v; }
   
-  [[ gnu::const, gnu::always_inline ]]
-  inline bool constexpr
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr bool
   operator >= ( fixed_t l, fixed_t r ) noexcept { return l.v >= r.v; }
   
-  [[ gnu::const, gnu::always_inline ]]
-  inline bool constexpr
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr bool
   operator < ( fixed_t l, fixed_t r ) noexcept { return l.v < r.v; }
   
-  [[ gnu::const, gnu::always_inline ]]
-  inline bool constexpr
+  [[ nodiscard, gnu::const, gnu::always_inline ]]
+  constexpr bool
   operator <= ( fixed_t l, fixed_t r ) noexcept { return l.v <= r.v; }
 
   

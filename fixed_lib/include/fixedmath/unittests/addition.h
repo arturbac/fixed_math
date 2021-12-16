@@ -8,6 +8,9 @@ namespace fixedmath
   //
   // fixed_addition
   //
+[[nodiscard]]
+constexpr bool addition_unit_tests() noexcept
+  {
   static_assert( fixed_addition( 0_fix, 1_fix ) == 1_fix );
   static_assert( fixed_addition( 1_fix, 1_fix ) == 2_fix );
   static_assert( fixed_addition( 10_fix, 1_fix ) == 11_fix );
@@ -36,6 +39,8 @@ namespace fixedmath
   static_assert( limits__::max() < limits__::quiet_NaN() );
   static_assert( limits__::lowest() +1 != limits__::quiet_NaN() );
   
+//   static_assert( limits__::max() + 1_fix == limits__::quiet_NaN() );
+  
   static_assert( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );
   static_assert( test_resulting_type<fixed_t>( uint64_t(1) + 1_fix ) );
@@ -55,4 +60,9 @@ namespace fixedmath
   static_assert( test_resulting_type<fixed_t>( 1_fix  + 1.f ) );
   static_assert( test_resulting_type<double>( 1. + 1_fix ) );
   static_assert( test_resulting_type<double>( 1_fix  + 1. ) );
+  
+  return true;
+  }
+  
+  static_assert(addition_unit_tests());
 }

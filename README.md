@@ -13,7 +13,7 @@ written from scratch fixed point math library in C++17
 * unit tests can be checked at compilation time just including header, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
 
 
-\[1\] - By default is used std:sqrt as current cpu's has hardware support for sqrt, but constexpr abacus algorithm could be used defining FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO, which is slower than cpu one
+\[1\] - By default is used std:sqrt as current cpu's has hardware support for sqrt, but constexpr abacus algorithm could be used defining FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO, which is slower than cpu one.
 
 ### performance comparisions of code 0.9.1
 At this point code wasn't been optimised, so results are from just from code written with quality only at this point in mind. Results are relative times of computing functions over bigtable of source values in function type (no value convertions)
@@ -122,17 +122,20 @@ or run them wit CMake/CTest "ninja/make test" as they are available in default C
 - [x] tan - improve calculations, limit tan__ to |x|<=pi/4
 - [x] atan, atan2 - error  ~<= 0.00005
 - [x] asin error  ~<= 0.0001
-- [    ] remove all old compat code that is compiled
-- [    ] cover all functionality with static_assert unit tests
 - [x] support clang, gcc c++17 compilers
 - [x] support msvc c++17 compiler, partial see notes for compilers tested in \"c++ compilers\"
 - [x] performance comparisions on arm64 and x86 with float/double arithemetic
-- [    ] dual licence project with MIT and BOOST licence
+- [x] dual licence project with MIT and Boost Software License licence
 
+## release notes
+### version 0.9.10
+  - improved unit testing dual c++17 and c++20
+  - rewrite of static asserts to function concept restrictions with std::enable_if_t
+  
 ## future goals
 
 - [    ] more math functionality, if somthing is missing in library that You need post issue and let me know about that.
-
+- [    ] more unit tests
 - [    ] more optimisations, calculation quality enchacments
 
 ## Feedback
@@ -141,4 +144,4 @@ If you think you have found a bug, please file an issue via issue submission [fo
 
 ## License
 
-This library is available to anybody free of charge, under the terms of MIT License (see LICENSE.md).
+This library is available to anybody free of charge, under the terms of MIT License or Boost Software License - Version 1.0 (see LICENSE.md).

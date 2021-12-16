@@ -4,16 +4,26 @@
 
 namespace fixedmath
 {
-
-  //------------------------------------------------------------------------------------------------------
-  //
-  // atan
-  //
+  
   constexpr bool test_atan( fixed_t x, double expected )
     {
     constexpr double expected_precision = 0.00005; //0.000025
     return ut_abs(atan( x ) - expected ) < expected_precision && ut_abs(atan( -x ) - -expected ) < expected_precision;
     }
+    
+  constexpr bool test_atan2( fixed_t y, fixed_t x, double expected )
+    {
+    constexpr double expected_precision = 0.00005; //0.000025
+    return ut_abs(atan2( y,x ) - expected ) < expected_precision;
+    }
+    
+[[nodiscard]]
+constexpr bool atan_unit_tests() noexcept
+  {
+  //------------------------------------------------------------------------------------------------------
+  //
+  // atan
+  //
   static_assert( test_atan( 1_fix/16,0.062418809995957));
   static_assert( test_atan( 3_fix/16,0.185347949995695));
   static_assert( test_atan( 5_fix/16,0.302884868374971));
@@ -32,11 +42,7 @@ namespace fixedmath
   static_assert( test_atan( 40_fix/16,1.19028994968253));
   static_assert( test_atan( 45_fix/16,1.22918083614709));
   
-  constexpr bool test_atan2( fixed_t y, fixed_t x, double expected )
-    {
-    constexpr double expected_precision = 0.00005; //0.000025
-    return ut_abs(atan2( y,x ) - expected ) < expected_precision;
-    }
+
   static_assert( test_atan2(-1/2_fix,-1/2_fix, -2.3561944901923448 ));
   
   //Thise are generated according to representation of fractions in fixed_t then std::atan2(static_cast<double(fixed y),static_cast<double(fixed x))
@@ -360,4 +366,8 @@ namespace fixedmath
   static_assert(test_atan2(1/-17_fix, 1/ 17_fix,-0.785398163397));
   static_assert(test_atan2(1/ 17_fix, 1/-17_fix,2.356194490192));
   static_assert(test_atan2(1/ 17_fix, 1/ 17_fix,0.785398163397));
+  return true;
+  }
+  
+  static_assert(atan_unit_tests());
 }

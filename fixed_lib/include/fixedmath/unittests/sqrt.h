@@ -4,6 +4,17 @@
 
 namespace fixedmath
 {
+  constexpr bool test_hypot( fixed_t x, fixed_t y, fixed_t expected )
+    {
+    return abs( hypot( x, y ) - expected ) < 0.00001_fix &&
+           abs( hypot( -x, y ) - expected ) < 0.00001_fix &&
+           abs( hypot( x, -y ) - expected ) < 0.00001_fix &&
+           abs( hypot( -x, -y ) - expected ) < 0.00001_fix;
+    }
+    
+[[nodiscard]]
+constexpr bool sqrt_unit_tests() noexcept
+  {
   //------------------------------------------------------------------------------------------------------
   //
   // sqrt
@@ -21,13 +32,7 @@ namespace fixedmath
   //
   // hypot
   //
-  constexpr bool test_hypot( fixed_t x, fixed_t y, fixed_t expected )
-    {
-    return abs( hypot( x, y ) - expected ) < 0.00001_fix &&
-           abs( hypot( -x, y ) - expected ) < 0.00001_fix &&
-           abs( hypot( x, -y ) - expected ) < 0.00001_fix &&
-           abs( hypot( -x, -y ) - expected ) < 0.00001_fix;
-    }
+
   static_assert( test_hypot(-14.991608_fix,-0.837158_fix, 15.0149536132812500_fix));
   static_assert( test_hypot(-14.991608_fix,-0.837158_fix, 15.0149536132812500_fix));
   static_assert( test_hypot(-0.774933_fix,-4.295090_fix, 4.3644256591796875_fix));
@@ -50,4 +55,9 @@ namespace fixedmath
   static_assert( test_hypot(0.0125_fix,0.125_fix, 0.1256103515625000_fix));
   static_assert( test_hypot(1_fix,1_fix, 1.4141998291015625_fix));
   static_assert( test_hypot(0.5_fix,0.25_fix, 0.5590057373046875_fix));
+  
+  return true;
+  }
+  
+  static_assert(sqrt_unit_tests());
 }

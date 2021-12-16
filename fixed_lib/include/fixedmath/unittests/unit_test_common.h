@@ -24,10 +24,11 @@ namespace fixedmath
   constexpr bool test_resulting_type( input ) { return std::is_same<expected,input>::value; }
   
   //llvm11 libcxx is not constexpr ready
-  template<typename value_type>
+  template<typename value_type,
+    typename = std::enable_if_t<detail::is_arithmetic_v<value_type>>>
   constexpr value_type ut_abs( value_type value ) 
     {
-    static_assert( detail::is_arithemetic_v<value_type> );
+    static_assert( detail::is_arithmetic_v<value_type> );
     return value > value_type{0} ? value : -value;
     }
 }

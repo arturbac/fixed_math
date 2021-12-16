@@ -74,7 +74,7 @@ namespace fixedmath
   //constexpr fixed_t::operator arithmethic_type() const noexcept
   
   ///\brief converts fixed_t into any floating point or integral type
-  template<typename arithmethic_type>
+  template<typename arithmethic_type, typename>
   constexpr arithmethic_type fixed_to_arithmetic( fixed_t value ) noexcept;
   
   ///\return absolute value of fixed_t
@@ -89,7 +89,8 @@ namespace fixedmath
   constexpr fixed_t floor( fixed_t value ) noexcept;
   
   ///\brief converts angle 0 - 360 to radians.
-  constexpr fixed_t angle_to_radians( int angle ) noexcept;
+  template<typename integral_type, typename>
+  constexpr fixed_t angle_to_radians( integral_type angle ) noexcept;
   
   ///\brief shifts right value of \param l by \param r digits
   constexpr fixed_t operator >> ( fixed_t l, int r ) noexcept;
@@ -100,62 +101,58 @@ namespace fixedmath
   ///\brief returns result of addition of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto fixed_addition( supported_type1 lh, supported_type2 rh) noexcept;
   
   ///\brief returns result of addition of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2,
-           std::enable_if_t<(detail::arithmetic_and_one_is_fixed_v<supported_type1,supported_type2>), int>>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto operator + ( supported_type1 l, supported_type2 r ) noexcept;
   
-  template<typename supported_type>
-  inline fixed_t & operator += ( fixed_t & l, supported_type r ) noexcept;
+  template<typename supported_type, typename>
+  constexpr fixed_t & operator += ( fixed_t & l, supported_type r ) noexcept;
   
   ///\brief returns result of substraction of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto fixed_substract( supported_type1 lh, supported_type2 rh) noexcept;
   
-  template<typename supported_type>
+  template<typename supported_type, typename>
   inline fixed_t & operator -= ( fixed_t & lh, supported_type rh ) noexcept;
   
   ///\brief returns result of substraction of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2,
-           std::enable_if_t<(detail::arithmetic_and_one_is_fixed_v<supported_type1,supported_type2>), int>>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto operator - ( supported_type1 l, supported_type2 r ) noexcept;
 
   ///\brief returns result of multiplication of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto fixed_multiply( supported_type1 lh, supported_type2 rh) noexcept;
   
-  template<typename supported_type>
-  inline fixed_t & operator *= ( fixed_t & lh, supported_type rh ) noexcept;
+  template<typename supported_type, typename>
+  constexpr fixed_t & operator *= ( fixed_t & lh, supported_type rh ) noexcept;
   
   ///\brief returns result of multiplication of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2,
-          std::enable_if_t<(detail::arithmetic_and_one_is_fixed_v<supported_type1,supported_type2>), int>>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto operator * ( supported_type1 lh, supported_type2 rh ) noexcept;
   
   ///\brief returns result of division of two arguments
   ///\notice when one of arguments is double precission operation is promoted to double
   ///\returns value of type fixed_t or double
-  template<typename supported_type1, typename supported_type2>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto fixed_division(supported_type1 lh, supported_type2 rh ) noexcept;
   
-  template<typename supported_type>
-  inline fixed_t & operator /= ( fixed_t & lh, supported_type rh ) noexcept;
+  template<typename supported_type, typename>
+  constexpr fixed_t & operator /= ( fixed_t & lh, supported_type rh ) noexcept;
   
-  template<typename supported_type1, typename supported_type2,
-          std::enable_if_t<(detail::arithmetic_and_one_is_fixed_v<supported_type1,supported_type2>), int>>
+  template<typename supported_type1, typename supported_type2, typename>
   constexpr auto operator / ( supported_type1 lh, supported_type2 rh ) noexcept;
   
 #if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO)
