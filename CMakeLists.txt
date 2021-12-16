@@ -5,6 +5,8 @@ project(fixed_math LANGUAGES CXX )
 include(FeatureSummary)
 
 set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
+set( CMAKE_CXX_EXTENSIONS OFF)
 
 option(ENABLE_UNIT_TESTS "Enable unit tests available from CTest" ON )
 
