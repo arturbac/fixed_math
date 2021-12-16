@@ -1,4 +1,4 @@
-# fixed_math ![MIT](https://img.shields.io/badge/license-MIT-blue.svg) ![CMake](https://github.com/arturbac/fixed_math/workflows/CMake/badge.svg) ![language](https://img.shields.io/badge/language-C%2B%2B17-blue.svg)
+# fixed_math ![MIT](https://img.shields.io/badge/license-MIT-blue.svg) ![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg) ![CMake](https://github.com/arturbac/fixed_math/workflows/CMake/badge.svg) ![language](https://img.shields.io/badge/language-C%2B%2B17-blue.svg)
 
 written from scratch fixed point math library in C++17
 
