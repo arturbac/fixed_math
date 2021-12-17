@@ -39,7 +39,7 @@ constexpr bool addition_unit_tests() noexcept
   static_assert( limits__::max() < limits__::quiet_NaN() );
   static_assert( limits__::lowest() +1 != limits__::quiet_NaN() );
   
-//   static_assert( limits__::max() + 1_fix == limits__::quiet_NaN() );
+  static_assert( as_fixed(limits__::max().v- 65536) + 1_fix != limits__::quiet_NaN() );
   
   static_assert( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );
