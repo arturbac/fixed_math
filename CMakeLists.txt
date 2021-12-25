@@ -33,7 +33,7 @@ include(GNUInstallDirs)
 # options
 #-----------------------------------------------------------------------------
 option(FIXEDMATH_ENABLE_UNIT_TESTS "unit tests available from CTest" ON )
-add_feature_info("ENABLE_UNIT_TESTS" ENABLE_UNIT_TESTS "unit test available from CTest")
+add_feature_info("FIXEDMATH_ENABLE_UNIT_TESTS" FIXEDMATH_ENABLE_UNIT_TESTS "unit test available from CTest")
 
 option(FIXEDMATH_ENABLE_DEVEL_CODE_GEN "enable internaly used precalculated table generator" OFF )
 add_feature_info("ENABLE_DEVEL_CODE_GEN" ENABLE_DEVEL_CODE_GEN "Enable internaly used precalculated table generator")
@@ -43,9 +43,11 @@ add_feature_info("ENABLE_DEVEL_CODE_GEN" ENABLE_DEVEL_CODE_GEN "Enable internaly
 #-----------------------------------------------------------------------------
 
 add_subdirectory( fixed_lib )
+
 if(FIXEDMATH_ENABLE_DEVEL_CODE_GEN)
   add_subdirectory(table_gen)
 endif()
+
 add_subdirectory(perf_test_suite)
 
 if( FIXEDMATH_ENABLE_UNIT_TESTS )

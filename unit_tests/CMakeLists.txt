@@ -11,7 +11,8 @@ set( TEST_DEFINITIONS -DFIXEDMATH_ENABLE_SQRT_ABACUS_ALGO )
 function(add_compile_test HEADER_FILE_NAME )
   get_filename_component(TEST_NAME ${HEADER_FILE_NAME} NAME_WE)
   set( SOURCE_FILE_NAME test_${TEST_NAME}.cc )
-  get_target_property( FIXED_MATH_INCLUDES fixed_math INCLUDE_DIRECTORIES)
+  
+  set( FIXED_MATH_INCLUDES ${PROJECT_SOURCE_DIR}/fixed_lib/include )
   file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${SOURCE_FILE_NAME} "#include <fixedmath/unittests/${HEADER_FILE_NAME}.h>\nint main( int argc, char ** argv ) {return fixedmath::${HEADER_FILE_NAME}_unit_tests() ? EXIT_SUCCESS : EXIT_FAILURE; }\n" )
   add_test(NAME ${TEST_NAME}_cxx17 
     COMMAND ${CMAKE_CXX_COMPILER} -std=c++17 ${TEST_DEFINITIONS} -I${FIXED_MATH_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR}/${SOURCE_FILE_NAME} -o ${CMAKE_CURRENT_BINARY_DIR}/test_${TEST_NAME}_cxx17.o )
