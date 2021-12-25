@@ -8,12 +8,13 @@ written from scratch fixed point math library in C++17
 * fixed point 48.16 arithmethic strong type without implicit convertions with assignment and construction, fixed type is safe against unwanted type convertions
 * all arithemtic types like float and integral types except double implicitly in base arithemitc operations are promoted to fixed_t
 * all arithmetic operations of fixed_t with double type yelds double result type, are promoted and evaluated as double operations
-* entire code including trigonometry functions is constexpr \[1\]
+* entire code including trigonometry functions is constexpr \[1\]\[2\]
 * fully header only library as everything is constexpr, see api interface [api](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/fixed_math.hpp) and [implementation](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/math.h)
 * unit tests can be checked at compilation time just including header, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
 
 
-\[1\] - By default is used std:sqrt as current cpu's has hardware support for sqrt, but constexpr abacus algorithm could be used defining FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO, which is slower than cpu one.
+\[1\] - with standard c++20 and up sqrt is always avalable as constexpr with abacus algo for const evaluation and std:;sqrt runtime 
+\[2\] - with standard c++17 by default is used std:sqrt as current cpu's has hardware support for sqrt as inline, but constexpr abacus algorithm could be used defining FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO, which is slower than cpu one.
 
 ### performance comparisions of code 0.9.1
 At this point code wasn't been optimised, so results are from just from code written with quality only at this point in mind. Results are relative times of computing functions over bigtable of source values in function type (no value convertions)

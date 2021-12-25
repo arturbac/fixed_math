@@ -154,14 +154,14 @@ namespace fixedmath
   
   template<typename supported_type1, typename supported_type2, typename>
   constexpr auto operator / ( supported_type1 lh, supported_type2 rh ) noexcept;
-  
-#if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO)
+ 
+  //You can check if constexpr sqrt is avaiable with, for c++20 is always avaiable
+  //if constexpr(fixedmath::sqrt_constexpr_available)
   ///\returns square root
-  constexpr fixed_t sqrt(fixed_t value) noexcept;
-#else
-  //hardware sqrt as when available is much faster
-  inline fixed_t sqrt(fixed_t value) noexcept;
-#endif
+  FIXEDMATH_SQRT_CONSTEXPR fixed_t sqrt(fixed_t value) noexcept;
+
+  FIXEDMATH_SQRT_CONSTEXPR fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept;
+  
   ///\returns sine of \param rad in radians
   constexpr fixed_t sin( fixed_t rad ) noexcept;
   

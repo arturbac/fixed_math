@@ -15,9 +15,7 @@ set(fixed_math_DESCRIPTION  "fixed point math library in C++17")
 
 include(FeatureSummary)
 
-set( CMAKE_CXX_STANDARD 17 )
-set( CMAKE_CXX_STANDARD_REQUIRED ON )
-set( CMAKE_CXX_EXTENSIONS OFF)
+
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -37,6 +35,14 @@ add_feature_info("FIXEDMATH_ENABLE_UNIT_TESTS" FIXEDMATH_ENABLE_UNIT_TESTS "unit
 
 option(FIXEDMATH_ENABLE_DEVEL_CODE "enable internaly used for development code" OFF )
 add_feature_info("ENABLE_DEVEL_CODE" ENABLE_DEVEL_CODE "enable internaly used for development code")
+
+# CMAKE_CXX_STANDARD used for compilation of fixedmath will not affect CMAKE_CXX_STANDARD avaialble when importing library
+if(CMAKE_CXX_STANDARD LESS 17 )
+  message(STATUS "Assuming by default c++17 standard")
+  set( CMAKE_CXX_STANDARD 17 )
+endif()
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
+set( CMAKE_CXX_EXTENSIONS OFF)
 
 #-----------------------------------------------------------------------------
 # project

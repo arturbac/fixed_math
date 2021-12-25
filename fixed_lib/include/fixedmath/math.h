@@ -596,49 +596,77 @@ namespace fixedmath
   
   [[nodiscard,FIXEDMATH_PUBLIC, deprecated]]
   fixed_t sqrt_aprox(fixed_t value) noexcept;
-    
+  namespace detail
+    {
+    ///\brief Square root by abacus algorithm
+    [[ nodiscard, gnu::const]]
+    constexpr fixed_t sqrt_abacus( fixed_t value ) noexcept
+      {
+      if( fixed_unlikely(value.v < 0 || value.v >= (1ll<<48)) )
+        return std::numeric_limits<fixed_t>::quiet_NaN();
+
+      value.v <<= 16;
+      
+      fixed_internal pwr4 { detail::highest_pwr4_clz(value.v) };
+      
+      fixed_internal result{};
+      while( pwr4 != 0 )
+        {
+        if( value.v >= ( result + pwr4 ) )
+          {
+          value.v -= result + pwr4;
+          result += pwr4 << 1;
+          }
+        result >>= 1;
+        pwr4 >>= 2;
+        }
+      return as_fixed(result);
+      }
+      
+    [[ nodiscard, gnu::const]]
+    inline fixed_t sqrt_std_math( fixed_t value ) noexcept
+      {
+      return floating_point_to_fixed(std::sqrt( fixed_to_floating_point<double>(value)));
+      }
+    }
+#if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO) || __cplusplus >= 202000L
+  #define FIXEDMATH_SQRT_CONSTEXPR constexpr
+#else
+  #define FIXEDMATH_SQRT_CONSTEXPR inline
+#endif
+
+#if __cplusplus < 202000L
 #if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO)
-  ///\brief Square root by abacus algorithm
-  [[ nodiscard, gnu::const]]
+  inline constexpr bool sqrt_constexpr_available = true;
   constexpr fixed_t sqrt( fixed_t value ) noexcept
     {
-    if( fixed_unlikely(value.v < 0 || value.v >= (1ll<<48)) )
-      return std::numeric_limits<fixed_t>::quiet_NaN();
-
-    value.v <<= 16;
-    
-    fixed_internal pwr4 { detail::highest_pwr4_clz(value.v) };
-    
-    fixed_internal result{};
-    while( pwr4 != 0 )
-      {
-      if( value.v >= ( result + pwr4 ) )
-        {
-        value.v -= result + pwr4;
-        result += pwr4 << 1;
-        }
-      result >>= 1;
-      pwr4 >>= 2;
-      }
-    return as_fixed(result);
+    return detail::sqrt_abacus(value);
     }
 #else
+  inline constexpr bool sqrt_constexpr_available = false;
   [[ nodiscard, gnu::const]]
   inline fixed_t sqrt( fixed_t value ) noexcept
     {
-    return floating_point_to_fixed(std::sqrt( fixed_to_floating_point<double>(value)));
+    return detail::sqrt_std_math(value);
+    }
+#endif
+#else
+  inline constexpr bool sqrt_constexpr_available = true;
+  
+  constexpr fixed_t sqrt( fixed_t value ) noexcept
+    {
+    if (std::is_constant_evaluated() )
+      return detail::sqrt_abacus(value);
+    else
+      return detail::sqrt_std_math(value);
     }
 #endif
   [[nodiscard,FIXEDMATH_PUBLIC,deprecated]]
   fixed_t hypot_aprox (fixed_t lh, fixed_t rh ) noexcept;
 
-#if defined(FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO)
-  #define FIXED_MATH_HYPOT_CONSTEXPR constexpr
-#else
-  #define FIXED_MATH_HYPOT_CONSTEXPR inline
-#endif
+
   [[ nodiscard, gnu::const]]
-  FIXED_MATH_HYPOT_CONSTEXPR fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept
+  FIXEDMATH_SQRT_CONSTEXPR fixed_t hypot(fixed_t lh, fixed_t rh ) noexcept
     {
     constexpr int prec_ = 16;
     //sqrt(X^2+Y^2) = sqrt( (X/D)^2+(Y/D)^2) * D
