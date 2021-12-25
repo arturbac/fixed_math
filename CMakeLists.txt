@@ -35,8 +35,8 @@ include(GNUInstallDirs)
 option(FIXEDMATH_ENABLE_UNIT_TESTS "unit tests available from CTest" ON )
 add_feature_info("FIXEDMATH_ENABLE_UNIT_TESTS" FIXEDMATH_ENABLE_UNIT_TESTS "unit test available from CTest")
 
-option(FIXEDMATH_ENABLE_DEVEL_CODE_GEN "enable internaly used precalculated table generator" OFF )
-add_feature_info("ENABLE_DEVEL_CODE_GEN" ENABLE_DEVEL_CODE_GEN "Enable internaly used precalculated table generator")
+option(FIXEDMATH_ENABLE_DEVEL_CODE "enable internaly used for development code" OFF )
+add_feature_info("ENABLE_DEVEL_CODE" ENABLE_DEVEL_CODE "enable internaly used for development code")
 
 #-----------------------------------------------------------------------------
 # project
@@ -44,11 +44,10 @@ add_feature_info("ENABLE_DEVEL_CODE_GEN" ENABLE_DEVEL_CODE_GEN "Enable internaly
 
 add_subdirectory( fixed_lib )
 
-if(FIXEDMATH_ENABLE_DEVEL_CODE_GEN)
+if(FIXEDMATH_ENABLE_DEVEL_CODE)
   add_subdirectory(table_gen)
+  add_subdirectory(perf_test_suite)
 endif()
-
-add_subdirectory(perf_test_suite)
 
 if( FIXEDMATH_ENABLE_UNIT_TESTS )
   enable_testing( TRUE )
@@ -65,3 +64,12 @@ add_custom_target(clean-all
 
 feature_summary(WHAT ALL)
 
+#--------
+add_subdirectory( agg_fixed )
+
+add_executable(fixed_math_test main.cc)
+target_compile_definitions( fixed_math_test PRIVATE -DFIXEDMATH_ENABLE_SQRT_ABACUS_ALGO=1)
+
+target_link_libraries( fixed_math_test 
+   fixed_math
+   agg_fixed )

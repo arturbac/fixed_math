@@ -1,4 +1,5 @@
 #include <fixedmath/fixed_math.hpp>
+// #include <fixedmath/unittests/compile_time_unit_tests.h>
 #include <vector>
 #include <iostream>
 #include <random>
@@ -50,7 +51,7 @@ auto test( std::vector<test_type> data_fx, test_function fnobj )
 template<typename test_function>
 struct test_executor
   {
-  void operator()( string_view info )
+  int64_t operator()( string_view info )
     {
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -67,14 +68,17 @@ struct test_executor
       data_f.emplace_back( static_cast<float>(phi/4*value/256) );
       data_d.emplace_back( static_cast<double>(phi/4*value/256) );
       }
-
-
+    
     auto float_perf { test(data_f, test_function{} ) };
     auto double_perf { test(data_d, test_function{} ) };
     auto fix_perf { test(data_fx, test_function{} ) };
 
-    cout << info << " fixed:"<< fix_perf << "ms float:" << float_perf << " ms double:" << double_perf << " ms"<< endl;
-
+    int64_t noop{ static_cast<int64_t>( std::accumulate(data_fx.begin(),data_fx.end(), fixed_t{} )) } ;
+    noop += static_cast<int64_t>( std::accumulate(data_f.begin(),data_f.end(), float{} ));
+    noop += static_cast<int64_t>( std::accumulate(data_d.begin(),data_d.end(), double{} ));
+    
+    cout << info << " fixed:"<< fix_perf << "ms float:" << float_perf << " ms double:" << double_perf << " ms ";
+    return noop;
     }
   };
   
@@ -94,12 +98,37 @@ struct atan_test{
   template<typename value_type>
   auto operator()(value_type const & tp){ return atan(tp); } 
 };
+struct sqrt_test{
+  template<typename value_type>
+  auto operator()(value_type const & tp){ return sqrt(tp); } 
+};
+struct arith_test{
+  template<typename value_type>
+  auto operator()(value_type const & tp){ return (1+tp*tp)/(1-tp); } 
+};
+struct add_test{
+  template<typename value_type>
+  auto operator()(value_type const & tp){ return tp+tp; } 
+};
+struct mul_test{
+  template<typename value_type>
+  auto operator()(value_type const & tp){ return tp*tp; } 
+};
+struct div_test{
+  template<typename value_type>
+  auto operator()(value_type const & tp){ return tp/tp; } 
+};
 int main(int argc, char **argv) 
 {
-test_executor<sin_test>{}("sin");
-test_executor<asin_test>{}("asin");
-test_executor<tan_test>{}("tan");
-test_executor<atan_test>{}("atan");
+cout << test_executor<sin_test>{}("sin") << endl;
+cout << test_executor<asin_test>{}("asin") << endl;
+cout << test_executor<tan_test>{}("tan") << endl;
+cout << test_executor<atan_test>{}("atan") << endl;
+cout << test_executor<sqrt_test>{}("sqrt") << endl;
+cout << test_executor<arith_test>{}("arith_test") << endl;
+cout << test_executor<add_test>{}("add") << endl;
+cout << test_executor<mul_test>{}("mul") << endl;
+cout << test_executor<div_test>{}("div") << endl;
 return EXIT_SUCCESS;
 }
 

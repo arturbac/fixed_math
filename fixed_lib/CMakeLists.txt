@@ -50,4 +50,6 @@ install(FILES
     DESTINATION ${ConfigPackageLocation}
     )
     
-add_subdirectory( mca_analisis )
+if(FIXEDMATH_ENABLE_DEVEL_CODE)
+  add_subdirectory( mca_analisis )
+endif()
