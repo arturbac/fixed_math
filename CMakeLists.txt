@@ -64,12 +64,3 @@ add_custom_target(clean-all
 
 feature_summary(WHAT ALL)
 
-#--------
-add_subdirectory( agg_fixed )
-
-add_executable(fixed_math_test main.cc)
-target_compile_definitions( fixed_math_test PRIVATE -DFIXEDMATH_ENABLE_SQRT_ABACUS_ALGO=1)
-
-target_link_libraries( fixed_math_test 
-   fixed_math
-   agg_fixed )
