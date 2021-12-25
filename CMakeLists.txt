@@ -37,7 +37,7 @@ option(FIXEDMATH_ENABLE_DEVEL_CODE "enable internaly used for development code" 
 add_feature_info("ENABLE_DEVEL_CODE" ENABLE_DEVEL_CODE "enable internaly used for development code")
 
 # CMAKE_CXX_STANDARD used for compilation of fixedmath will not affect CMAKE_CXX_STANDARD avaialble when importing library
-if(CMAKE_CXX_STANDARD LESS 17 )
+if(NOT DEFINED CMAKE_CXX_STANDARD OR CMAKE_CXX_STANDARD LESS 17 )
   message(STATUS "Assuming by default c++17 standard")
   set( CMAKE_CXX_STANDARD 17 )
 endif()
