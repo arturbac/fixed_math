@@ -5,11 +5,17 @@ add_library( fixed_math )
 target_include_directories( fixed_math 
   PUBLIC 
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/fixed_math>"
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
   )
 target_sources( fixed_math PRIVATE src/fixed_math.cc )
 
-file(GLOB_RECURSE fixed_math_include_files ${CMAKE_CURRENT_SOURCE_DIR}/include/fixed_math/*.h )
+file(GLOB fixed_math_include_files 
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/fixedmath/*.h 
+  )
+
+file(GLOB fixed_math_include_files_detail 
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/fixedmath/detail/*.h
+  )
 
 install(TARGETS fixed_math
         EXPORT fixed_math_targets
@@ -22,7 +28,10 @@ install(TARGETS fixed_math
 install(FILES ${fixed_math_include_files}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fixed_math 
         )
-
+install(FILES ${fixed_math_include_files}
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fixed_math/detail
+        )
+        
 install(EXPORT fixed_math_targets
         FILE fixed_mathTargets.cmake
         NAMESPACE fixed_math::
