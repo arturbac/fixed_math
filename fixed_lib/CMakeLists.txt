@@ -5,7 +5,7 @@ add_library( fixed_math )
 target_include_directories( fixed_math 
   PUBLIC 
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+  "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
   )
 target_sources( fixed_math PRIVATE src/fixed_math.cc )
 
