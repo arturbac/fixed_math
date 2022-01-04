@@ -132,11 +132,6 @@ or run them wit CMake/CTest "ninja/make test" as they are available in default C
 - [x] performance comparisions on arm64 and x86 with float/double arithemetic
 - [x] dual licence project with MIT Licence and Boost Software License
 
-## release notes
-### version 0.9.10
-  - improved unit testing dual c++17 and c++20
-  - rewrite of static asserts to function concept restrictions with std::enable_if_t
-  
 ## future goals
 
 - [    ] more math functionality, if somthing is missing in library that You need post issue and let me know about that.
