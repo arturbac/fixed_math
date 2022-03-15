@@ -10,7 +10,7 @@ written from scratch fixed point math library in C++17
 * all arithmetic operations of fixed_t with double type yelds double result type, are promoted and evaluated as double operations
 * entire code including trigonometry functions is constexpr \[1\]\[2\]
 * fully header only library as everything is constexpr, see api interface [api](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/fixed_math.hpp) and [implementation](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/math.h)
-* unit tests can be checked at compilation time just including header, see [unittests](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/compile_time_unit_tests.h)
+* unit tests can be checked at compilation time just including header, see [unittests](https://github.com/arturbac/fixed_math/fixed_lib/include/fixedmath/unittests/compile_time_unit_tests.h)
 
 
 \[1\] - with standard c++20 and up sqrt is always avalable as constexpr with abacus algo for const evaluation and std:;sqrt runtime 
