@@ -7,6 +7,13 @@ else()
   set(SUPPORTS_CXX20 FALSE)
 endif()
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set( CMAKE_REQUIRED_FLAGS -std=c++2b)
+  check_source_compiles(CXX "int main(void){return 0;}" SUPPORTS_CXX23)
+else()
+  set(SUPPORTS_CXX23 FALSE)
+endif()
+
 set( TEST_DEFINITIONS -DFIXEDMATH_ENABLE_SQRT_ABACUS_ALGO )
 function(add_compile_test HEADER_FILE_NAME )
   get_filename_component(TEST_NAME ${HEADER_FILE_NAME} NAME_WE)
@@ -20,6 +27,14 @@ function(add_compile_test HEADER_FILE_NAME )
     # using FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO is not required for sqrt with c++20 standard
     add_test(NAME ${TEST_NAME}_cxx20 
       COMMAND ${CMAKE_CXX_COMPILER} -std=c++20 -I${FIXED_MATH_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR}/${SOURCE_FILE_NAME} -o ${CMAKE_CURRENT_BINARY_DIR}/test_${TEST_NAME}_cxx20.o )
+  endif()
+  if( SUPPORTS_CXX20 )
+    add_test(NAME ${TEST_NAME}_cxx23 
+      COMMAND ${CMAKE_CXX_COMPILER} -std=c++2b -I${FIXED_MATH_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR}/${SOURCE_FILE_NAME} -o ${CMAKE_CURRENT_BINARY_DIR}/test_${TEST_NAME}_cxx2b.o )
+  endif()
+  if(FIXEDMATH_ENABLE_DEVEL_CODE)
+    add_executable( ${TEST_NAME}_DEVEL ${CMAKE_CURRENT_BINARY_DIR}/${SOURCE_FILE_NAME})
+    target_link_libraries( ${TEST_NAME}_DEVEL PRIVATE fixed_math )
   endif()
 endfunction()
 
