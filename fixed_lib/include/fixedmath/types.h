@@ -26,8 +26,8 @@
 
 #define FIXEDMATH_VERSION_MAJOR 0
 #define FIXEDMATH_VERSION_MINOR 9
-#define FIXEDMATH_VERSION_PATCH 13
-#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.13"
+#define FIXEDMATH_VERSION_PATCH 14
+#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.14"
 
 namespace fixedmath
 {
@@ -36,17 +36,17 @@ namespace fixedmath
     { 
     fixed_internal v {};
     
-    constexpr fix_carrier_t() = default;
+    constexpr fix_carrier_t() noexcept = default;
     
-    constexpr fix_carrier_t( fix_carrier_t && ) = default;
-    constexpr fix_carrier_t( fix_carrier_t const & ) = default;
-    constexpr fix_carrier_t & operator=( fix_carrier_t && ) = default;
-    constexpr fix_carrier_t & operator=( fix_carrier_t const & ) = default;
+    constexpr fix_carrier_t( fix_carrier_t && ) noexcept = default;
+    constexpr fix_carrier_t( fix_carrier_t const & ) noexcept = default;
+    constexpr fix_carrier_t & operator=( fix_carrier_t && ) noexcept = default;
+    constexpr fix_carrier_t & operator=( fix_carrier_t const & ) noexcept = default;
   
     template<typename input_type,
       typename = std::enable_if_t<std::is_same_v<fixed_internal, input_type>>
       >
-    explicit constexpr fix_carrier_t( input_type const & value) : v{value}
+    explicit constexpr fix_carrier_t( input_type const & value) noexcept : v{value}
       {}
       
     ~fix_carrier_t() = default;
@@ -62,27 +62,27 @@ namespace fixedmath
       >
     explicit constexpr operator arithmethic_type() const noexcept;
     
-    constexpr fixed_t() = default;
+    constexpr fixed_t() noexcept = default;
     
-    constexpr fixed_t( fixed_t && ) = default;
-    constexpr fixed_t( fixed_t const & ) = default;
+    constexpr fixed_t( fixed_t && ) noexcept = default;
+    constexpr fixed_t( fixed_t const & ) noexcept = default;
     
-    constexpr fixed_t & operator=( fixed_t && ) = default;
-    constexpr fixed_t & operator=( fixed_t const & ) = default;
+    constexpr fixed_t & operator=( fixed_t && ) noexcept = default;
+    constexpr fixed_t & operator=( fixed_t const & ) noexcept = default;
     
-    constexpr fixed_t( fix_carrier_t value) : v{ value.v }{}
+    constexpr fixed_t( fix_carrier_t value) noexcept : v{ value.v }{}
     
     template<typename arithmethic_type,
       typename = std::enable_if_t<detail::is_arithmetic_and_not_fixed_v<arithmethic_type>>
       >
-    explicit constexpr fixed_t( arithmethic_type const & value );
+    explicit constexpr fixed_t( arithmethic_type const & value ) noexcept;
     
     ~fixed_t() = default;
     };
 
   
   ///\brief constructs fixed from raw value in internal format
-  constexpr fixed_t as_fixed( fixed_internal carried ) { return fix_carrier_t{carried}; }
+  constexpr fixed_t as_fixed( fixed_internal carried ) noexcept { return fix_carrier_t{carried}; }
     
   [[ nodiscard, gnu::const, gnu::always_inline ]]
   constexpr bool

@@ -36,7 +36,7 @@ namespace fixedmath
   constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept;
   
   template<typename arithmethic_type, typename>
-  constexpr fixed_t::fixed_t( arithmethic_type const & value )
+  constexpr fixed_t::fixed_t( arithmethic_type const & value ) noexcept
     : v{ arithmetic_to_fixed(value).v }
     {
     static_assert( detail::is_arithmetic_and_not_fixed_v<arithmethic_type> );
@@ -65,7 +65,7 @@ namespace fixedmath
     return quiet_NaN_result();
     }
   
-  constexpr fixed_t operator"" _fix ( unsigned long long value )
+  constexpr fixed_t operator"" _fix ( unsigned long long value ) noexcept
     {
     return integral_to_fixed( static_cast<int64_t>( value ));
     }
@@ -88,7 +88,7 @@ namespace fixedmath
     return quiet_NaN_result();
     }
   
-  constexpr fixed_t operator"" _fix ( long double value )
+  constexpr fixed_t operator"" _fix ( long double value ) noexcept
     {
     return floating_point_to_fixed( static_cast<double>( value ));
     }
@@ -225,7 +225,7 @@ namespace fixedmath
     
     template<typename supported_type>
     [[ gnu::const, gnu::always_inline ]]
-    constexpr double promote_to_double( supported_type  value )
+    constexpr double promote_to_double( supported_type  value ) noexcept
       {
       if constexpr( is_double_v<supported_type> )
         return value;
@@ -237,7 +237,7 @@ namespace fixedmath
       typename = std::enable_if_t<detail::is_arithmetic_v<supported_type>>
       >
     [[ gnu::const, gnu::always_inline ]]
-    constexpr fixed_t promote_to_fixed( supported_type  value )
+    constexpr fixed_t promote_to_fixed( supported_type  value ) noexcept
       {
       if constexpr( detail::is_fixed_v<supported_type> )
         return value;
@@ -713,7 +713,7 @@ namespace fixedmath
     {
     ///\returns \param rad normalized into range -phi/2 .. 3phi/2
     [[ nodiscard, gnu::const, gnu::always_inline ]]
-    constexpr fixed_t sin_range( fixed_t rad )
+    constexpr fixed_t sin_range( fixed_t rad ) noexcept
       {
       constexpr fixed_t phi2 { phi/2 };
       constexpr fixed_t _2phi { 2*phi };
@@ -844,7 +844,7 @@ namespace fixedmath
       }
       
     [[ nodiscard,gnu::const, gnu::always_inline ]]
-    constexpr fixed_internal tan_range( fixed_internal x )
+    constexpr fixed_internal tan_range( fixed_internal x ) noexcept
       {
       constexpr fixed_t phi2 { phi/2 };
       
@@ -917,7 +917,7 @@ namespace fixedmath
     //t=x*x
     //1/11*x(11+t(-11/3+t(11/5+t(-11/7+t(11/9-t)))))
     template<int prec_>
-    constexpr fixed_internal atan( fixed_internal x )
+    constexpr fixed_internal atan( fixed_internal x ) noexcept
       {
       fixed_internal const t { mul_<prec_>(x,x)};
       constexpr fixed_internal _11o9{ fix_<prec_>(11)/9 };
@@ -1025,7 +1025,7 @@ namespace fixedmath
     // { { 1 over 10395 } x left ( { 10395 + { 1 over 2 } x ^ 2 left ( { 3465 + { 3 over 4 } x ^ 2 left ( { 2079 + { 5 over 2 } x ^ 2 left ( { 495 + 49 { 1 over 16 } x ^ 2 left ( { 110 + 81 x ^ 2 } right ) } right ) } right ) } right ) } right ) } 
 #if 1
     template<int prec_>
-    constexpr fixed_internal asin( fixed_internal x )
+    constexpr fixed_internal asin( fixed_internal x ) noexcept
       {
       fixed_internal x2{ mul_<prec_>(x,x) };
         

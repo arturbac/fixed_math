@@ -36,10 +36,10 @@ namespace fixedmath::detail
   
   // concepts
   template<typename arithmetic_type>
-  constexpr bool is_signed_v = std::numeric_limits<arithmetic_type>::is_signed;
+  inline constexpr bool is_signed_v = std::numeric_limits<arithmetic_type>::is_signed;
   
   template<typename arithmetic_type>
-  constexpr bool is_unsigned_v = !std::numeric_limits<arithmetic_type>::is_signed;
+  inline constexpr bool is_unsigned_v = !std::numeric_limits<arithmetic_type>::is_signed;
   
   template<typename supported_type>
   inline constexpr bool is_fixed_v = std::is_same_v<supported_type,fixed_t>;

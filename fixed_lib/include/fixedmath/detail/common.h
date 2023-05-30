@@ -31,7 +31,7 @@ namespace fixedmath::detail
                               && is_unsigned_v<value_type>>
     >
   [[nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr auto promote_integral_unsigned_to_signed( value_type value )
+  constexpr auto promote_integral_unsigned_to_signed( value_type value ) noexcept
     {
     using signed_type = typename signed_type_by_size<((sizeof(value_type)<<1))>::type;
     return static_cast<signed_type>( value );
@@ -39,7 +39,7 @@ namespace fixedmath::detail
   
   template<typename value_type>
   [[nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr auto promote_type_to_signed( value_type value )
+  constexpr auto promote_type_to_signed( value_type value ) noexcept
     {
     if constexpr ( detail::is_signed_v<value_type> )
       return value;
@@ -58,7 +58,7 @@ namespace fixedmath::detail
     
   ///\returns the highest power of 4 that is less than or equal to \param value
   [[ nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal highest_pwr4_clz( fixed_internal_unsigned value )
+  constexpr fixed_internal highest_pwr4_clz( fixed_internal_unsigned value ) noexcept
     {
     if( fixed_likely( value != 0 ) )
       {
@@ -74,7 +74,7 @@ namespace fixedmath::detail
     }
     
   [[ nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal highest_pwr4( fixed_internal_unsigned value )
+  constexpr fixed_internal highest_pwr4( fixed_internal_unsigned value ) noexcept
     {
     // one starts at the highest power of four <= than the argument.
     fixed_internal_unsigned pwr4 { 1ll << 62 }; // second-to-top bit set
@@ -86,20 +86,20 @@ namespace fixedmath::detail
     
   template<int precision>
   [[ nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal mul_( fixed_internal x, fixed_internal y ) 
+  constexpr fixed_internal mul_( fixed_internal x, fixed_internal y ) noexcept
     {
     return (x * y) >> precision;
     }
   template<int precision>
   [[ nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal div_( fixed_internal x, fixed_internal y ) 
+  constexpr fixed_internal div_( fixed_internal x, fixed_internal y ) noexcept
     {
     return (x<<precision) / y;
     }
     
   template<int precision>
   [[ nodiscard, gnu::const, gnu::always_inline ]]
-  constexpr fixed_internal fix_( fixed_internal x ) 
+  constexpr fixed_internal fix_( fixed_internal x ) noexcept
     {
     return (x<<precision);
     }
