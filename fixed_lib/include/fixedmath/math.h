@@ -65,7 +65,7 @@ namespace fixedmath
     return quiet_NaN_result();
     }
   
-  constexpr fixed_t operator"" _fix ( unsigned long long value ) noexcept
+  constexpr fixed_t operator ""_fix ( unsigned long long value ) noexcept
     {
     return integral_to_fixed( static_cast<int64_t>( value ));
     }
@@ -88,7 +88,7 @@ namespace fixedmath
     return quiet_NaN_result();
     }
   
-  constexpr fixed_t operator"" _fix ( long double value ) noexcept
+  constexpr fixed_t operator ""_fix ( long double value ) noexcept
     {
     return floating_point_to_fixed( static_cast<double>( value ));
     }
