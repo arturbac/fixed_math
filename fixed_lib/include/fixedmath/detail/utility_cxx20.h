@@ -181,10 +181,8 @@ namespace cxx20
 
 #if defined(__cpp_lib_bit_cast)
     using std::bit_cast;
-#else
-    #if !__has_builtin(__builtin_bit_cast)
-        #error "Not bit_cast support at all implement using std::memcpy"
-    #endif
+#else //defined(__cpp_lib_bit_cast)
+#if __has_builtin(__builtin_bit_cast)
     
   template <class To, class From>
 #if __cplusplus > 201703L
@@ -203,7 +201,8 @@ namespace cxx20
 #endif
     return __builtin_bit_cast(To,src);
     }
-#endif
+#endif //__has_builtin(__builtin_bit_cast)
+#endif //defined(__cpp_lib_bit_cast)
 
 #if defined(__cpp_lib_assume_aligned)
   using std::assume_aligned;
