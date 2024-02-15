@@ -12,35 +12,35 @@ constexpr bool floating_point_type_convertions_unit_tests() noexcept
   // floating_point_to_fixed unit tests
   //
   static_assert( floating_point_to_fixed(0.f) == 0_fix );
-  static_assert( floating_point_to_fixed(-1.f) == -limits__::one() );
-  static_assert( floating_point_to_fixed(-1.f) != limits__::one() );
+  static_assert( floating_point_to_fixed(-1.f) == -limits_::one() );
+  static_assert( floating_point_to_fixed(-1.f) != limits_::one() );
   static_assert( floating_point_to_fixed(-1.f) != 0_fix );
   static_assert( floating_point_to_fixed(1.f) != 0_fix );
   static_assert( floating_point_to_fixed(1.f) != integral_to_fixed(-1) );
   static_assert( floating_point_to_fixed(1.f) == integral_to_fixed(1) );
   static_assert( floating_point_to_fixed(0.f) == 0_fix );
-  static_assert( floating_point_to_fixed(float(limits__::max_integral())) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(flimits__::max()) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(float(limits__::max_integral()+1ll)) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(float(limits__::min_integral())) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(float(limits__::min_integral()-1ll)) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(flimits__::lowest()) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(flimits__::min()) != limits__::quiet_NaN() );
+  static_assert( floating_point_to_fixed(float(limits_::max_integral())) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(flimits_::max()) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(float(limits_::max_integral()+1ll)) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(float(limits_::min_integral())) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(float(limits_::min_integral()-1ll)) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(flimits_::lowest()) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(flimits_::min()) != limits_::quiet_NaN() );
   
-  static_assert( floating_point_to_fixed(-1.) == -limits__::one() );
-  static_assert( floating_point_to_fixed(-1.) != limits__::one() );
+  static_assert( floating_point_to_fixed(-1.) == -limits_::one() );
+  static_assert( floating_point_to_fixed(-1.) != limits_::one() );
   static_assert( floating_point_to_fixed(-1.) != 0_fix );
   static_assert( floating_point_to_fixed(1.) != 0_fix );
   static_assert( floating_point_to_fixed(1.) != integral_to_fixed(-1) );
   static_assert( floating_point_to_fixed(1.) == integral_to_fixed(1) );
-  static_assert( floating_point_to_fixed(double(limits__::max_integral())) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(double(limits__::max_integral()-1ll)) != limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(double(limits__::max_integral()+1ll)) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(double(limits__::min_integral())) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(double(limits__::min_integral()-1ll)) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(double(limits__::min_integral()+1ll)) != limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(dlimits__::lowest()) == limits__::quiet_NaN() );
-  static_assert( floating_point_to_fixed(dlimits__::min()) != limits__::quiet_NaN() );
+  static_assert( floating_point_to_fixed(double(limits_::max_integral())) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(double(limits_::max_integral()-1ll)) != limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(double(limits_::max_integral()+1ll)) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(double(limits_::min_integral())) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(double(limits_::min_integral()-1ll)) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(double(limits_::min_integral()+1ll)) != limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(dlimits_::lowest()) == limits_::quiet_NaN() );
+  static_assert( floating_point_to_fixed(dlimits_::min()) != limits_::quiet_NaN() );
 
   //------------------------------------------------------------------------------------------------------
   //

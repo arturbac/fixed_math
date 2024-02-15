@@ -27,7 +27,7 @@ using std::atan;
 using std::string_view;
 using fixedmath::phi;
 
-using limits__ = std::numeric_limits<fixedmath::fixed_t>;
+using limits_ = std::numeric_limits<fixedmath::fixed_t>;
 
 struct tuple_type 
   {

@@ -54,8 +54,8 @@ namespace fixedmath
   [[ gnu::const, gnu::always_inline ]]
   constexpr fixed_t integral_to_fixed(integral_type value) noexcept
     { 
-    if( fixed_likely(cxx20::cmp_less_equal(value, detail::limits__::max_integral()) && 
-                     cxx20::cmp_greater_equal(value, detail::limits__::min_integral()) ) ) 
+    if( fixed_likely(cxx20::cmp_less_equal(value, detail::limits_::max_integral()) && 
+                     cxx20::cmp_greater_equal(value, detail::limits_::min_integral()) ) ) 
       {
       if constexpr ( detail::is_unsigned_v<integral_type> )
         return fix_carrier_t{detail::unsigned_shift_left_unsigned<16>(value)};
@@ -81,8 +81,8 @@ namespace fixedmath
     { 
     using ft = floating_point_type;
     
-    if( fixed_likely( value < double(detail::limits__::max_integral()) &&
-                      value > double(detail::limits__::min_integral())) )
+    if( fixed_likely( value < double(detail::limits_::max_integral()) &&
+                      value > double(detail::limits_::min_integral())) )
       return fix_carrier_t( static_cast<fixed_internal>(value * 65536 + (value < ft(0) ? ft(-0.5) : ft(0.5) )) );
 
     return quiet_NaN_result();

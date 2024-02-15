@@ -25,8 +25,8 @@ constexpr bool misc_functions_unit_tests() noexcept
   // floor
   //
   static_assert( fixed_to_integral<int>(floor(0.25_fix)) == 0 );
-  static_assert( floor( -1_fix + limits__::epsilon()) == -1_fix ); //
-  static_assert( floor( -1_fix - limits__::epsilon()) == -2_fix ); //
+  static_assert( floor( -1_fix + limits_::epsilon()) == -1_fix ); //
+  static_assert( floor( -1_fix - limits_::epsilon()) == -2_fix ); //
   static_assert( floor(-0.25_fix) == -1_fix );
   static_assert( floor(0.25_fix) == 0_fix );
   static_assert( floor(0.95_fix) == 0_fix );

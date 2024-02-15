@@ -29,9 +29,9 @@
 
 using namespace fixedmath;
 
-using limits__ = std::numeric_limits<fixedmath::fixed_t>;
-using flimits__ = std::numeric_limits<float>;
-using dlimits__ = std::numeric_limits<double>;
+using limits_ = std::numeric_limits<fixedmath::fixed_t>;
+using flimits_ = std::numeric_limits<float>;
+using dlimits_ = std::numeric_limits<double>;
 
 using std::endl;
 

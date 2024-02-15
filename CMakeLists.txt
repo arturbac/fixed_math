@@ -74,5 +74,7 @@ add_custom_target(clean-all
    COMMAND rm -rf ${CMAKE_BINARY_DIR}/
 )
 
-feature_summary(WHAT ALL)
+if( PROJECT_IS_TOP_LEVEL)
+  feature_summary(WHAT ALL)
+endif()
 

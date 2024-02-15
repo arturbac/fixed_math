@@ -27,7 +27,7 @@ constexpr bool substraction_unit_tests() noexcept
   static_assert( uint16_t(10) -10.5_fix == -.5_fix );
   static_assert( uint32_t(10) -10.5_fix == -.5_fix );
   static_assert( uint64_t(10) -10.5_fix == -.5_fix );
-  static_assert( limits__::max() -1 != limits__::quiet_NaN() );
+  static_assert( limits_::max() -1 != limits_::quiet_NaN() );
   
   static_assert( test_resulting_type<fixed_t>( int64_t(1) - 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  - int64_t(1) ) );

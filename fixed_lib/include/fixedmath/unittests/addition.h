@@ -36,10 +36,10 @@ constexpr bool addition_unit_tests() noexcept
   static_assert( -10_fix+ 1 == -9_fix );
   static_assert( 10.5_fix + -10. == .5 );
   static_assert( 10.5_fix + -10.f == .5_fix );
-  static_assert( limits__::max() < limits__::quiet_NaN() );
-  static_assert( limits__::lowest() +1 != limits__::quiet_NaN() );
+  static_assert( limits_::max() < limits_::quiet_NaN() );
+  static_assert( limits_::lowest() +1 != limits_::quiet_NaN() );
   
-  static_assert( as_fixed(limits__::max().v- 65536) + 1_fix != limits__::quiet_NaN() );
+  static_assert( as_fixed(limits_::max().v- 65536) + 1_fix != limits_::quiet_NaN() );
   
   static_assert( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
   static_assert( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );

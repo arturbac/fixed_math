@@ -13,7 +13,7 @@ constexpr bool multiplication_unit_tests() noexcept
   //
   static_assert( 1_fix * 1_fix  == 1_fix );
   static_assert( 10_fix * 0.5_fix  == 5_fix );
-  static_assert( abs(0.8_fix * 0.2_fix)  - 0.16_fix <= limits__::epsilon() );
+  static_assert( abs(0.8_fix * 0.2_fix)  - 0.16_fix <= limits_::epsilon() );
   static_assert( abs(0.8_fix * -0.2_fix)  > 0_fix );
 
   static_assert( -1.25_fix * int8_t(4)  == -5_fix );

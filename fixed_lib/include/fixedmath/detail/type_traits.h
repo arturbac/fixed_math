@@ -76,7 +76,7 @@ namespace fixedmath::detail
   template<typename supported_type1, typename supported_type2>
   inline constexpr bool one_of_is_double_v = is_double_v<supported_type1> || is_double_v<supported_type2>;
   
-  using limits__ = std::numeric_limits<fixedmath::fixed_t>;
-  using flimits__ = std::numeric_limits<float>;
-  using dlimits__ = std::numeric_limits<double>;
+  using limits_ = std::numeric_limits<fixedmath::fixed_t>;
+  using flimits_ = std::numeric_limits<float>;
+  using dlimits_ = std::numeric_limits<double>;
   }

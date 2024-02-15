@@ -5,9 +5,9 @@
 
 namespace fixedmath
 {
-  using detail::limits__;
-  using detail::flimits__;
-  using detail::dlimits__;
+  using detail::limits_;
+  using detail::flimits_;
+  using detail::dlimits_;
 
   
   #define make_const_value(x) const_val<decltype(x), x>
