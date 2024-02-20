@@ -30,7 +30,7 @@ include(GNUInstallDirs)
 #-----------------------------------------------------------------------------
 # options
 #-----------------------------------------------------------------------------
-option(FIXEDMATH_ENABLE_UNIT_TESTS "unit tests available from CTest" ON )
+option(FIXEDMATH_ENABLE_UNIT_TESTS "unit tests available from CTest" OFF )
 
 if(FIXEDMATH_ENABLE_UNIT_TESTS AND ${CMAKE_VERSION} VERSION_LESS "3.19.0") 
   message( STATUS "unit tests not available as require cmake CheckSourceCompiles added in 3.19")
@@ -62,8 +62,10 @@ if(FIXEDMATH_ENABLE_DEVEL_CODE)
 endif()
 
 if( FIXEDMATH_ENABLE_UNIT_TESTS )
-  enable_testing( TRUE )
-  add_subdirectory(unit_tests)
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19.0") 
+    enable_testing( TRUE )
+    add_subdirectory(unit_tests)
+  endif()
 endif()
 
 #-----------------------------------------------------------------------------
