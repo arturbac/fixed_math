@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8 FATAL_ERROR )
+cmake_minimum_required(VERSION 3.21 FATAL_ERROR )
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 
@@ -30,18 +30,13 @@ include(GNUInstallDirs)
 #-----------------------------------------------------------------------------
 # options
 #-----------------------------------------------------------------------------
-option(FIXEDMATH_ENABLE_UNIT_TESTS "unit tests available from CTest" OFF )
+if(PROJECT_IS_TOP_LEVEL)
+  option(FIXEDMATH_ENABLE_UNIT_TESTS "unit tests available from CTest" OFF )
+  add_feature_info("FIXEDMATH_ENABLE_UNIT_TESTS" FIXEDMATH_ENABLE_UNIT_TESTS "unit test available from CTest")
 
-if(FIXEDMATH_ENABLE_UNIT_TESTS AND ${CMAKE_VERSION} VERSION_LESS "3.19.0") 
-  message( STATUS "unit tests not available as require cmake CheckSourceCompiles added in 3.19")
-  set( FIXEDMATH_ENABLE_UNIT_TESTS OFF )
+  option(FIXEDMATH_ENABLE_DEVEL_CODE "enable internaly used for development code" OFF )
+  add_feature_info("ENABLE_DEVEL_CODE" ENABLE_DEVEL_CODE "enable internaly used for development code")
 endif()
-
-add_feature_info("FIXEDMATH_ENABLE_UNIT_TESTS" FIXEDMATH_ENABLE_UNIT_TESTS "unit test available from CTest")
-
-option(FIXEDMATH_ENABLE_DEVEL_CODE "enable internaly used for development code" OFF )
-add_feature_info("ENABLE_DEVEL_CODE" ENABLE_DEVEL_CODE "enable internaly used for development code")
-
 # CMAKE_CXX_STANDARD used for compilation of fixedmath will not affect CMAKE_CXX_STANDARD avaialble when importing library
 if(NOT DEFINED CMAKE_CXX_STANDARD OR CMAKE_CXX_STANDARD LESS 17 )
   message(STATUS "Assuming by default c++17 standard")
@@ -61,13 +56,12 @@ if(FIXEDMATH_ENABLE_DEVEL_CODE)
   add_subdirectory(perf_test_suite)
 endif()
 
-if( FIXEDMATH_ENABLE_UNIT_TESTS )
-  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19.0") 
-    enable_testing( TRUE )
-    add_subdirectory(unit_tests)
+if( PROJECT_IS_TOP_LEVEL)
+  if( FIXEDMATH_ENABLE_UNIT_TESTS )
+      enable_testing( TRUE )
+      add_subdirectory(unit_tests)
   endif()
 endif()
-
 #-----------------------------------------------------------------------------
 # Add clean-all target
 #-----------------------------------------------------------------------------
