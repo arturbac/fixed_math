@@ -680,10 +680,8 @@ namespace fixedmath
     
     //reorder hi/lo
     if( uhi < ulo )
-      {
-      uhi = ulo;
-      ulo = static_cast<uint64_t>(lh.v);
-      }
+      detail::swap(uhi, ulo);
+
     if( fixed_unlikely(uhi == 0) )
       return 0_fix;
     //check hi for overflow and shift right with d

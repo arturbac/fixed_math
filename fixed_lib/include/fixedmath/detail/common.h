@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../types.h"
+#include <type_traits>
 
 #define FIXEDMATH_PUBLIC gnu::visibility("default")
 
@@ -111,4 +112,13 @@ namespace fixedmath::detail
       return as_fixed(result);
     return as_fixed(-result);
     }
+    
+  template<typename T, typename = std::enable_if_t<std::is_arithmetic<T>::value>>
+  constexpr void swap(T& a, T& b) noexcept 
+    {
+    T temp = a;
+    a = b;
+    b = temp;
+    }
   }
+
