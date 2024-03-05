@@ -1,0 +1,27 @@
+Checks: 'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,bugprone-*,readability-identifier-naming,misc-const-correctness,cert-dcl21-cpp,cert-dcl50-cpp,cert-err34-c,cert-err52-cpp,cert-err58-cpp,cert-err60-cpp,cert-flp30-cpp,cert-mem57-cpp,cert-msc50-cpp,cert-msc51-cpp,cert-oop57-cpp,cert-oop58-cpp,misc-new-delete-overloads,misc-no-recursion,misc-non-copyable-objects,misc-unused-using-decls,misc-uniqueptr-reset-release,misc-unconventional-assign-operator,misc-throw-by-value-catch-by-reference,misc-static-assert,misc-redundant-expression,performance-*,readability-use-anyofallof,readability-string-compare,readability-static-accessed-through-instance,readability-simplify-subscript-expr,readability-simplify-boolean-expr,readability-redundant-*,readability-qualified-auto,readability-non-const-parameter,readability-misplaced-array-index,readability-make-member-function-const,readability-isolate-declaration,readability-inconsistent-declaration-parameter-name,readability-implicit-bool-conversion,readability-function-size,readability-else-after-return,readability-deleted-default,readability-delete-null-pointer,readability-convert-member-functions-to-static,readability-container-size-empty,readability-const-return-type,readability-avoid-const-params-in-decls,modernize-use-nodiscard'
+CheckOptions:
+  # General Naming Convention: lower_case
+  - key: readability-identifier-naming.NamespaceCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ClassCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.StructCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.FunctionCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.VariableCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.PublicMemberCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: 'lower_case_'
+  - key: readability-identifier-naming.ProtectedMemberCase
+    value: 'lower_case_'
+  - key: readability-identifier-naming.ConstantCase
+    value: 'lower_case'
+  # Member variables should end with '_'
+  - key: readability-identifier-naming.MemberSuffix
+    value: '_'
+  # Macros should be UPPER_CASE
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: 'UPPER_CASE'
