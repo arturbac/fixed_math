@@ -24,10 +24,10 @@
 
 #include "detail/type_traits.h"
 
-#define FIXEDMATH_VERSION_MAJOR 0
-#define FIXEDMATH_VERSION_MINOR 9
-#define FIXEDMATH_VERSION_PATCH 19
-#define FIXEDMATH_VERSION_STRING "fixedmath 0.9.19"
+#define FIXEDMATH_VERSION_MAJOR 1
+#define FIXEDMATH_VERSION_MINOR 0
+#define FIXEDMATH_VERSION_PATCH 0
+#define FIXEDMATH_VERSION_STRING "1.0.0"
 
 namespace fixedmath
 {

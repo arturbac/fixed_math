@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.21 FATAL_ERROR )
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 
 include(get_fixed_math_version)
-get_fixed_math_version(${CMAKE_CURRENT_SOURCE_DIR}/fixed_lib/include/fixedmath/types.h fixed_math_VERSION_MAJOR fixed_math_VERSION_MINOR fixed_math_VERSION_PATCH)
 
 project(fixed_math
         LANGUAGES CXX
@@ -14,8 +13,6 @@ set(fixed_math_HOMEPAGE_URL "https://github.com/arturbac/fixed_math")
 set(fixed_math_DESCRIPTION  "fixed point math library in C++17")
 
 include(FeatureSummary)
-
-
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -74,3 +71,12 @@ if( PROJECT_IS_TOP_LEVEL)
   feature_summary(WHAT ALL)
 endif()
 
+
+#--------
+#[[
+add_executable(fixed_math_test main.cc)
+target_compile_definitions( fixed_math_test PRIVATE -DFIXEDMATH_ENABLE_SQRT_ABACUS_ALGO=1)
+
+target_link_libraries( fixed_math_test 
+   fixed_math
+   agg_fixed )]]
