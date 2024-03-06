@@ -4,9 +4,11 @@
 
 The FixedMath library provides a comprehensive suite for fixed-point arithmetic operations, optimized for performance and precision. It includes basic arithmetic operations, trigonometric functions, conversion utilities, and more.
 
+
+
 ## Main Type
 
-- `struct fixed_t`: The main type used in calculations.
+- [`struct fixed_t`](fixed_t.md): The main type used in calculations.
 
 ## Arithmetic Operations
 
@@ -28,11 +30,15 @@ The FixedMath library provides a comprehensive suite for fixed-point arithmetic 
 
 ### Multiplication
 
+See our [full documentation of division](multiplication.md) for more details.
+
 - `auto fixed_multiply(supported_type1 lh, supported_type2 rh) noexcept`: Returns the result of the multiplication of two arguments.
 - `auto operator *(supported_type1 lh, supported_type2 rh) noexcept`: Operator overload for multiplication.
 - `fixed_t & operator *=(fixed_t &lh, supported_type rh) noexcept`: Multiplication assignment.
 
 ### Division
+
+See our [full documentation of division](division.md) for more details.
 
 - `auto fixed_division(supported_type1 lh, supported_type2 rh) noexcept`: Returns the result of the division of two arguments.
 - `auto operator /(supported_type1 lh, supported_type2 rh) noexcept`: Operator overload for division.
@@ -68,3 +74,6 @@ The FixedMath library provides a comprehensive suite for fixed-point arithmetic 
 - `fixed_t sqrt(fixed_t value) noexcept`: Returns the square root of `value`.
 - `fixed_t hypot(fixed_t lh, fixed_t rh) noexcept`: Returns the hypotenuse of `lh` and `rh`.
 
+## FixedMath Applications and Use Cases
+
+Explore the FixedMath [applications.](aplication.md)
