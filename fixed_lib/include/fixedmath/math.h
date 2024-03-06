@@ -743,7 +743,7 @@ namespace fixedmath
     
     rad = detail::sin_range(rad);
       
-    // on arm64 condition is compiled as  substraction with csel instruction without jump
+    // on arm64 condition is compiled as  subtraction with csel instruction without jump
     //         mov     w9, #9279
     //         movk    w9, #3, lsl #16
     //         cmp     x0, x8
@@ -761,14 +761,16 @@ namespace fixedmath
     fixed_internal result{ mul_<prec_>(x,( one__ - mul_<prec_+1>(x2,( one__ - mul_<prec_+2>(x2,( one__-x2/42))/5))/3)) };
 #else
   // reduce number of divisions
-  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 42 } } right ) cdot { 1 over 20 } } right ) { 1 over 6 } } right ) } 
-  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 2 } { 1 over 21 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
-  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over 21 } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
-  // { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over { 5 cdot 21 } } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
-  // { x left ( { 1 - x ^ 2 { 1 over { 3 cdot 5 cdot 21 } } left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) } 
-  // { x left ( { 3 cdot 5 cdot 21 - x ^ 2 left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) { 1 over { 3 cdot 5 cdot 21 } } } 
-  // { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) :315 } 
-  // { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 42 - x ^ 2 } right ) cdot { 1 over 8 } } right ) { 1 over 2 } } right ) :315 } 
+  /*
+  { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 42 } } right ) cdot { 1 over 20 } } right ) { 1 over 6 } } right ) } 
+  { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 2 } { 1 over 21 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
+  { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over 21 } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
+  { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over { 5 cdot 21 } } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } 
+  { x left ( { 1 - x ^ 2 { 1 over { 3 cdot 5 cdot 21 } } left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) } 
+  { x left ( { 3 cdot 5 cdot 21 - x ^ 2 left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) { 1 over { 3 cdot 5 cdot 21 } } } 
+  { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) :315 } 
+  { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 42 - x ^ 2 } right ) cdot { 1 over 8 } } right ) { 1 over 2 } } right ) :315 } 
+  */
     constexpr fixed_internal _42{ fixed_internal{42}<<prec_};
     constexpr fixed_internal _105{ fixed_internal{105}<<(prec_+prec_+3)};
     constexpr fixed_internal _315{ fixed_internal{315}<<prec_};
