@@ -37,4 +37,5 @@ fixed_t result2 = a * scalar; // Multiplication by an integral scalar
 
 double d = 2.0;
 auto result3 = a * d; // Multiplication with a double, result is promoted to double
+```
 

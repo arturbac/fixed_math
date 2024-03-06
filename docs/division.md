@@ -37,4 +37,5 @@ fixed_t result2 = a / scalar; // Division by an integral scalar
 
 double d = 2.0;
 auto result3 = a / d; // Division with a double, result is promoted to double
+```
 

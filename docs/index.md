@@ -18,6 +18,9 @@ The FixedMath library provides a comprehensive suite for fixed-point arithmetic 
 
 ### Addition
 
+
+See our [full documentation of addition](addition.md) for more details.
+
 - `auto fixed_addition(supported_type1 lh, supported_type2 rh) noexcept`  : Returns the result of the addition of two arguments.
 - `auto operator +(supported_type1 l, supported_type2 r) noexcept` : Operator overload for addition.
 - `fixed_t &operator +=(fixed_t &l, supported_type r) noexcept`: Addition assignment.
@@ -30,7 +33,7 @@ The FixedMath library provides a comprehensive suite for fixed-point arithmetic 
 
 ### Multiplication
 
-See our [full documentation of division](multiplication.md) for more details.
+See our [full documentation of multiplication](multiplication.md) for more details.
 
 - `auto fixed_multiply(supported_type1 lh, supported_type2 rh) noexcept`: Returns the result of the multiplication of two arguments.
 - `auto operator *(supported_type1 lh, supported_type2 rh) noexcept`: Operator overload for multiplication.
