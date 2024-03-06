@@ -1,5 +1,5 @@
 ## Real-World Application of FixedMath: AutoMapa Navigation System
-
+![automapalogo](https://assets-global.website-files.com/5fae9732e3321c0c757ff57b/6527cd9cbbff8cdac0b98d65_APR%202.0%20-%20600.jpg)
 [AutoMapa](https://www.automapa.pl/) stands as a prime example of FixedMath's practical application in the technology industry. Since its deployment on January 5th, 2021, FixedMath has been at the core of the AutoMapa navigation system, leveraging the library's precision and efficiency to deliver reliable GPS and mapping solutions. This implementation successfully replaced the system's previous arithmetic logic, which was based on older C code, marking a significant enhancement in terms of both performance and maintainability.
 
 ### Overview of AutoMapa
