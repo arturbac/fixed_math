@@ -38,6 +38,15 @@
       }
     },
     {
+      "name": "clang-18-release",
+      "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
+      "cacheVariables": { "CMAKE_CXX_COMPILER" : "/usr/lib/llvm/18/bin/clang++" }
+    },
+    {
+      "name": "clang-18-libc++release",
+      "inherits": ["clang-18-release", "cfg-libc++"]
+    },
+    {
       "name": "clang-17-release",
       "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
       "cacheVariables": { "CMAKE_CXX_COMPILER" : "/usr/lib/llvm/17/bin/clang++" }

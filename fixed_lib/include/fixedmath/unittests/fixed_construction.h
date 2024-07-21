@@ -2,6 +2,7 @@
 
 #include "unit_test_common.h"
 
+
 namespace fixedmath
 {
 [[nodiscard]]

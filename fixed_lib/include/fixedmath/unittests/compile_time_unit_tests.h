@@ -20,12 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 #pragma once
-/*
-#if defined(_MSC_VER)
-static_assert(false, "dont expect constexpr will work on this broken compiler. Expect cl crash and internal compiler error");
-#endif*/
-//1>D:\projects\fixed_math\fixed_lib\include\fixedmath\unittests\addition.h(19,43): fatal error C1001: Wewnêtrzny b³¹d kompilatora.
-//1 > (plik kompilatora „d : \A01\_work\2\s\src\vctools\Compiler\CxxFE\sl\p1\c\constexpr\constexpr.cpp”, wiersz 6887)
 
 #include "type_traits.h"
 #include "integral_type_convertions.h"

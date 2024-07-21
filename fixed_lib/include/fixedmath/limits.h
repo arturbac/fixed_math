@@ -56,21 +56,21 @@ namespace std
     static constexpr bool traps{true};
     static constexpr bool tinyness_before{};
     
-    static constexpr value_type min() noexcept{ return fix_carrier_t{fixed_internal{1}}; };
-    static constexpr value_type lowest() noexcept{ return fix_carrier_t{fixed_internal{-0x7FFFFFFFFFFFFFFEll}}; };
-    static constexpr value_type max() noexcept { return fix_carrier_t{fixed_internal{0x7FFFFFFFFFFFFFFEll}}; }
-    static constexpr value_type one() noexcept { return fix_carrier_t{fixed_internal{65536}}; }
-    static constexpr value_type epsilon() noexcept { return fix_carrier_t{fixed_internal{1}}; }
-    static constexpr value_type round_error() noexcept { return fix_carrier_t{fixed_internal{1}}; }
-    static constexpr value_type quiet_NaN() noexcept { return fix_carrier_t{fixed_internal{0x7FFFFFFFFFFFFFFFll}}; }
+    static consteval value_type min() noexcept{ return fix_carrier_t{fixed_internal{1}}; }
+    static consteval value_type lowest() noexcept{ return fix_carrier_t{fixed_internal{-0x7FFFFFFFFFFFFFFEll}}; }
+    static consteval value_type max() noexcept { return fix_carrier_t{fixed_internal{0x7FFFFFFFFFFFFFFEll}}; }
+    static consteval value_type one() noexcept { return fix_carrier_t{fixed_internal{65536}}; }
+    static consteval value_type epsilon() noexcept { return fix_carrier_t{fixed_internal{1}}; }
+    static consteval value_type round_error() noexcept { return fix_carrier_t{fixed_internal{1}}; }
+    static consteval value_type quiet_NaN() noexcept { return fix_carrier_t{fixed_internal{0x7FFFFFFFFFFFFFFFll}}; }
     
-    static constexpr int32_t max_integral() noexcept { return 2147483647; }
-    static constexpr int32_t min_integral() noexcept{ return -2147483647; };
+    static consteval int32_t max_integral() noexcept { return 2147483647; }
+    static consteval int32_t min_integral() noexcept{ return -2147483647; }
     };
 
 }
 namespace fixedmath
 {
-inline constexpr fixed_t quiet_NaN_result() noexcept { return std::numeric_limits<fixed_t>::quiet_NaN(); }
+inline consteval auto quiet_NaN_result() -> fixed_t { return std::numeric_limits<fixed_t>::quiet_NaN(); }
 }
 

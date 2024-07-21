@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
+#if 0
 #include <fixedmath/fixed_math.hpp>
 #include "square_root_table.h"
 #include "tan_table.h"
@@ -27,10 +27,10 @@
 #include "cos_angle_table.h"
 #include <algorithm>
 #include <fixedmath/iostream.h>
-
+#endif
 namespace fixedmath 
 {
-  
+#if 0
   struct fix_rbit_scan_loop
     {
     constexpr int operator()( uint32_t value ) const
@@ -142,4 +142,5 @@ namespace fixedmath
       return -128_fix + as_fixed( fixed_internal(index) << 15);
       }
     }
+#endif
 }
