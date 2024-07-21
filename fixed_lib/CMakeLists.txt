@@ -9,8 +9,9 @@ target_include_directories( fixed_math
   )
 target_sources( fixed_math PRIVATE src/fixed_math.cc )
 
-file(GLOB fixed_math_include_files 
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/fixedmath/*.h 
+file(GLOB fixed_math_include_files
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/fixedmath/*.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/fixedmath/*.hpp
   )
 
 file(GLOB fixed_math_include_files_detail 
