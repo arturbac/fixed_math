@@ -39,10 +39,7 @@ struct fix_carrier_t
 
   constexpr fix_carrier_t() noexcept = default;
 
-  template<std::same_as<fixed_internal> input_type>
-  explicit constexpr fix_carrier_t(input_type const & value) noexcept : v{value}
-    {
-    }
+  explicit constexpr fix_carrier_t(std::same_as<fixed_internal> auto const & value) noexcept : v{value} {}
   };
 
 ///\brief hermetization of fixed value to avoid implicit conversions from int64, long long
@@ -55,31 +52,33 @@ struct fixed_t
 
   constexpr fixed_t() noexcept = default;
 
-  constexpr fixed_t(fix_carrier_t value) noexcept : v{value.v} {}
+  constexpr fixed_t(std::same_as<fix_carrier_t> auto value) noexcept : v{value.v} {}
 
-  template<concepts::arithmetic_and_not_fixed arithmethic_type>
-  explicit constexpr fixed_t(arithmethic_type value) noexcept;
+  explicit constexpr fixed_t(concepts::arithmetic_and_not_fixed auto value) noexcept;
   };
 
 struct as_fixed_t
   {
-  constexpr auto operator()(fixed_internal carried) const noexcept -> fixed_t { return fix_carrier_t{carried}; }
+  constexpr auto operator()(std::same_as<fixed_internal> auto carried) const noexcept -> fixed_t
+    {
+    return fix_carrier_t{carried};
+    }
   };
 
 ///\brief constructs fixed from raw value in internal format
 inline constexpr as_fixed_t as_fixed;
 
 [[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator==(fixed_t l, fixed_t r) noexcept -> bool
+constexpr auto operator==(std::same_as<fixed_t> auto l, std::same_as<fixed_t> auto r) noexcept -> bool
   {
-  return l.v != r.v;
+  return l.v == r.v;
   }
 
 [[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator<=>(fixed_t l, fixed_t r) noexcept
+constexpr auto operator<=>(std::same_as<fixed_t> auto l, std::same_as<fixed_t> auto r) noexcept
   {
   return l.v <=> r.v;
   }
 
-  }  // namespace fixedmath
+  }  // namespace fixedmath::inline v2
 

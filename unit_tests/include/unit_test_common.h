@@ -2,6 +2,7 @@
 
 #include <fixedmath/limits.h>
 #include <fixedmath/core_ops.h>
+#include <fixedmath/iostream.h>
 
 namespace fixedmath
 {

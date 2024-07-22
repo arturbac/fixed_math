@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unit_test_core.h>
 #include "unit_test_common.h"
 
 namespace fixedmath

@@ -35,10 +35,10 @@ if(PROJECT_IS_TOP_LEVEL)
   option(FIXEDMATH_ENABLE_DEVEL_CODE "enable internaly used for development code" OFF )
   add_feature_info("ENABLE_DEVEL_CODE" ENABLE_DEVEL_CODE "enable internaly used for development code")
 endif()
-# CMAKE_CXX_STANDARD used for compilation of fixedmath will not affect CMAKE_CXX_STANDARD avaialble when importing library
-if(NOT DEFINED CMAKE_CXX_STANDARD OR CMAKE_CXX_STANDARD LESS 20 )
-  message(STATUS "Assuming by default c++17 standard")
-  set( CMAKE_CXX_STANDARD 20 )
+
+if(NOT DEFINED CMAKE_CXX_STANDARD OR CMAKE_CXX_STANDARD LESS 23 )
+  message(STATUS "Assuming by default c++23 standard")
+  set( CMAKE_CXX_STANDARD 23 )
 endif()
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF)
@@ -50,7 +50,6 @@ set( CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory( fixed_lib )
 
 if(FIXEDMATH_ENABLE_DEVEL_CODE)
-  add_subdirectory(table_gen)
   add_subdirectory(perf_test_suite)
 endif()
 
@@ -60,24 +59,8 @@ if( PROJECT_IS_TOP_LEVEL)
       add_subdirectory(unit_tests)
   endif()
 endif()
-#-----------------------------------------------------------------------------
-# Add clean-all target
-#-----------------------------------------------------------------------------
-add_custom_target(clean-all
-   COMMAND ${CMAKE_BUILD_TOOL} clean
-   COMMAND rm -rf ${CMAKE_BINARY_DIR}/
-)
 
 if( PROJECT_IS_TOP_LEVEL)
   feature_summary(WHAT ALL)
 endif()
 
-
-#--------
-#[[
-add_executable(fixed_math_test main.cc)
-target_compile_definitions( fixed_math_test PRIVATE -DFIXEDMATH_ENABLE_SQRT_ABACUS_ALGO=1)
-
-target_link_libraries( fixed_math_test 
-   fixed_math
-   agg_fixed )]]

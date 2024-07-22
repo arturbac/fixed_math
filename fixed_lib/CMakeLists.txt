@@ -1,13 +1,12 @@
 
 
-add_library( fixed_math )
+add_library( fixed_math INTERFACE )
 
 target_include_directories( fixed_math 
-  PUBLIC 
+  INTERFACE 
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
   )
-target_sources( fixed_math PRIVATE src/fixed_math.cc )
 
 file(GLOB fixed_math_include_files
   ${CMAKE_CURRENT_SOURCE_DIR}/include/fixedmath/*.h
@@ -20,9 +19,6 @@ file(GLOB fixed_math_include_files_detail
 
 install(TARGETS fixed_math
         EXPORT fixed_math_targets
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
