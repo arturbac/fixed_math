@@ -67,8 +67,10 @@ constexpr auto
     return test_result{expression};
     }
   }
+
 template<typename T, std::equality_comparable_with<T> U>
-constexpr auto expect_eq( T const & left, U const & right, source_location const location = source_location::current()) -> test_result
+constexpr auto
+  expect_eq(T const & left, U const & right, source_location const location = source_location::current()) -> test_result
   {
   if(std::is_constant_evaluated())
     {
@@ -78,40 +80,53 @@ constexpr auto expect_eq( T const & left, U const & right, source_location const
     }
   else
     {
-    boost::ut::expect( boost::ut::eq(left,right), location);
+    boost::ut::expect(boost::ut::eq(left, right), location);
     return test_result{left == right};
     }
   }
+
 template<typename T, std::equality_comparable_with<T> U>
-constexpr auto expect_neq( T const & left, U const & right, source_location const location = source_location::current()) -> test_result
+constexpr auto expect_neq(T const & left, U const & right, source_location const location = source_location::current())
+  -> test_result
   {
   if(std::is_constant_evaluated())
     {
-    if( left == right)
+    if(left == right)
       throw;
     return test_result{left != right};
     }
   else
     {
-    boost::ut::expect( boost::ut::neq(left,right), location);
+    boost::ut::expect(boost::ut::neq(left, right), location);
     return test_result{left != right};
     }
   }
 
-// constexpr auto expect_approx( T const & left, U const & right, source_location const location = source_location::current()) -> test_result
-//   {
-//   if(std::is_constant_evaluated())
-//     {
-//     if( left == right)
-//       throw;
-//     return test_result{left != right};
-//     }
-//   else
-//     {
-//     boost::ut::expect( boost::ut::neq(left,right), location);
-//     return test_result{left != right};
-//     }
-//   }
+template<typename T, typename U, typename X>
+  requires requires(T const & t, U const & u, X const & x) {
+    { t - u } -> std::three_way_comparable_with<X>;
+  }
+constexpr auto expect_approx(
+  T const & left, U const & right, X const & approx , source_location const location = source_location::current()
+) -> test_result
+  {
+  if(std::is_constant_evaluated())
+    {
+    using sub_res_type = decltype(left - right);
+    sub_res_type diff{left - right};
+    if(diff < sub_res_type(0))
+      diff = -diff;
+    if(diff >= approx)
+      throw;
+    return test_result{diff < approx};
+    }
+  else
+    {
+    boost::ut::expect(boost::ut::approx(left, right, approx), location);
+    return test_result{boost::ut::approx(left, right, approx)};
+    }
+  }
+
 template<typename except, typename test_type>
 test_result require_throw(test_type const & test) noexcept
   {
@@ -146,7 +161,8 @@ test_result require_throw(test_type const & test) noexcept
 
 template<typename unit_test>
 [[maybe_unused]]
-constexpr test_result run_constexpr_test(unit_test const & test, source_location const location = source_location::current())
+constexpr test_result
+  run_constexpr_test(unit_test const & test, source_location const location = source_location::current())
   {
   return expect(test(), location);
   }

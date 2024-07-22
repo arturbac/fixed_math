@@ -68,7 +68,7 @@ endfunction()
 # endfunction()
 
 # add_fixedmath_ut( type_traits )
-add_fixedmath_ut( integral_type_convertions_ut )
+add_fixedmath_ut( type_convertions_ut )
 # add_compile_test( floating_point_type_convertions )
 # add_compile_test( fixed_construction )
 # add_compile_test( addition )
