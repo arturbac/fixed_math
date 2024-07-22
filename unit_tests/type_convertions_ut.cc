@@ -1,38 +1,15 @@
-#pragma once
-
 #include <unit_test_core.h>
 #include <unit_test_common.h>
 
 using boost::ut::operator""_test;
 using namespace metatests;
-
-// namespace fixedmath
-// {
-// [[nodiscard]]
-// constexpr bool integral_type_convertions_unit_tests() noexcept
-//   {
-//   //------------------------------------------------------------------------------------------------------
-//   //
-//   // arithmetic_to_fixed unit tests
-//   //
-//   expect_eq( arithmetic_to_fixed(0) == 0_fix );
-
-//
-//   //------------------------------------------------------------------------------------------------------
-//   //
-//   // fixed_to_integral
-//   //
-
-//   return true;
-//   }
-//   expect_eq(integral_type_convertions_unit_tests());
-// }
+using namespace fixedmath;
 int main()
   {
   test_result result;
   using F = fixedmath::fixed_internal;
 
-  using namespace fixedmath;
+  
   "arithmetic_to_fixed integrals"_test = [&result]
   {
     auto fn_tmpl = [] -> metatests::test_result
@@ -114,7 +91,7 @@ int main()
     result |= run_constexpr_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
-  "fixed_to_arithmetic integrals"_test = [&result]
+  "fixed_to_arithmetic floating point"_test = [&result]
   {
     auto fn_tmpl = [] -> metatests::test_result
     {

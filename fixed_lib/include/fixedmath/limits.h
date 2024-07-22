@@ -43,7 +43,6 @@ namespace std
     static constexpr bool has_infinity{};
     static constexpr bool has_quiet_NaN{ true };
     static constexpr bool has_signaling_NaN{};
-    static constexpr float_denorm_style has_denorm{denorm_absent};
     static constexpr bool has_denorm_loss{};
     static constexpr float_round_style round_style{round_toward_zero};
     static constexpr bool is_iec559{};

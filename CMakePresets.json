@@ -9,8 +9,12 @@
     {
       "name": "cfg-common",
       "hidden": true,
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": { "FIXEDMATH_ENABLE_UNIT_TESTS": "ON" }
+    },
+    {
+      "name": "cfg-build-dir",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}"
     },
     {
     "name": "cfg-ninja",
@@ -33,8 +37,13 @@
       }
     },
     {
-      "name": "ci-clang-18-release",
+      "name": "clang-18-release",
       "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
+      "cacheVariables": { "CMAKE_CXX_COMPILER" : "clang++-18" }
+    },
+    {
+      "name": "ci-clang-18-release",
+      "inherits": [ "cfg-common", "cfg-build-dir", "cfg-ninja", "cfg-c++23" ],
       "cacheVariables": { "CMAKE_CXX_COMPILER" : "clang++-18" }
     },
     {
@@ -43,18 +52,18 @@
     },
     {
       "name": "ci-gcc-14-release",
-      "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
+      "inherits": [ "cfg-common", "cfg-build-dir", "cfg-ninja", "cfg-c++23" ],
       "cacheVariables": {"CMAKE_CXX_COMPILER": "g++-14" }
     },
     {
       "name": "ci-clangcl-release",
-      "inherits": "cfg-common",
+      "inherits": ["cfg-common", "cfg-build-dir"],
       "generator": "Visual Studio 17 2022",
       "toolset": "ClangCL"
     },
     {
       "name": "ci-msvc-release",
-      "inherits": "cfg-common",
+      "inherits": ["cfg-common", "cfg-build-dir"],
       "generator": "Visual Studio 17 2022"
     }
   ],

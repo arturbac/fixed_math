@@ -102,12 +102,45 @@ constexpr auto expect_neq(T const & left, U const & right, source_location const
     }
   }
 
+template<typename T, std::equality_comparable_with<T> U>
+constexpr auto
+  expect_gt(T const & left, U const & right, source_location const location = source_location::current()) -> test_result
+  {
+  if(std::is_constant_evaluated())
+    {
+    if(left <= right)
+      throw;
+    return test_result{left > right};
+    }
+  else
+    {
+    boost::ut::expect(boost::ut::gt(left, right), location);
+    return test_result{left > right};
+    }
+  }
+
+template<typename T, std::equality_comparable_with<T> U>
+constexpr auto
+  expect_lt(T const & left, U const & right, source_location const location = source_location::current()) -> test_result
+  {
+  if(std::is_constant_evaluated())
+    {
+    if(left >= right)
+      throw;
+    return test_result{left < right};
+    }
+  else
+    {
+    boost::ut::expect(boost::ut::lt(left, right), location);
+    return test_result{left < right};
+    }
+  }
 template<typename T, typename U, typename X>
   requires requires(T const & t, U const & u, X const & x) {
     { t - u } -> std::three_way_comparable_with<X>;
   }
 constexpr auto expect_approx(
-  T const & left, U const & right, X const & approx , source_location const location = source_location::current()
+  T const & left, U const & right, X const & approx, source_location const location = source_location::current()
 ) -> test_result
   {
   if(std::is_constant_evaluated())
