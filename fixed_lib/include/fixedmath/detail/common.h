@@ -1,25 +1,29 @@
 #pragma once
 
 #include "../types.h"
-#include <type_traits>
-
-#define FIXEDMATH_PUBLIC gnu::visibility("default")
+#include <fixedmath/detail/type_traits.h>
 
 namespace fixedmath::inline v2::detail
   {
 
 template<int digits>
 [[gnu::const, gnu::always_inline]]
-constexpr auto unsigned_shift_left_signed(fixed_internal value) noexcept -> fixed_internal
+constexpr auto unsigned_shift_left_signed(std::signed_integral auto value) noexcept -> fixed_internal
   {
-  using unsigned_internal = std::make_unsigned_t<fixed_internal>;
   return static_cast<fixed_internal>(
-    (static_cast<unsigned_internal>(value) << digits)
-    | (static_cast<unsigned_internal>(value) & (unsigned_internal(1) << 63u))
+    (static_cast<fixed_internal_unsigned>(value) << digits)
+    | (static_cast<fixed_internal_unsigned>(value) & (fixed_internal_unsigned(1) << 63u))
   );
   }
 
-template<typename value_type>
+template<int digits>
+[[nodiscard, gnu::const, gnu::always_inline]]
+constexpr auto unsigned_shift_left_unsigned(std::unsigned_integral auto value) noexcept -> fixed_internal
+  {
+  return static_cast<fixed_internal>(static_cast<fixed_internal_unsigned>(value) << digits);
+  }
+
+template<std::integral value_type>
 [[nodiscard, gnu::const, gnu::always_inline]]
 constexpr auto promote_type_to_signed(value_type value) noexcept
   {
@@ -32,17 +36,9 @@ constexpr auto promote_type_to_signed(value_type value) noexcept
     }
   }
 
-template<int digits>
-[[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto unsigned_shift_left_unsigned(fixed_internal value) noexcept -> fixed_internal
-  {
-  using unsigned_internal = std::make_unsigned_t<fixed_internal>;
-  return static_cast<fixed_internal>(static_cast<unsigned_internal>(value) << digits);
-  }
-
 [[nodiscard, gnu::const, gnu::always_inline]]
 ///\returns the highest power of 4 that is less than or equal to \ref value
-constexpr auto highest_pwr4_clz(fixed_internal_unsigned value) noexcept -> fixed_internal
+constexpr auto highest_pwr4_clz(concepts::internal_unsigned auto value) noexcept -> fixed_internal
   {
   if(value != 0) [[likely]]
     {
@@ -58,7 +54,7 @@ constexpr auto highest_pwr4_clz(fixed_internal_unsigned value) noexcept -> fixed
   }
 
 [[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto highest_pwr4(fixed_internal_unsigned value) noexcept -> fixed_internal
+constexpr auto highest_pwr4(std::unsigned_integral auto value) noexcept -> fixed_internal
   {
   // one starts at the highest power of four <= than the argument.
   fixed_internal_unsigned pwr4{1ll << 62};  // second-to-top bit set
@@ -70,27 +66,27 @@ constexpr auto highest_pwr4(fixed_internal_unsigned value) noexcept -> fixed_int
 
 template<int precision>
 [[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto mul_(fixed_internal x, fixed_internal y) noexcept -> fixed_internal
+constexpr auto mul_(concepts::internal auto x, concepts::internal auto y) noexcept -> fixed_internal
   {
   return (x * y) >> precision;
   }
 
 template<int precision>
 [[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto div_(fixed_internal x, fixed_internal y) noexcept -> fixed_internal
+constexpr auto div_(concepts::internal auto x, concepts::internal auto y) noexcept -> fixed_internal
   {
   return (x << precision) / y;
   }
 
 template<int precision>
 [[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto fix_(fixed_internal x) noexcept -> fixed_internal
+constexpr auto fix_(std::integral auto x) noexcept -> fixed_internal
   {
-  return (x << precision);
+  return fixed_internal(x) << precision;
   }
 
 [[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto set_sign(bool sign_, fixed_internal result) -> fixed_t
+constexpr auto set_sign(bool sign_, concepts::internal auto result) -> fixed_t
   {
   if(!sign_)
     return as_fixed(result);
@@ -104,5 +100,5 @@ constexpr void swap(T & a, T & b) noexcept
   a = b;
   b = temp;
   }
-  }  // namespace fixedmath::detail
+  }  // namespace fixedmath::inline v2::detail
 

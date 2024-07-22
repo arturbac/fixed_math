@@ -53,7 +53,7 @@ endfunction()
 add_fixedmath_ut( fixed_construction_ut )
 add_fixedmath_ut( type_convertions_ut )
 add_fixedmath_ut( addition_ut )
-
+add_fixedmath_ut( subtraction_ut )
 
 # add_compile_test( addition )
 # add_compile_test( substraction )

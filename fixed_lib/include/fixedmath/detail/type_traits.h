@@ -37,7 +37,6 @@ using promote_to_signed_t = signed_type_by_size_t<(sizeof(T) << 1)>;
 template<typename T>
 inline constexpr bool is_integral_v = std::is_integral_v<T>;
 
-
 template<typename T>
 inline constexpr bool is_fixed_point_v = std::is_same_v<T, fixed_t>;
 
@@ -70,6 +69,11 @@ inline constexpr bool one_of_is_double_v = std::is_same_v<T, double> || std::is_
 namespace fixedmath::inline v2::concepts
   {
 using std::integral;
+template<typename T>
+concept internal_unsigned = std::same_as<T, fixed_internal_unsigned>;
+
+template<typename T>
+concept internal = std::same_as<T, fixed_internal>;
 
 template<typename T>
 concept fixed_point = typetraits::is_fixed_point_v<T>;
@@ -91,6 +95,7 @@ concept arithmetic_and_one_is_fixed = typetraits::is_arithmetic_and_one_is_fixed
 
 template<typename T, typename U>
 concept one_of_is_double = typetraits::one_of_is_double_v<T, U>;
+
   }  // namespace fixedmath::inline v2::concepts
 
 namespace fixedmath::inline v2::detail

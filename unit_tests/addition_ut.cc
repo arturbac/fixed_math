@@ -42,6 +42,26 @@ int main()
       expect_neq(limits_::lowest() + 1, limits_::quiet_NaN());
 
       expect_neq(as_fixed(limits_::max().v - 65536) + 1_fix, limits_::quiet_NaN());
+      
+      expect( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );
+      expect( test_resulting_type<fixed_t>( uint64_t(1) + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix  + uint64_t(1) ) );
+      expect( test_resulting_type<fixed_t>( 1_fix + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1 + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix + 1 ) );
+      expect( test_resulting_type<fixed_t>( int16_t(1) + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix  + int16_t(1) ) );
+      expect( test_resulting_type<fixed_t>( uint16_t(1) + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix  + uint16_t(1) ) );
+      expect( test_resulting_type<fixed_t>( int8_t(1) + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix  + int8_t(1) ) );
+      expect( test_resulting_type<fixed_t>( uint8_t(1) + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix  + uint8_t(1) ) );
+      expect( test_resulting_type<fixed_t>( 1.f + 1_fix ) );
+      expect( test_resulting_type<fixed_t>( 1_fix  + 1.f ) );
+      expect( test_resulting_type<double>( 1. + 1_fix ) );
+      expect( test_resulting_type<double>( 1_fix  + 1. ) );
       return {};
     };
     result |= run_constexpr_test(fn_tmpl);

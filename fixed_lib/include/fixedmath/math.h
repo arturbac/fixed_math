@@ -226,7 +226,7 @@ struct subtract_t
   template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
     requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
   [[nodiscard, gnu::const, gnu::always_inline]]
-  constexpr auto operator()(supported_type1 lh, supported_type2 rh) noexcept
+  static constexpr auto operator()(supported_type1 lh, supported_type2 rh) noexcept
     {
     if constexpr(typetraits::one_of_is_double_v<supported_type1, supported_type2>)
       return detail::promote_to_double(lh) - detail::promote_to_double(rh);
