@@ -62,3 +62,4 @@ if( PROJECT_IS_TOP_LEVEL)
   feature_summary(WHAT ALL)
 endif()
 
+add_subdirectory(examples)
