@@ -1,4 +1,9 @@
+// SPDX-FileCopyrightText: 2020-2024 Artur Bać
+// SPDX-License-Identifier: BSL-1.0
+// SPDX-PackageHomePage: https://github.com/arturbac/fixed_math
+
 #pragma once
+
 #include <cstdint>
 #include <concepts>
 #include <type_traits>

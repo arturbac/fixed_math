@@ -15,14 +15,15 @@ using std::cout;
 using std::endl;
 
 using std::string_view;
-namespace fixedmath::inline v2
-  {
-// using std::asin;
-// using std::atan;
 
-// using std::tan;
-// using std::sin;
-using limits_ = std::numeric_limits<fixedmath::fixed_t>;
+using std::asin;
+using std::atan;
+using std::tan;
+using std::sin;
+
+using fixedmath::fixed_t;
+
+using limits_ = std::numeric_limits<fixed_t>;
 
 struct tuple_type
   {
@@ -166,19 +167,18 @@ struct div_test
     return tp / tp;
     }
   };
-  }  // namespace fixedmath
 
 int main(int argc, char ** argv)
   {
-  cout << fixedmath::test_executor<fixedmath::sin_test>{}("sin") << endl;
-  cout << fixedmath::test_executor<fixedmath::asin_test>{}("asin") << endl;
-  cout << fixedmath::test_executor<fixedmath::tan_test>{}("tan") << endl;
-  cout << fixedmath::test_executor<fixedmath::atan_test>{}("atan") << endl;
-  cout << fixedmath::test_executor<fixedmath::sqrt_test>{}("sqrt") << endl;
-  cout << fixedmath::test_executor<fixedmath::arith_test>{}("arith_test") << endl;
-  cout << fixedmath::test_executor<fixedmath::add_test>{}("add") << endl;
-  cout << fixedmath::test_executor<fixedmath::mul_test>{}("mul") << endl;
-  cout << fixedmath::test_executor<fixedmath::div_test>{}("div") << endl;
+  cout << test_executor<sin_test>{}("sin") << endl;
+  cout << test_executor<asin_test>{}("asin") << endl;
+  cout << test_executor<tan_test>{}("tan") << endl;
+  cout << test_executor<atan_test>{}("atan") << endl;
+  cout << test_executor<sqrt_test>{}("sqrt") << endl;
+  cout << test_executor<arith_test>{}("arith_test") << endl;
+  cout << test_executor<add_test>{}("add") << endl;
+  cout << test_executor<mul_test>{}("mul") << endl;
+  cout << test_executor<div_test>{}("div") << endl;
   return EXIT_SUCCESS;
   }
 

@@ -50,7 +50,7 @@ set( CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory( fixed_lib )
 
 if(PROJECT_IS_TOP_LEVEL AND FIXEDMATH_ENABLE_DEVEL_CODE)
-  add_subdirectory(perf_test_suite)
+  # add_subdirectory(perf_test_suite)
 endif()
 
 if( PROJECT_IS_TOP_LEVEL AND FIXEDMATH_ENABLE_UNIT_TESTS)
