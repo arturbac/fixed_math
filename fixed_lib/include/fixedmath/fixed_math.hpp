@@ -133,6 +133,13 @@ namespace func
     return fobj::floor(value);
     }
 
+  template<std::integral integral_type>
+  [[nodiscard, gnu::const, gnu::always_inline]]
+  constexpr auto angle_to_radians(integral_type angle) noexcept -> fixed_t
+    {
+    return fobj::angle_to_radians(angle);
+    }
+
   [[nodiscard]]
   constexpr auto sqrt(std::same_as<fixed_t> auto value) noexcept -> fixed_t
     {

@@ -64,13 +64,13 @@ int main()
       test_hypot(asfix(1ul << 30), asfix(1u << 30), 23170_fix, 1_fix);
       test_hypot(asfix((1ul << 30) - 1), asfix((1ul << 30) - 1), 23170.47497_fix, 0.0001_fix);
 
-      test_hypot(asfix(1u), asfix(1u), 0.0000152587890625_fix, 0.00001_fix);
-      test_hypot(asfix(2u), asfix(2u), 0.0000305175781250_fix, 0.00001_fix);
-      test_hypot(asfix(1u), asfix(3u), 0.0000457763671875_fix, 0.00001_fix);
-      test_hypot(asfix(2u), asfix(3u), 0.0000457763671875_fix, 0.00001_fix);
-      test_hypot(0.0125_fix, 0.125_fix, 0.1256103515625000_fix, 0.00001_fix);
-      test_hypot(1_fix, 1_fix, 1.4141998291015625_fix, 0.0001_fix);
-      test_hypot(0.5_fix, 0.25_fix, 0.5590057373046875_fix, 0.0001_fix);
+      test_hypot(asfix(1u), asfix(1u), 0.000015_fix, 0.00001_fix);
+      test_hypot(asfix(2u), asfix(2u), 0.000030_fix, 0.00001_fix);
+      test_hypot(asfix(1u), asfix(3u), 0.000045_fix, 0.00001_fix);
+      test_hypot(asfix(2u), asfix(3u), 0.000045_fix, 0.00001_fix);
+      test_hypot(0.0125_fix, 0.125_fix, 0.125610_fix, 0.00001_fix);
+      test_hypot(1_fix, 1_fix, 1.41419_fix, 0.0001_fix);
+      test_hypot(0.5_fix, 0.25_fix, 0.559005_fix, 0.0001_fix);
       return {};
     };
     result |= run_constexpr_test(fn_tmpl);

@@ -56,15 +56,9 @@ add_fixedmath_ut( addition_ut )
 add_fixedmath_ut( subtraction_ut )
 add_fixedmath_ut( sqrt_ut )
 add_fixedmath_ut( multiplication_ut )
-# add_compile_test( division )
-# 
-# add_compile_test( misc_functions )
-# add_compile_test( sin )
+add_fixedmath_ut( division_ut )
+add_fixedmath_ut( misc_functions_ut )
+add_fixedmath_ut( sin_cos_ut )
 # add_compile_test( tan )
 # add_compile_test( atan )
 
-# add_executable( hypot_not_abacus hypot_not_abacus.cc )
-# target_link_libraries( hypot_not_abacus fixed_math )
-
-# add_executable( tests tests.cc )
-# target_link_libraries( tests fixed_math stralgo::stralgo )

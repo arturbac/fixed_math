@@ -348,11 +348,12 @@ struct angle_to_radians_t
   {
   ///\brief converts angle 0 - 360 to radians.
   template<std::integral integral_type>
+    requires(sizeof(integral_type) > 1)
   [[nodiscard, gnu::const, gnu::always_inline]]
   static constexpr auto operator()(integral_type angle) noexcept -> fixed_t
     {
     if(angle >= integral_type(0) && angle <= integral_type(360))
-      return integral_to_fixed(angle) * fixedmath::phi / 180;
+      return division(multiply(arithmetic_to_fixed(angle), fixedmath::phi), 180);
     return quiet_NaN_result();
     }
   };
