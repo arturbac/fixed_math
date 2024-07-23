@@ -39,7 +39,7 @@
     {
       "name": "clang-18-release",
       "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
-      "cacheVariables": { "CMAKE_CXX_COMPILER" : "clang++-18" }
+      "cacheVariables": { "CMAKE_CXX_COMPILER" : "clang++-18", "FIXEDMATH_ENABLE_DEVEL_CODE" : "ON" }
     },
     {
       "name": "ci-clang-18-release",

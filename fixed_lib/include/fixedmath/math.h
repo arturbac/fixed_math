@@ -25,11 +25,38 @@
 #include "core_ops.h"
 #include <algorithm>
 
-namespace fixedmath::inline v2
+namespace fixedmath::inline v2::detail
   {
 
-//------------------------------------------------------------------------------------------------------
+template<concepts::arithmetic supported_type>
+[[nodiscard, gnu::const, gnu::always_inline]]
+inline constexpr double promote_to_double(supported_type value) noexcept
+  {
+  if constexpr(std::same_as<double, supported_type>)
+    return value;
+  else
+    return fixed_to_arithmetic<double>(value);
+  }
 
+template<concepts::arithmetic supported_type>
+[[nodiscard, gnu::const, gnu::always_inline]]
+inline constexpr fixed_t promote_to_fixed(supported_type value) noexcept
+  {
+  if constexpr(std::same_as<fixed_t, supported_type>)
+    return value;
+  else
+    return arithmetic_to_fixed(value);
+  }
+  }  // namespace fixedmath::inline v2::detail
+
+namespace fixedmath::inline v2::fobj
+  {
+namespace detail
+  {
+  using namespace fixedmath::detail;
+  }
+
+//------------------------------------------------------------------------------------------------------
 struct abs_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -44,6 +71,7 @@ struct abs_t
 inline constexpr abs_t abs;
 
 //------------------------------------------------------------------------------------------------------
+
 struct isnan_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -56,6 +84,7 @@ struct isnan_t
 inline constexpr isnan_t isnan;
 
 //------------------------------------------------------------------------------------------------------
+
 struct rshift_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -69,13 +98,8 @@ struct rshift_t
 
 inline constexpr rshift_t rshift;
 
-[[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator>>(std::same_as<fixed_t> auto l, int r) noexcept -> fixed_t
-  {
-  return rshift(l, r);
-  }
-
 //------------------------------------------------------------------------------------------------------
+
 struct lshift_t
   {
   [[nodiscard, gnu::const]]
@@ -95,13 +119,8 @@ struct lshift_t
 
 inline constexpr lshift_t lshift;
 
-[[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator<<(std::same_as<fixed_t> auto l, int r) noexcept -> fixed_t
-  {
-  return lshift(l, r);
-  }
-
 //------------------------------------------------------------------------------------------------------
+
 struct bit_and_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -113,12 +132,8 @@ struct bit_and_t
 
 inline constexpr bit_and_t bit_and;
 
-inline auto constexpr operator&(std::same_as<fixed_t> auto l, std::same_as<fixed_t> auto r) noexcept -> fixed_t
-  {
-  return bit_and(l, r);
-  }
-
 //------------------------------------------------------------------------------------------------------
+
 namespace detail
   {
   ///\brief Returns the sum of two fixed_t point values.
@@ -139,25 +154,6 @@ namespace detail
     return result;
     }
 
-  template<concepts::arithmetic supported_type>
-  [[nodiscard, gnu::const, gnu::always_inline]]
-  inline constexpr double promote_to_double(supported_type value) noexcept
-    {
-    if constexpr(std::same_as<double, supported_type>)
-      return value;
-    else
-      return fixed_to_arithmetic<double>(value);
-    }
-
-  template<concepts::arithmetic supported_type>
-  [[nodiscard, gnu::const, gnu::always_inline]]
-  inline constexpr fixed_t promote_to_fixed(supported_type value) noexcept
-    {
-    if constexpr(std::same_as<fixed_t, supported_type>)
-      return value;
-    else
-      return arithmetic_to_fixed(value);
-    }
   }  // namespace detail
 
 struct add_t
@@ -178,24 +174,8 @@ struct add_t
 
 inline constexpr add_t add;
 
-[[gnu::always_inline]]
-constexpr auto operator+=(fixed_t & l, concepts::arithmetic auto r) noexcept -> fixed_t &
-  {
-  l = add(l, r);
-  return l;
-  }
-
-///\brief returns result of addition of to arguments
-///\note when one of arguments is double precission operation is promoted to double
-template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
-  requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
-[[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator+(supported_type1 l, supported_type2 r) noexcept
-  {
-  return add(l, r);
-  }
-
 //------------------------------------------------------------------------------------------------------
+
 namespace detail
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -237,26 +217,9 @@ struct subtract_t
 
 inline constexpr subtract_t subtract;
 
-[[gnu::always_inline]]
-inline constexpr auto operator-=(fixed_t & lh, concepts::arithmetic auto rh) noexcept -> fixed_t &
-  {
-  lh = subtract(lh, rh);
-  return lh;
-  }
-
-// 3 overloads to avoid problem with vector implicit convertion
-// see https://www.reddit.com/r/cpp_questions/comments/l2cbqe/bug_in_libstdc_or_not_question_about_static/
-
-template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
-  requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
-[[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator-(supported_type1 lh, supported_type2 rh) noexcept
-  {
-  return subtract(lh, rh);
-  }
-
 //------------------------------------------------------------------------------------------------------
 /// \brief Returns the product of two fixed_t point values.
+
 namespace detail
   {
   constexpr bool check_multiply_result(std::same_as<fixed_t> auto result)
@@ -315,22 +278,8 @@ struct multiply_t
 
 inline constexpr multiply_t multiply;
 
-[[gnu::always_inline]]
-constexpr auto operator*=(fixed_t & lh, concepts::arithmetic auto rh) noexcept -> fixed_t &
-  {
-  lh = multiply(lh, rh);
-  return lh;
-  }
-
-template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
-  requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
-[[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator*(supported_type1 lh, supported_type2 rh) noexcept
-  {
-  return multiply(lh, rh);
-  }
-
 //------------------------------------------------------------------------------------------------------
+
 namespace detail
   {
   constexpr bool check_division_result(std::same_as<fixed_t> auto result)
@@ -355,7 +304,7 @@ namespace detail
     {
     if(rh != 0) [[likely]]
       {
-      fixed_t const result = as_fixed(lh.v / promote_type_to_signed(rh));
+      fixed_t const result = as_fixed(lh.v / detail::promote_type_to_signed(rh));
       return result;
       }
     return quiet_NaN_result();  // abort ?
@@ -380,22 +329,8 @@ struct division_t
 
 inline constexpr division_t division;
 
-[[gnu::always_inline]]
-constexpr auto operator/=(fixed_t & lh, concepts::arithmetic auto rh) noexcept -> fixed_t &
-  {
-  lh = division(lh, rh);
-  return lh;
-  }
-
-template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
-  requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
-[[nodiscard, gnu::const, gnu::always_inline]]
-constexpr auto operator/(supported_type1 lh, supported_type2 rh) noexcept
-  {
-  return division(lh, rh);
-  }
-
 //------------------------------------------------------------------------------------------------------
+
 struct ceil_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -411,6 +346,7 @@ struct ceil_t
 inline constexpr ceil_t ceil;
 
 //------------------------------------------------------------------------------------------------------
+
 struct floor_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -424,9 +360,10 @@ struct floor_t
 inline constexpr floor_t floor;
 
 //------------------------------------------------------------------------------------------------------
-///\brief converts angle 0 - 360 to radians.
+
 struct angle_to_radians_t
   {
+  ///\brief converts angle 0 - 360 to radians.
   template<std::integral integral_type>
   [[nodiscard, gnu::const, gnu::always_inline]]
   static constexpr auto operator()(integral_type angle) noexcept -> fixed_t
@@ -473,6 +410,7 @@ inline constexpr bool sqrt_constexpr_available = true;
 
 struct sqrt_t
   {
+  [[nodiscard]]
   static constexpr auto operator()(std::same_as<fixed_t> auto value) noexcept -> fixed_t
     {
     if(std::is_constant_evaluated())
@@ -484,9 +422,11 @@ struct sqrt_t
 
 inline constexpr sqrt_t sqrt;
 
+//------------------------------------------------------------------------------------------------------
+
 struct hypot_t
   {
-  [[nodiscard, gnu::const]]
+  [[nodiscard]]
   static constexpr auto operator()(std::same_as<fixed_t> auto lh, std::same_as<fixed_t> auto rh) noexcept -> fixed_t
     {
     constexpr int prec_ = 16;
@@ -538,7 +478,7 @@ namespace detail
   constexpr auto sin_range(std::same_as<fixed_t> auto rad) noexcept -> fixed_t
     {
     // maximum performance for values in range thus fixed_unlikely
-    if(rad < -fixpidiv2 || rad > phi + fixpidiv2) [[unlikely]]
+    if(rad < -fixpidiv2 || rad > add(phi, fixpidiv2)) [[unlikely]]
       {
       rad = as_fixed((fixpidiv2.v + rad.v) % fixpi2.v - fixpidiv2.v);
       if(rad < -fixpidiv2) [[unlikely]]
@@ -550,7 +490,6 @@ namespace detail
 
 struct sin_t
   {
-  [[nodiscard, gnu::const]]
   ///\return sine of value in radians
   /// Y = X - X^3/ 3! + X^5/ 5! - ... + (-1)^(n+1) * X^(2*n-1)/(2n-1)!
   /// X - X^3/ 3! + X^5/ 5! - X^7/7!
@@ -560,7 +499,8 @@ struct sin_t
   /// X * (1 - X2*(1 - X2*(1 - X2/42)/20)/6)
   ///
   /// error is less or equal to X^9/9!
-  constexpr auto sin(std::same_as<fixed_t> auto rad) noexcept -> fixed_t
+  [[nodiscard, gnu::const]]
+  static constexpr auto operator()(std::same_as<fixed_t> auto rad) noexcept -> fixed_t
     {
     using detail::mul_;
     rad = detail::sin_range(rad);
@@ -580,18 +520,19 @@ struct sin_t
     fixed_internal x2{mul_<prec_>(x, x)};
     // reduce number of divisions
     /*
-    { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 42 } } right ) cdot { 1 over 20 } } right
-    ) { 1 over 6 } } right ) } { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 2 } { 1 over
-    21 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } { x left ( {
-    1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over 21 } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } cdot {
-    1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over {
-    5 cdot 21 } } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } cdot { 1 over
-    3 } } right ) } { x left ( { 1 - x ^ 2 { 1 over { 3 cdot 5 cdot 21 } } left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^
-    2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) } { x left ( { 3 cdot 5 cdot 21 - x
-    ^ 2 left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over
-    2 } } right ) { 1 over { 3 cdot 5 cdot 21 } } } { x left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 21 - x ^ 2
-    cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) :315 } { x left ( { 315 - x ^ 2 left
-    ( { 105 - x ^ 2 left ( { 42 - x ^ 2 } right ) cdot { 1 over 8 } } right ) { 1 over 2 } } right ) :315 }
+    { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 42 } } right ) cdot { 1 over 20 } }
+    right ) { 1 over 6 } } right ) } { x left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 cdot { 1 over 2 } {
+    1 over 21 } } right ) cdot { 1 over 4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } { x
+    left ( { 1 - x ^ 2 left ( { 1 - x ^ 2 { 1 over 21 } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over
+    4 } cdot { 1 over 5 } } right ) { 1 over 2 } cdot { 1 over 3 } } right ) } { x left ( { 1 - x ^ 2 left ( { 1 - x ^
+    2 { 1 over { 5 cdot 21 } } left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2
+    } cdot { 1 over 3 } } right ) } { x left ( { 1 - x ^ 2 { 1 over { 3 cdot 5 cdot 21 } } left ( { 5 cdot 21 - x ^ 2
+    left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) } { x left ( {
+    3 cdot 5 cdot 21 - x ^ 2 left ( { 5 cdot 21 - x ^ 2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over
+    4 } } right ) { 1 over 2 } } right ) { 1 over { 3 cdot 5 cdot 21 } } } { x left ( { 315 - x ^ 2 left ( { 105 - x ^
+    2 left ( { 21 - x ^ 2 cdot { 1 over 2 } } right ) cdot { 1 over 4 } } right ) { 1 over 2 } } right ) :315 } { x
+    left ( { 315 - x ^ 2 left ( { 105 - x ^ 2 left ( { 42 - x ^ 2 } right ) cdot { 1 over 8 } } right ) { 1 over 2 } }
+    right ) :315 }
     */
     static constexpr fixed_internal _42{fixed_internal{42} << prec_};
     static constexpr fixed_internal _105{fixed_internal{105} << (prec_ + prec_ + 3)};
@@ -612,7 +553,7 @@ struct cos_t
     {
     // more effective to use sine than calculate maclurin series for cosine
     // as maclurin series give precise results for -pi/2 .. pi/2
-    return sin(fixpidiv2 + rad);
+    return sin(add(fixpidiv2, rad));
     }
   };
 
@@ -632,38 +573,38 @@ inline constexpr cos_t cos;
 // 9 43867/798
 namespace detail
   {
-  // { { 1 over 6 } { { left ( - 4 right ) ^ 1 left ( 1 - 4 ^ 1 right ) } over fact left ( 2 right ) } x + { - 1 over 30
-  // } { { left ( - 4 right ) ^ 2 left ( 1 - 4 ^ 2 right ) } over fact left ( 2 cdot 2 right ) } x ^ left ( 2 cdot 2 - 1
-  // right ) + { 1 over 42 } { { left ( - 4 right ) ^ 3 left ( 1 - 4 ^ 3 right ) } over fact left ( 2 cdot 3 right ) } x
-  // ^ left ( 2 cdot 3 - 1 right ) + { - 1 over 30 } cdot { { left ( - 4 right ) ^ 4 left ( 1 - 4 ^ 4 right ) } over
-  // fact left ( 2 cdot 4 right ) } x ^ left ( { 2 cdot 4 - 1 } right ) + { 5 over 66 } cdot { { left ( - 4 right ) ^ 5
-  // left ( 1 - 4 ^ 5 right ) } over fact left ( 2 cdot 5 right ) } x ^ left ( { 2 cdot 5 - 1 } right ) + { - 691 over
-  // 2730 } cdot { { left ( - 4 right ) ^ 6 left ( 1 - 4 ^ 6 right ) } over fact left ( 2 cdot 6 right ) } x ^ left ( {
-  // 2 cdot 6 - 1 } right ) + { 7 over 6 } { { left ( - 4 right ) ^ 7 left ( 1 - 4 ^ 7 right ) } over fact left ( 2 cdot
-  // 7 right ) } x ^ left ( { 2 cdot 7 - 1 } right ) + { - 3617 over 510 } { { left ( - 4 right ) ^ 8 left ( 1 - 4 ^ 8
-  // right ) } over fact left ( 2 cdot 8 right ) } x ^ left ( { 2 cdot 8 - 1 } right ) }
+  // { { 1 over 6 } { { left ( - 4 right ) ^ 1 left ( 1 - 4 ^ 1 right ) } over fact left ( 2 right ) } x + { - 1 over
+  // 30 } { { left ( - 4 right ) ^ 2 left ( 1 - 4 ^ 2 right ) } over fact left ( 2 cdot 2 right ) } x ^ left ( 2 cdot
+  // 2 - 1 right ) + { 1 over 42 } { { left ( - 4 right ) ^ 3 left ( 1 - 4 ^ 3 right ) } over fact left ( 2 cdot 3
+  // right ) } x ^ left ( 2 cdot 3 - 1 right ) + { - 1 over 30 } cdot { { left ( - 4 right ) ^ 4 left ( 1 - 4 ^ 4
+  // right ) } over fact left ( 2 cdot 4 right ) } x ^ left ( { 2 cdot 4 - 1 } right ) + { 5 over 66 } cdot { { left (
+  // - 4 right ) ^ 5 left ( 1 - 4 ^ 5 right ) } over fact left ( 2 cdot 5 right ) } x ^ left ( { 2 cdot 5 - 1 } right
+  // ) + { - 691 over 2730 } cdot { { left ( - 4 right ) ^ 6 left ( 1 - 4 ^ 6 right ) } over fact left ( 2 cdot 6
+  // right ) } x ^ left ( { 2 cdot 6 - 1 } right ) + { 7 over 6 } { { left ( - 4 right ) ^ 7 left ( 1 - 4 ^ 7 right )
+  // } over fact left ( 2 cdot 7 right ) } x ^ left ( { 2 cdot 7 - 1 } right ) + { - 3617 over 510 } { { left ( - 4
+  // right ) ^ 8 left ( 1 - 4 ^ 8 right ) } over fact left ( 2 cdot 8 right ) } x ^ left ( { 2 cdot 8 - 1 } right ) }
 
   // { x + { 1 over 3 } x ^ 3 + { 2 over 15 } x ^ 5 + { 17 over 315 } x ^ 7 + { 62 over 2835 } x ^ 9 + { 1382 over
-  // 155925 } x ^ 11 + { 21844 over 6081075 } x ^ 13 + { 929569 over 638512875 } x ^ 15 } { x left ( { 1 + { 1 over 3 }
-  // x ^ 2 + { 2 over 15 } x ^ 4 + { 17 over 315 } x ^ 6 + { 62 over 2835 } x ^ 8 + { 1382 over 155925 } x ^ 10 + {
-  // 21844 over 6081075 } x ^ 12 + { 929569 over 638512875 } x ^ 14 } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2 left
-  // ( { 1 + { 2 over 5 } x ^ 2 + { 17 over 105 } x ^ 4 + { 62 over 945 } x ^ 6 + { 1382 over 51975 } x ^ 8 + { 21844
-  // over 2027025 } x ^ 10 + { 929569 over 212837625 } x ^ 12 } right ) } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2
-  // left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 17 over 21 } x ^ 2 + { 62 over 189 } x ^ 4 + { 1382 over 10395 } x ^
-  // 6 + { 21844 over 405405 } x ^ 8 + { 929569 over 42567525 } x ^ 10 } right ) } right ) } right ) } { x left ( { 1 +
-  // { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 62 over 9 } x ^
-  // 2 + { 1382 over 495 } x ^ 4 + { 21844 over 19305 } x ^ 6 + { 929569 over 2027025 } x ^ 8 } right ) } right ) }
-  // right ) } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 }
-  // x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1382 over 55 } x ^ 2 + { 21844 over 2145 } x ^ 4 + { 929569
-  // over 225225 } x ^ 6 } right ) } right ) } right ) } right ) } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2 left (
-  // { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over
-  // 55 } x ^ 2 left ( { 1382 + { 21844 over 39 } x ^ 2 + { 929569 over 4095 } x ^ 4 } right ) } right ) } right ) }
-  // right ) } right ) } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1
-  // over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 1 over 39 } x
-  // ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) } right ) } right ) } right ) } right ) } right ) } right
-  // ) } { x left ( { 1 + x ^ 2 left ( { 1 + x ^ 2 left ( { 2 + x ^ 2 left ( { 17 + x ^ 2 left ( { 62 + x ^ 2 left ( {
-  // 1382 + x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) :39 } right ) :55 } right ) :9 } right ) :21 }
-  // right ) :5 } right ) :3 } right ) }
+  // 155925 } x ^ 11 + { 21844 over 6081075 } x ^ 13 + { 929569 over 638512875 } x ^ 15 } { x left ( { 1 + { 1 over 3
+  // } x ^ 2 + { 2 over 15 } x ^ 4 + { 17 over 315 } x ^ 6 + { 62 over 2835 } x ^ 8 + { 1382 over 155925 } x ^ 10 + {
+  // 21844 over 6081075 } x ^ 12 + { 929569 over 638512875 } x ^ 14 } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2
+  // left ( { 1 + { 2 over 5 } x ^ 2 + { 17 over 105 } x ^ 4 + { 62 over 945 } x ^ 6 + { 1382 over 51975 } x ^ 8 + {
+  // 21844 over 2027025 } x ^ 10 + { 929569 over 212837625 } x ^ 12 } right ) } right ) } { x left ( { 1 + { 1 over 3
+  // } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 17 over 21 } x ^ 2 + { 62 over 189 } x ^ 4 + { 1382 over
+  // 10395 } x ^ 6 + { 21844 over 405405 } x ^ 8 + { 929569 over 42567525 } x ^ 10 } right ) } right ) } right ) } { x
+  // left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + {
+  // 62 over 9 } x ^ 2 + { 1382 over 495 } x ^ 4 + { 21844 over 19305 } x ^ 6 + { 929569 over 2027025 } x ^ 8 } right
+  // ) } right ) } right ) } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2
+  // + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1382 over 55 } x ^ 2 + { 21844 over 2145 }
+  // x ^ 4 + { 929569 over 225225 } x ^ 6 } right ) } right ) } right ) } right ) } right ) } { x left ( { 1 + { 1
+  // over 3 } x ^ 2 left ( { 1 + { 1 over 5 } x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2
+  // left ( { 62 + { 1 over 55 } x ^ 2 left ( { 1382 + { 21844 over 39 } x ^ 2 + { 929569 over 4095 } x ^ 4 } right )
+  // } right ) } right ) } right ) } right ) } right ) } { x left ( { 1 + { 1 over 3 } x ^ 2 left ( { 1 + { 1 over 5 }
+  // x ^ 2 left ( { 2 + { 1 over 21 } x ^ 2 left ( { 17 + { 1 over 9 } x ^ 2 left ( { 62 + { 1 over 55 } x ^ 2 left (
+  // { 1382 + { 1 over 39 } x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) } right ) } right ) } right ) }
+  // right ) } right ) } right ) } { x left ( { 1 + x ^ 2 left ( { 1 + x ^ 2 left ( { 2 + x ^ 2 left ( { 17 + x ^ 2
+  // left ( { 62 + x ^ 2 left ( { 1382 + x ^ 2 left ( { 21844 + { 929569 over 105 } x ^ 4 } right ) :39 } right ) :55
+  // } right ) :9 } right ) :21 } right ) :5 } right ) :3 } right ) }
   template<int prec_>
   [[nodiscard, gnu::const, gnu::always_inline]]
   constexpr auto tan_(fixed_internal x) noexcept -> fixed_internal
@@ -707,8 +648,8 @@ struct tan_t
   [[nodiscard, gnu::const]]
   static constexpr auto operator()(std::same_as<fixed_t> auto rad) noexcept -> fixed_t
     {
-    using detail::div_;
     using detail::tan_;
+    using detail::div_;
 
     static constexpr int prec_ = 16;
     static constexpr int prec_inc = 4;
@@ -746,8 +687,8 @@ inline constexpr tan_t tan;
 // atan
 // Y = X - X^3/3 + X^5/5 - X^7/7 + X^9/9 -X^11/11
 //  { x - { x ^ 3 over 3 } + { x ^ 5 over 5 } - { x ^ 7 over 7 } + { x ^ 9 over 9 } - { x ^ 11 over 11 } }
-// { { 1 over 11 } x left ( { 11 + x ^ 2 left ( { - { 11 over 3 } + x ^ 2 left ( { { 11 over 5 } + x ^ 2 left ( { - { 11
-// over 7 } + x ^ 2 left ( { { 11 over 9 } - x ^ 2 } right ) } right ) } right ) } right ) } right ) }
+// { { 1 over 11 } x left ( { 11 + x ^ 2 left ( { - { 11 over 3 } + x ^ 2 left ( { { 11 over 5 } + x ^ 2 left ( { - {
+// 11 over 7 } + x ^ 2 left ( { { 11 over 9 } - x ^ 2 } right ) } right ) } right ) } right ) } right ) }
 namespace detail
   {
   // t=x*x
@@ -956,7 +897,7 @@ struct sin_angle_t
   [[nodiscard, gnu::const]]
   static constexpr auto operator()(concepts::arithmetic auto angle) noexcept -> fixed_t
     {
-    return sin(angle * phi / 180);
+    return sin(division(multiply(angle, phi), 180));
     }
   };
 
@@ -968,7 +909,7 @@ struct cos_angle_t
   [[nodiscard, gnu::const]]
   static constexpr auto operator()(concepts::arithmetic auto angle) noexcept -> fixed_t
     {
-    return cos(angle * phi / 180);
+    return cos(division(multiply(angle, phi), 180));
     }
   };
 
@@ -978,9 +919,12 @@ inline cos_angle_t cos_angle;
 struct tan_angle_t
   {
   [[nodiscard, gnu::const]]
-  constexpr auto tan_angle(concepts::arithmetic auto angle) noexcept -> fixed_t { return tan(angle * phi / 180); }
+  static constexpr auto operator()(concepts::arithmetic auto angle) noexcept -> fixed_t
+    {
+    return tan(division(multiply(angle, phi), 180));
+    }
   };
 
 inline constexpr tan_angle_t tan_angle;
 
-  }  // namespace fixedmath::inline v2
+  }  // namespace fixedmath::inline v2::fobj

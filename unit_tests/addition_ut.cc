@@ -13,10 +13,10 @@ int main()
   {
     auto fn_tmpl = [] -> metatests::test_result
     {
-      expect_eq(add(0_fix, 1_fix), 1_fix);
-      expect_eq(add(1_fix, 1_fix), 2_fix);
-      expect_eq(add(10_fix, 1_fix), 11_fix);
-      expect_eq(add(-10_fix, 1_fix), -9_fix);
+      expect_eq(fobj::add(0_fix, 1_fix), 1_fix);
+      expect_eq(fobj::add(1_fix, 1_fix), 2_fix);
+      expect_eq(fobj::add(10_fix, 1_fix), 11_fix);
+      expect_eq(fobj::add(-10_fix, 1_fix), -9_fix);
 
       expect_eq(0_fix + 1_fix, 1_fix);
       expect_eq(1_fix + 1_fix, 2_fix);

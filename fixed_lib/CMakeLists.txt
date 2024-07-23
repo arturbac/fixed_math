@@ -1,7 +1,7 @@
 
 
 add_library( fixed_math INTERFACE )
-
+target_compile_features( fixed_math INTERFACE cxx_std_23 )
 target_include_directories( fixed_math 
   INTERFACE 
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"

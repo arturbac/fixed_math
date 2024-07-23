@@ -1,7 +1,6 @@
 #pragma once
 
-#include <fixedmath/limits.h>
-#include <fixedmath/core_ops.h>
+#include <fixedmath/fixed_math.hpp>
 #include <fixedmath/iostream.h>
 
 namespace fixedmath

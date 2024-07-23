@@ -36,11 +36,11 @@ if(PROJECT_IS_TOP_LEVEL)
   add_feature_info("ENABLE_DEVEL_CODE" ENABLE_DEVEL_CODE "enable internaly used for development code")
 endif()
 
-if(NOT DEFINED CMAKE_CXX_STANDARD OR CMAKE_CXX_STANDARD LESS 23 )
-  message(STATUS "Assuming by default c++23 standard")
-  set( CMAKE_CXX_STANDARD 23 )
-endif()
-set( CMAKE_CXX_STANDARD_REQUIRED ON )
+# if(NOT DEFINED CMAKE_CXX_STANDARD OR CMAKE_CXX_STANDARD LESS 23 )
+#   message(STATUS "Assuming by default c++23 standard")
+#   set( CMAKE_CXX_STANDARD 23 )
+# endif()
+# set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF)
 
 #-----------------------------------------------------------------------------
@@ -49,15 +49,13 @@ set( CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory( fixed_lib )
 
-if(FIXEDMATH_ENABLE_DEVEL_CODE)
+if(PROJECT_IS_TOP_LEVEL AND FIXEDMATH_ENABLE_DEVEL_CODE)
   add_subdirectory(perf_test_suite)
 endif()
 
-if( PROJECT_IS_TOP_LEVEL)
-  if( FIXEDMATH_ENABLE_UNIT_TESTS )
-      enable_testing( TRUE )
-      add_subdirectory(unit_tests)
-  endif()
+if( PROJECT_IS_TOP_LEVEL AND FIXEDMATH_ENABLE_UNIT_TESTS)
+  enable_testing( TRUE )
+  add_subdirectory(unit_tests)
 endif()
 
 if( PROJECT_IS_TOP_LEVEL)
