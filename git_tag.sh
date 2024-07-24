@@ -1,27 +1,24 @@
 #!/bin/bash
 
-# Path to the top level CMakeLists.txt file
-CMAKE_FILE="CMakeLists.txt"
+# Path to the file containing the version string
+FILE_PATH="fixed_lib/include/fixedmath/types.h"
 
-# Extract the version number
-#VERSION=$(grep "VERSION" $CMAKE_FILE | head -n 1 | awk '{print $2}')
-#VERSION=$(grep "VERSION" $CMAKE_FILE | head -n 1 | sed -E 's/.*VERSION ([0-9]+.[0-9]+.[0-9]+).*/\1/')
-#VERSION=$(grep "^project(" $CMAKE_FILE | sed -n 's/.*VERSION \([0-9]*\.[0-9]*\.[0-9]*\).*/\1/p')
-VERSION=$(tail -n +2 $CMAKE_FILE | grep "VERSION" | head -n 1 | awk '{print $2}')
+# Extract the version string from the file
+VERSION_STRING=$(grep 'FIXEDMATH_VERSION_STRING' $FILE_PATH | cut -d '"' -f2)
 
-# Check if VERSION is empty
-if [ -z "$VERSION" ]; then
-  echo "Version not found in $CMAKE_FILE"
-  exit 1
+# Check if the version string was found
+if [ -z "$VERSION_STRING" ]; then
+    echo "Version string not found in $FILE_PATH"
+    exit 1
 fi
 
-# Prefix the version with a 'v'
-TAG="v$VERSION"
+# Prefix the version string with 'v'
+TAG_NAME="v$VERSION_STRING"
 
-# Add a git tag
-git tag -a $TAG -m "Release $TAG"
+# Create a Git tag with the prefixed version string
+git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
 
-# Optional: Push the tag to remote repository
-# git push origin $TAG
+echo "Git tag $TAG_NAME created successfully."
 
-echo "Tag $TAG created and ready to be pushed."
+# Optional: Push the tag to the remote repository
+# git push origin "$TAG_NAME"

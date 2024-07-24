@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10) # Version 3.10 is required for string(JSON ...)
+cmake_minimum_required(VERSION 3.23) # Version 3.10 is required for string(JSON ...)
 
 # Read the content of types.h into a variable
 file(READ fixed_lib/include/fixedmath/types.h types_h_content)

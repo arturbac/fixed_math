@@ -6,7 +6,7 @@
 namespace fixedmath
 {
 
-fixed_t nhypot(fixed_t lh, fixed_t rh ) noexcept
+static fixed_t nhypot(fixed_t lh, fixed_t rh ) noexcept
     {
     constexpr int prec_ = 16;
     //sqrt(X^2+Y^2) = sqrt( (X/D)^2+(Y/D)^2) * D
@@ -29,7 +29,7 @@ fixed_t nhypot(fixed_t lh, fixed_t rh ) noexcept
     int llbits{ cxx20::countl_zero( ulo ) };
     int lrbits{ cxx20::countr_zero( ulo ) };
     
-    if( fixed_unlikely(uhi == 0) )
+    if( uhi == 0 )
       return 0_fix;
     //check hi for overflow and shift right with d
     else if( uhi >= (1ull<<30) )
@@ -37,7 +37,7 @@ fixed_t nhypot(fixed_t lh, fixed_t rh ) noexcept
       int rshbits{ std::min(cxx20::countr_zero( uhi ),cxx20::countr_zero( ulo )) };
       uhi >>= rshbits;
       ulo >>= rshbits;
-      return as_fixed(sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_ ) ).v << rshbits)  ;
+      return as_fixed(sqrt( as_fixed( fixed_internal((uhi*uhi+ulo*ulo)>>prec_) ) ).v << rshbits)  ;
       }
     //else check lo for underflow and shift left with d
     else if( ulo < (1<<16) )
@@ -52,10 +52,10 @@ fixed_t nhypot(fixed_t lh, fixed_t rh ) noexcept
       uhi <<= lshbits;
       ulo <<= lshbits;
 
-      return as_fixed( fixedmath::sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_) ).v  >> lshbits);
+      return as_fixed( fixedmath::sqrt( as_fixed( fixed_internal((uhi*uhi+ulo*ulo)>>prec_)) ).v  >> lshbits);
       }
     else
-      return sqrt( as_fixed( (uhi*uhi+ulo*ulo)>>prec_ ) );
+      return sqrt( as_fixed( fixed_internal((uhi*uhi+ulo*ulo)>>prec_) ) );
     }
 inline void test_hypot( fixed_t x, fixed_t y, fixed_t expected )
     {
@@ -66,6 +66,7 @@ inline void test_hypot( fixed_t x, fixed_t y, fixed_t expected )
     }
 
 }
+using FX = fixedmath::fixed_internal;
 int main( int argc, char ** argv ) 
 {
   using namespace fixedmath;
@@ -82,7 +83,7 @@ int main( int argc, char ** argv )
   ( test_hypot(-0.774933_fix,-4.295090_fix, 4.3644377251651436_fix)); 
    test_hypot(-20.245346_fix,-0.909424_fix, 20.265762_fix);
 //     d20.2657614997891855 h20.2657470703125000 ex20.2657623291015625
-  ( test_hypot(as_fixed(1ul<<32),as_fixed(1ul<<31), 73270_fix));
+  ( test_hypot(as_fixed(FX(1ul<<32)),as_fixed(FX(1ul<<31)), 73270_fix));
   ( test_hypot(as_fixed(1ul<<30),as_fixed(1<<0ul), 16384_fix) );
   ( test_hypot(as_fixed(1ul<<33),as_fixed(1ul<<31), 135104_fix) );
   ( test_hypot(as_fixed(1ul<<31),as_fixed(1ul<<31), 46340_fix));

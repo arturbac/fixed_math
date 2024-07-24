@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2020-2024 Artur Bać
+// SPDX-License-Identifier: BSL-1.0
+// SPDX-PackageHomePage: https://github.com/arturbac/fixed_math
+
 #include <fixedmath/fixed_math.hpp>
 #include <fixedmath/iostream.h>
 
@@ -5,12 +9,13 @@ using fixedmath::fixed_t;
 using fixedmath::operator""_fix;
 
 // fixed and all functionality is constexpr so You can declare constants see features [1]
-inline constexpr fixed_t foo_constant{fixedmath::tan(15 * fixedmath::phi / 180)};
+inline constexpr fixed_t foo_constant{fixedmath::fobj::tan(15 * fixedmath::phi / 180)};
 
 constexpr fixed_t my_function(fixed_t value)
   {
   using namespace fixedmath;
-  return foo_constant + sin(value) / (1.41_fix - 2 * cos(value) / 4);
+  // You can use funcioons or function objects
+  return foo_constant + fobj::sin(value) / (1.41_fix - 2 * func::cos(value) / 4);
   }
 
 int main()
