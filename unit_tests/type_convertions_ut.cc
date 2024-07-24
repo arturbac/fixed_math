@@ -33,7 +33,7 @@ int main()
       //
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
 
@@ -73,7 +73,7 @@ int main()
       expect_neq(arithmetic_to_fixed(dlimits_::min()), limits_::quiet_NaN());
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
 
@@ -88,7 +88,7 @@ int main()
       expect_eq(fixed_to_arithmetic<unsigned>(100.55_fix), 100u);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
   "fixed_to_arithmetic floating point"_test = [&result]
@@ -122,7 +122,7 @@ int main()
       }
     return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
   }

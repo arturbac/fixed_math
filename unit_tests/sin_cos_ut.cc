@@ -71,7 +71,7 @@ int main()
       test_sin(-85 * phi / 180, -0.99610_fix, 0.0001_fix);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
 
@@ -96,7 +96,7 @@ int main()
       test_cos(2 * -phi, 0.99984_fix, 0.0001_fix);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
   }

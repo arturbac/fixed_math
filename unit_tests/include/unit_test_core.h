@@ -195,7 +195,7 @@ test_result require_throw(test_type const & test) noexcept
 template<typename unit_test>
 [[maybe_unused]]
 constexpr test_result
-  run_constexpr_test(unit_test const & test, source_location const location = source_location::current())
+  run_runtime_test(unit_test const & test, source_location const location = source_location::current())
   {
   return expect(test(), location);
   }
@@ -266,7 +266,7 @@ namespace detail
 template<typename templ_list, typename unit_test>
 [[maybe_unused]]
 constexpr test_result
-  run_constexpr_test(unit_test const & test, source_location const location = source_location::current())
+  run_runtime_test(unit_test const & test, source_location const location = source_location::current())
   {
   return expect(detail::test_invoke<templ_list>::constexpr_run(test), location);
   }
@@ -295,7 +295,7 @@ consteval test_result test()
     return test_result{};
   };
 
-  auto res = run_constexpr_test<traits_test_list>(test_fn);
+  auto res = run_runtime_test<traits_test_list>(test_fn);
   return res | test_result{counter == 4};
   }
 

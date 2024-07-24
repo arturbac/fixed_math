@@ -59,6 +59,6 @@ add_fixedmath_ut( multiplication_ut )
 add_fixedmath_ut( division_ut )
 add_fixedmath_ut( misc_functions_ut )
 add_fixedmath_ut( sin_cos_ut )
-# add_compile_test( tan )
-# add_compile_test( atan )
+add_fixedmath_ut( tan_ut )
+add_fixedmath_ut( atan_ut )
 

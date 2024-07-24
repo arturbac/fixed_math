@@ -64,7 +64,7 @@ int main()
       expect( test_resulting_type<double>( 1_fix  + 1. ) );
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
   }

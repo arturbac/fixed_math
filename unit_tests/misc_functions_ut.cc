@@ -24,7 +24,7 @@ int main()
       expect_eq(ceil(5.25_fix), 6_fix);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
 
@@ -43,7 +43,7 @@ int main()
 
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
 
@@ -58,7 +58,7 @@ int main()
       expect_eq(angle_to_radians(45), phi / 4);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
   }

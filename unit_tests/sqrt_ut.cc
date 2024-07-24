@@ -41,7 +41,7 @@ int main()
       expect_approx(sqrt(3333331.0215148925781250_fix), 1825.7412_fix, 0.001_fix);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
 
@@ -73,7 +73,7 @@ int main()
       test_hypot(0.5_fix, 0.25_fix, 0.559005_fix, 0.0001_fix);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
   }

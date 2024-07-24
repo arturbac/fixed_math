@@ -122,7 +122,7 @@ int main()
       expect_eq(fixed_t{4096llu}, 4096_fix);
       return {};
     };
-    result |= run_constexpr_test(fn_tmpl);
+    result |= run_runtime_test(fn_tmpl);
     result |= run_consteval_test(fn_tmpl);
   };
   }
