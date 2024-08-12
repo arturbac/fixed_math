@@ -9,19 +9,18 @@
     {
       "name": "cfg-common",
       "hidden": true,
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": { "FIXEDMATH_ENABLE_UNIT_TESTS": "ON" }
+    },
+    {
+      "name": "cfg-build-dir",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}"
     },
     {
     "name": "cfg-ninja",
     "hidden": true,
     "generator": "Ninja",
     "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
-    },
-    {
-    "name": "cfg-c++20",
-    "hidden": true,
-    "cacheVariables": { "CMAKE_CXX_STANDARD" : "20" }
     },
     {
     "name": "cfg-c++23",
@@ -38,285 +37,119 @@
       }
     },
     {
-      "name": "clang-17-release",
+      "name": "clang-18-release",
       "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
-      "cacheVariables": { "CMAKE_CXX_COMPILER" : "/usr/lib/llvm/17/bin/clang++" }
+      "cacheVariables": { "CMAKE_CXX_COMPILER" : "clang++-18", "FIXEDMATH_ENABLE_DEVEL_CODE" : "ON" }
     },
     {
-      "name": "clang-17-libc++release",
-      "inherits": ["clang-17-release", "cfg-libc++"]
+      "name": "ci-clang-18-release",
+      "inherits": [ "cfg-common", "cfg-build-dir", "cfg-ninja", "cfg-c++23" ],
+      "cacheVariables": { "CMAKE_CXX_COMPILER" : "clang++-18" }
     },
     {
-      "name": "clang-16-release",
-      "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
-      "cacheVariables": { "CMAKE_CXX_COMPILER" : "/usr/lib/llvm/16/bin/clang++" }
+      "name": "ci-clang-18-libc++-release",
+      "inherits": ["ci-clang-18-release", "cfg-libc++"]
     },
     {
-      "name": "clang-16-libc++release",
-      "inherits": ["clang-16-release", "cfg-libc++"]
+      "name": "ci-gcc-14-release",
+      "inherits": [ "cfg-common", "cfg-build-dir", "cfg-ninja", "cfg-c++23" ],
+      "cacheVariables": {"CMAKE_CXX_COMPILER": "g++-14" }
     },
     {
-      "name": "clang-15-release",
-      "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++20" ],
-      "cacheVariables": { "CMAKE_CXX_COMPILER": "/usr/lib/llvm/15/bin/clang++" }
-    },
-    {
-      "name": "clang-15-libc++release",
-      "inherits": ["clang-15-release", "cfg-libc++"]
-    },
-    {
-      "name": "gcc-12-release",
-      "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++20" ],
-      "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "g++-12",
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-      }
-    },
-    {
-      "name": "gcc-13-release",
-      "inherits": [ "cfg-common", "cfg-ninja", "cfg-c++23" ],
-      "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "g++-13",
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-      }
-    },
-    {
-      "name": "clangcl-release",
-      "inherits": "cfg-common",
+      "name": "ci-clangcl-release",
+      "inherits": ["cfg-common", "cfg-build-dir"],
       "generator": "Visual Studio 17 2022",
       "toolset": "ClangCL"
     },
     {
-      "name": "msvc-release",
-      "inherits": "cfg-common",
+      "name": "ci-msvc-release",
+      "inherits": ["cfg-common", "cfg-build-dir"],
       "generator": "Visual Studio 17 2022"
-    },
-    {
-      "name": "clang-15-release-coverage",
-      "inherits": "clang-15-release",
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "--coverage"
-      }
     }
   ],
   "buildPresets": [
     {
-      "name": "clang-17-release",
-      "configurePreset": "clang-17-release"
+      "name": "ci-clang-18-release",
+      "configurePreset": "ci-clang-18-release"
     },
     {
-      "name": "clang-17-libc++release",
-      "configurePreset": "clang-17-libc++release"
+      "name": "ci-clang-18-libc++-release",
+      "configurePreset": "ci-clang-18-libc++-release"
     },
     {
-      "name": "clang-16-release",
-      "configurePreset": "clang-16-release"
-    },
-    {
-      "name": "clang-16-libc++release",
-      "configurePreset": "clang-16-libc++release"
-    },
-    {
-      "name": "clang-15-release",
-      "configurePreset": "clang-15-release"
-    },
-    {
-      "name": "clang-15-libc++release",
-      "configurePreset": "clang-15-libc++release"
-    },
-    {
-      "name": "gcc-12-release",
-      "configurePreset": "gcc-12-release"
-    },
-    {
-      "name": "gcc-13-release",
-      "configurePreset": "gcc-13-release"
+      "name": "ci-gcc-14-release",
+      "configurePreset": "ci-gcc-14-release"
     }
   ],
   "testPresets": [
     {
-      "name": "clang-17-release",
-      "configurePreset": "clang-17-release",
+      "name": "ci-clang-18-release",
+      "configurePreset": "ci-clang-18-release",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true}
     },
     {
-      "name": "clang-17-libc++release",
-      "configurePreset": "clang-17-libc++release",
+      "name": "ci-clang-18-libc++-release",
+      "configurePreset": "ci-clang-18-libc++-release",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true}
     },
     {
-      "name": "clang-16-release",
-      "configurePreset": "clang-16-release",
-      "output": {"outputOnFailure": true},
-      "execution": {"noTestsAction": "error", "stopOnFailure": true}
-    },
-    {
-      "name": "clang-16-libc++release",
-      "configurePreset": "clang-16-libc++release",
-      "output": {"outputOnFailure": true},
-      "execution": {"noTestsAction": "error", "stopOnFailure": true}
-    },
-    {
-      "name": "clang-15-release",
-      "configurePreset": "clang-15-release",
-      "output": {"outputOnFailure": true},
-      "execution": {"noTestsAction": "error", "stopOnFailure": true}
-    },
-    {
-      "name": "clang-15-libc++release",
-      "configurePreset": "clang-15-libc++release",
-      "output": {"outputOnFailure": true},
-      "execution": {"noTestsAction": "error", "stopOnFailure": true}
-    },
-    {
-      "name": "gcc-12-release",
-      "configurePreset": "gcc-12-release",
-      "output": {"outputOnFailure": true},
-      "execution": {"noTestsAction": "error", "stopOnFailure": true}
-    },
-    {
-      "name": "gcc-13-release",
-      "configurePreset": "gcc-13-release",
+      "name": "ci-gcc-14-release",
+      "configurePreset": "ci-gcc-14-release",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true}
     }
   ],
   "workflowPresets": [
     {
-      "name": "clang-17-release",
+      "name": "ci-clang-18-release",
       "steps": [
         {
           "type": "configure",
-          "name": "clang-17-release"
+          "name": "ci-clang-18-release"
         },
         {
           "type": "build",
-          "name": "clang-17-release"
+          "name": "ci-clang-18-release"
         },
         {
           "type": "test",
-          "name": "clang-17-release"
+          "name": "ci-clang-18-release"
         }
       ]
     },
     {
-      "name": "clang-17-libc++release",
+      "name": "ci-clang-18-libc++-release",
       "steps": [
         {
           "type": "configure",
-          "name": "clang-17-libc++release"
+          "name": "ci-clang-18-libc++-release"
         },
         {
           "type": "build",
-          "name": "clang-17-libc++release"
+          "name": "ci-clang-18-libc++-release"
         },
         {
           "type": "test",
-          "name": "clang-17-libc++release"
+          "name": "ci-clang-18-libc++-release"
         }
       ]
     },
     {
-      "name": "clang-16-release",
+      "name": "ci-gcc-14-release",
       "steps": [
         {
           "type": "configure",
-          "name": "clang-16-release"
+          "name": "ci-gcc-14-release"
         },
         {
           "type": "build",
-          "name": "clang-16-release"
+          "name": "ci-gcc-14-release"
         },
         {
           "type": "test",
-          "name": "clang-16-release"
-        }
-      ]
-    },
-    {
-      "name": "clang-16-libc++release",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "clang-16-libc++release"
-        },
-        {
-          "type": "build",
-          "name": "clang-16-libc++release"
-        },
-        {
-          "type": "test",
-          "name": "clang-16-libc++release"
-        }
-      ]
-    },
-    {
-      "name": "clang-15-release",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "clang-15-release"
-        },
-        {
-          "type": "build",
-          "name": "clang-15-release"
-        },
-        {
-          "type": "test",
-          "name": "clang-15-release"
-        }
-      ]
-    },
-    {
-      "name": "clang-15-libc++release",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "clang-15-libc++release"
-        },
-        {
-          "type": "build",
-          "name": "clang-15-libc++release"
-        },
-        {
-          "type": "test",
-          "name": "clang-15-libc++release"
-        }
-      ]
-    },
-    {
-      "name": "gcc-12-release",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "gcc-12-release"
-        },
-        {
-          "type": "build",
-          "name": "gcc-12-release"
-        },
-        {
-          "type": "test",
-          "name": "gcc-12-release"
-        }
-      ]
-    },
-    {
-      "name": "gcc-13-release",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "gcc-13-release"
-        },
-        {
-          "type": "build",
-          "name": "gcc-13-release"
-        },
-        {
-          "type": "test",
-          "name": "gcc-13-release"
+          "name": "ci-gcc-14-release"
         }
       ]
     }
