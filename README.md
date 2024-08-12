@@ -7,7 +7,14 @@ A comprehensive fixed-point math library written in C++23 and C++17, designed fo
 ## Major changes 12.08.2024
 - master contains version 2.x rewritten in c++23
 - branch 1.x contains stable c++17 which will be still maintained for compatibility and bugfixes
-
+  
+## Differences between 1.x branch and master branch ( version 2.x)
+- version 2.x requires C++23 standard to compile while 1.x only C++17
+- version 2.x version has both math functions avaiable as plain functions and as function objects, while 1.x only as plain functions
+- version 2.x has much more constraints for validity of types checking at compile time compared to 1.x and exploits C++23 standard
+- API is a bit different in version 2.x as plain functions in 2.x comapred to 1.x are defined in sub namespace `fixedmath::func` and function objects in sub namespace `fixedmath::fobj`
+- version 2.x is tested with every PR if it works with clang libstdc++, clang libc++, gcc, msvc, msvc clang-cl compilers
+  
 ## Features
 
 - **Modern C++ Standards**: Requires a minimum of C++23, (branch 1.x c++17) leveraging modern language features for optimal performance and reliability.
