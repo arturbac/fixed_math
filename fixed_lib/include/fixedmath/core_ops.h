@@ -9,6 +9,8 @@
 #include "numbers.h"
 #include "detail/common.h"
 
+#include "detail/static_call_operator_prolog.h
+
 namespace fixedmath::inline v2
   {
 //------------------------------------------------------------------------------------------------------
@@ -105,3 +107,4 @@ constexpr fixed_t::operator arithmethic_type() const noexcept
 
   }  // namespace fixedmath::inline v2
 
+#include "detail/static_call_operator_epilog.h"
