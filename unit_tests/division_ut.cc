@@ -12,7 +12,7 @@ int main()
   
   "division"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(1_fix / 1_fix, 1_fix);
       expect_eq(-1_fix / 1_fix, -1_fix);

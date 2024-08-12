@@ -27,7 +27,7 @@ int main()
   test_result result;
   "sqrt"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_approx(sqrt(1.4111175537109375_fix), 1.1878_fix, 0.001_fix);
       expect_approx(sqrt(2.0000000000000000_fix), 1.4141_fix, 0.001_fix);
@@ -46,7 +46,7 @@ int main()
 
   "hypot"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       test_hypot(-14.991608_fix, -0.837158_fix, 15.01495_fix, 0.0001_fix);
       test_hypot(-14.991608_fix, -0.837158_fix, 15.01495_fix, 0.0001_fix);

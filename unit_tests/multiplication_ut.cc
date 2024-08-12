@@ -11,7 +11,7 @@ int main()
   test_result result;
   "multiplication"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(1_fix * 1_fix, 1_fix);
       expect_eq(10_fix * 0.5_fix, 5_fix);

@@ -10,7 +10,7 @@ int main()
   test_result result;
   "addition"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(fobj::add(0_fix, 1_fix), 1_fix);
       expect_eq(fobj::add(1_fix, 1_fix), 2_fix);

@@ -12,7 +12,7 @@ int main()
 
   "ceil"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(ceil(-0.25_fix), 0_fix);
       expect_eq(ceil(-1.25_fix), -1_fix);
@@ -30,7 +30,7 @@ int main()
 
   "floor"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(fixed_to_arithmetic<int>(floor(0.25_fix)), 0);
       expect_eq(floor(-1_fix + limits_::epsilon()), -1_fix);  //
@@ -49,7 +49,7 @@ int main()
 
   "angle_to_radians"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(angle_to_radians(0), 0_fix);
       expect_eq(angle_to_radians(180), 3.1415926536_fix);

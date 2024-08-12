@@ -101,7 +101,7 @@ int main()
   test_result result;
   "fixed construction"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(fixed_t{1}, 1_fix);
       expect_eq(fixed_t{1u}, 1_fix);

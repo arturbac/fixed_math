@@ -12,7 +12,7 @@ int main()
   
   "arithmetic_to_fixed integrals"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(arithmetic_to_fixed(0), 0_fix);
       expect_eq(arithmetic_to_fixed(1), limits_::one());
@@ -39,7 +39,7 @@ int main()
 
   "arithmetic_to_fixed floating point"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(arithmetic_to_fixed(0.f), 0_fix);
       expect_eq(arithmetic_to_fixed(-1.f), -limits_::one());
@@ -79,7 +79,7 @@ int main()
 
   "fixed_to_arithmetic integrals"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(fixed_to_arithmetic<int>(0.25_fix), 0);
       expect_eq(fixed_to_arithmetic<int>(1.25_fix), 1);
@@ -93,7 +93,7 @@ int main()
   };
   "fixed_to_arithmetic floating point"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       {
       static constexpr auto approx{std::numeric_limits<float>::epsilon()};
