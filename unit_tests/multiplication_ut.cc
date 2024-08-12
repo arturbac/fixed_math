@@ -9,7 +9,6 @@ using namespace fixedmath::func;
 int main()
   {
   test_result result;
-  using F = fixedmath::fixed_internal;
   "multiplication"_test = [&result]
   {
     auto fn_tmpl = [] -> metatests::test_result

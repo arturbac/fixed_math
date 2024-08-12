@@ -25,7 +25,6 @@ constexpr auto asfix(T const v)
 int main()
   {
   test_result result;
-  using F = fixedmath::fixed_internal;
   "sqrt"_test = [&result]
   {
     auto fn_tmpl = [] -> metatests::test_result
@@ -56,13 +55,13 @@ int main()
       test_hypot(14.9916076660156250_fix, 0_fix, 14.99160_fix, 0.0001_fix);
       test_hypot(0_fix, 14.9916076660156250_fix, 14.99160_fix, 0.0001_fix);
 
-      test_hypot(asfix(1ul << 30), asfix(1u << 0), 16384_fix, 0.0001_fix);
-      test_hypot(asfix(1ul << 33), asfix(1ul << 31), 135104_fix, 0.0001_fix);
-      test_hypot(asfix(1ul << 32), asfix(1ul << 31), 73271_fix, 1.1_fix);
-      test_hypot(asfix(1ul << 31), asfix(1ul << 31), 46340_fix, 1.1_fix);
-      test_hypot(asfix(1ul << 32), asfix(1ul), 65536_fix, 0.0001_fix);
-      test_hypot(asfix(1ul << 30), asfix(1u << 30), 23170_fix, 1_fix);
-      test_hypot(asfix((1ul << 30) - 1), asfix((1ul << 30) - 1), 23170.47497_fix, 0.0001_fix);
+      test_hypot(asfix(1ull << 30), asfix(1u << 0), 16384_fix, 0.0001_fix);
+      test_hypot(asfix(1ull << 33), asfix(1ul << 31), 135104_fix, 0.0001_fix);
+      test_hypot(asfix(1ull << 32), asfix(1ul << 31), 73271_fix, 1.1_fix);
+      test_hypot(asfix(1ull << 31), asfix(1ul << 31), 46340_fix, 1.1_fix);
+      test_hypot(asfix(1ull << 32), asfix(1ul), 65536_fix, 0.0001_fix);
+      test_hypot(asfix(1ull << 30), asfix(1u << 30), 23170_fix, 1_fix);
+      test_hypot(asfix((1ull << 30) - 1), asfix((1ul << 30) - 1), 23170.47497_fix, 0.0001_fix);
 
       test_hypot(asfix(1u), asfix(1u), 0.000015_fix, 0.00001_fix);
       test_hypot(asfix(2u), asfix(2u), 0.000030_fix, 0.00001_fix);
