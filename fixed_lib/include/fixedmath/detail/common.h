@@ -6,6 +6,7 @@
 
 #include "../types.h"
 #include <fixedmath/detail/type_traits.h>
+#include <bit>
 
 namespace fixedmath::inline v2::detail
   {

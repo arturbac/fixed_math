@@ -43,3 +43,13 @@ jobs:
       run: cmake --workflow --preset="ci-clang-18-release"
     - name: clang-18-libc++-release
       run: cmake --workflow --preset="ci-clang-18-libc++-release"
+      
+  build-and-test-msvc:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: ci-clangcl-release
+      run: cmake --workflow --preset="ci-clangcl-release"
+    - name: ci-msvc-release
+      run: cmake --workflow --preset="ci-msvc-release"
+

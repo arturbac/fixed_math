@@ -9,7 +9,6 @@
 #include <type_traits>
 #include <limits>
 #include <cmath>
-#include "utility_cxx20.h"
 
 namespace fixedmath::inline v2
   {

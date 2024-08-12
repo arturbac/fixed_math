@@ -8,10 +8,9 @@ using namespace fixedmath;
 int main()
   {
   test_result result;
-  using F = fixedmath::fixed_internal;
   "addition"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       expect_eq(0.2_fix - 1.2_fix, -1_fix);
       expect_eq(3.2_fix - 1.2_fix, 2_fix);
@@ -56,6 +55,9 @@ int main()
       return {};
     };
     result |= run_runtime_test(fn_tmpl);
+#if !defined(_MSC_VER) || defined(__clang__)
+    // skip msvc toolset undebugable nonsense consteval errors for completely valid code
     result |= run_consteval_test(fn_tmpl);
+#endif
   };
   }

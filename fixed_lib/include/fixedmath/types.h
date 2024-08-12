@@ -6,6 +6,8 @@
 
 #include "detail/type_traits.h"
 
+#include "detail/static_call_operator_prolog.h"
+
 #define FIXEDMATH_VERSION_MAJOR 2
 #define FIXEDMATH_VERSION_MINOR 0
 #define FIXEDMATH_VERSION_PATCH 0
@@ -41,7 +43,8 @@ struct fixed_t
 
 struct as_fixed_t
   {
-  constexpr auto operator()(std::same_as<fixed_internal> auto carried) const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_internal> auto carried
+  ) static_call_operator_const noexcept -> fixed_t
     {
     return fix_carrier_t{carried};
     }
@@ -64,3 +67,4 @@ constexpr auto operator<=>(std::same_as<fixed_t> auto l, std::same_as<fixed_t> a
 
   }  // namespace fixedmath::inline v2
 
+#include "detail/static_call_operator_epilog.h"

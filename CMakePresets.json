@@ -56,14 +56,24 @@
       "cacheVariables": {"CMAKE_CXX_COMPILER": "g++-14" }
     },
     {
+      "name": "ci-windows-base",
+      "hidden": true,
+      "inherits": ["cfg-common", "cfg-c++23", "cfg-build-dir"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
       "name": "ci-clangcl-release",
-      "inherits": ["cfg-common", "cfg-build-dir"],
+      "inherits": ["ci-windows-base"],
       "generator": "Visual Studio 17 2022",
       "toolset": "ClangCL"
     },
     {
       "name": "ci-msvc-release",
-      "inherits": ["cfg-common", "cfg-build-dir"],
+      "inherits": ["ci-windows-base"],
       "generator": "Visual Studio 17 2022"
     }
   ],
@@ -79,6 +89,26 @@
     {
       "name": "ci-gcc-14-release",
       "configurePreset": "ci-gcc-14-release"
+    },
+    {
+      "name": "ci-clangcl-release",
+      "configurePreset": "ci-clangcl-release",
+      "configuration": "Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ci-msvc-release",
+      "configurePreset": "ci-msvc-release",
+      "configuration": "Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     }
   ],
   "testPresets": [
@@ -99,6 +129,30 @@
       "configurePreset": "ci-gcc-14-release",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    },
+    {
+      "name": "ci-clangcl-release",
+      "configurePreset": "ci-clangcl-release",
+      "configuration": "Release",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true},
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ci-msvc-release",
+      "configurePreset": "ci-msvc-release",
+      "configuration": "Release",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true},
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     }
   ],
   "workflowPresets": [
@@ -150,6 +204,40 @@
         {
           "type": "test",
           "name": "ci-gcc-14-release"
+        }
+      ]
+    },
+    {
+      "name": "ci-clangcl-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "ci-clangcl-release"
+        },
+        {
+          "type": "build",
+          "name": "ci-clangcl-release"
+        },
+        {
+          "type": "test",
+          "name": "ci-clangcl-release"
+        }
+      ]
+    },
+    {
+      "name": "ci-msvc-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "ci-msvc-release"
+        },
+        {
+          "type": "build",
+          "name": "ci-msvc-release"
+        },
+        {
+          "type": "test",
+          "name": "ci-msvc-release"
         }
       ]
     }

@@ -18,7 +18,7 @@ int main()
   test_result result;
   "tan"_test = [&result]
   {
-    auto fn_tmpl = [] -> metatests::test_result
+    auto fn_tmpl = []() -> metatests::test_result
     {
       test_tan(phi / 2 + phi / 32, -10.155854941143394_fix, 0.0001_fix);
       test_tan(phi / 3, 1.73204_fix, 0.0001_fix);
@@ -30,7 +30,10 @@ int main()
       return {};
     };
     result |= run_runtime_test(fn_tmpl);
+#if !defined(_MSC_VER) || defined(__clang__)
+    // skip msvc toolset undebugable nonsense consteval errors for completely valid code
     result |= run_consteval_test(fn_tmpl);
+#endif
   };
   }
 
