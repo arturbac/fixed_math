@@ -2,7 +2,7 @@ name: CMake
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "1.x" ]
     paths-ignore:
       - 'README.md'
       - 'docs/**'
