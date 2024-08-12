@@ -6,7 +6,7 @@ A comprehensive fixed-point math library written in C++23 and C++17, designed fo
 
 ## Major changes 12.08.2024
 - master contains version 2.x rewritten in c++23 - under development
-- branch 1.x contains c++17 which will be still maintained for compatibility and bugfixes
+- branch 1.x contains stable c++17 which will be still maintained for compatibility and bugfixes
 
 ## Features
 
