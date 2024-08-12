@@ -2,7 +2,11 @@
 
 # FixedMath
 
-A comprehensive fixed-point math library crafted in C++17, designed for high precision and efficiency.
+A comprehensive fixed-point math library written in C++23 and C++17, designed for high precision and efficiency.
+
+## Major changes 12.08.2024
+- master contains version 2.x rewritten in c++23
+- branch 1.x contains c++17 which will be still maintained for compatibility and bugfixes
 
 ## Features
 
@@ -76,7 +80,16 @@ target_precompile_headers( fixed_math INTERFACE <fixedmath/fixed_math.hpp>)
 
 ## C++ Compilers Compatibility
 
-The following compilers are confirmed to compile the project successfully with C++17 standards. If you encounter any issues with a C++17 compatible compiler, please report it by submitting an issue. The standard template library (STL) compatibility is expected to be consistent across these compilers:
+The following compilers are confirmed to compile the project in branches
+
+### version 2.x with C++23 standard, master development branch.
+- Clang version 18.0.1 with llvm-libcxx on Gentoo x86-64
+- Clang version 13.0.0 with gcc-libstdc++ 14.1.1 on Gentoo x86-64
+- GCC 14.1.1_p20240720 p4
+- MSVC - under develoment
+
+  
+### version 1.x with C++17 standard on stable 1.x branch
 
 - Clang version 17.0.6 with llvm-libcxx on Gentoo x86-64
 - Clang version 13.0.0 with llvm-libcxx on Gentoo x86-64
@@ -92,6 +105,8 @@ The following compilers are confirmed to compile the project successfully with C
 - GCC 9.4.0 on Gentoo x86-64
 - MSVC 19 (Visual Studio 2019) support
 
+If you encounter any issues with a C++17 compatible compiler, please report it by submitting an issue. The standard template library (STL) compatibility is expected to be consistent across these compilers:
+ 
 ## Usage
 
 `fixed_t` serves as the typename for the fixed-point arithmetic type within this library, supporting common operators such as `+`, `-`, `*`, and more. 
