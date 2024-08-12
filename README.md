@@ -1,28 +1,26 @@
-![MIT](https://img.shields.io/badge/license-MIT-blue.svg) ![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg) ![CMake](https://github.com/arturbac/fixed_math/workflows/CMake/badge.svg) ![language](https://img.shields.io/badge/language-C%2B%2B17-blue.svg)
+![MIT](https://img.shields.io/badge/license-MIT-blue.svg) ![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg) ![CMake](https://github.com/arturbac/fixed_math/workflows/CMake/badge.svg) ![language](https://img.shields.io/badge/language-C%2B%2B23-blue.svg)
 
 # FixedMath
 
 A comprehensive fixed-point math library written in C++23 and C++17, designed for high precision and efficiency.
 
 ## Major changes 12.08.2024
-- master contains version 2.x rewritten in c++23 - under development
+- master contains version 2.x rewritten in c++23
 - branch 1.x contains stable c++17 which will be still maintained for compatibility and bugfixes
 
 ## Features
 
-- **Modern C++ Standards**: Requires a minimum of C++17, leveraging modern language features for optimal performance and reliability.
+- **Modern C++ Standards**: Requires a minimum of C++23, (branch 1.x c++17) leveraging modern language features for optimal performance and reliability.
 - **Strongly Typed Fixed-Point Arithmetic**: Utilizes a 48.16 fixed-point arithmetic model, ensuring type safety with explicit conversions and operations. The `fixed_t` type is robust against unintentional type conversions, fostering code correctness.
 - **Implicit Type Promotion**: Supports implicit promotion of all arithmetic types (excluding `double`) to `fixed_t` in basic arithmetic operations, enhancing ease of use without sacrificing precision.
 - **Double Precision Compatibility**: Interactions between `fixed_t` and `double` types automatically yield a `double` result type. Arithmetic operations involving `double` are seamlessly elevated to double precision, ensuring accuracy for critical calculations.
-- **Compile-Time Evaluation**: The entire codebase, including trigonometric functions, is `constexpr`, enabling compile-time evaluations where applicable. This feature significantly reduces runtime overhead and allows for constant expressions.\[1\]\[2\]
+- **Compile-Time Evaluation**: The entire codebase, including trigonometric functions, is `constexpr`, enabling compile-time evaluations where applicable. This feature significantly reduces runtime overhead and allows for constant expressions.\[1\]
 - **Header-Only Library**: As a fully header-only library with extensive use of `constexpr`, FixedMath simplifies integration into projects. Explore the API interface and implementation details: [API Reference](https://arturbac.github.io/fixed_math/) | [Implementation](https://github.com/arturbac/fixed_math/blob/master/fixed_lib/include/fixedmath/math.h).
 - **Compile-Time Unit Testing**: Offers a robust suite of compile-time unit tests, streamlining test-driven development and ensuring library correctness. Dive into the unit tests: [Compile-Time Unit Tests](https://github.com/arturbac/fixed_math/tree/master/fixed_lib/include/fixedmath/unittests).
 
 FixedMath is committed to delivering precision, efficiency, and ease of use, making it an ideal choice for projects requiring fixed-point arithmetic in a modern C++ environment.
 
-\[1\] Starting with C++20, the `sqrt` function is always available as `constexpr`, utilizing the Abacus algorithm for constant evaluation, alongside the standard `std::sqrt` for runtime execution.
-
-\[2\] In C++17, `std::sqrt` is used by default, leveraging the CPU's hardware support for square root calculations, which allows for inline optimizations. For compile-time evaluations, the Abacus algorithm can be enabled by defining `FIXEDMATH_ENABLE_SQRT_ABACUS_ALGO`. Note that while the Abacus algorithm supports `constexpr` usage, it is typically slower than the CPU-optimized implementation.
+\[1\] The `sqrt` function is always available as `constexpr`, utilizing the Abacus algorithm for constant evaluation, alongside the standard `std::sqrt` for runtime execution. On windows msvc toolset (not clang-cl) still is not fully compatibile with c++23 and still has nonsense compiletime evaluation errors, [for example I had to split consteval function into constant](https://github.com/arturbac/fixed_math/blob/4f7b5f00b60dce007305d44ed4d2edb4ea98eb65/unit_tests/addition_ut.cc#L8) but this change does not has any sense.
 
 ### Performance Comparisons of Code Version 0.9.1
 
@@ -69,7 +67,7 @@ For projects utilizing CPM (CMake Package Manager) for dependency management, yo
 CPMAddPackage(
   NAME fixed_math
   GITHUB_REPOSITORY arturbac/fixed_math
-  GIT_TAG        v1.0.0
+  GIT_TAG        v2.0.0
 )
 
 find_package(fixed_math REQUIRED)
@@ -84,28 +82,32 @@ The following compilers are confirmed to compile the project in branches
 
 ### version 2.x with C++23 standard, master development branch.
 - Clang version 18.0.1 with llvm-libcxx on Gentoo x86-64
-- Clang version 13.0.0 with gcc-libstdc++ 14.1.1 on Gentoo x86-64
-- GCC 14.1.1_p20240720 p4
-- MSVC - under develoment
+- Clang version 18.0.1 with gcc-libstdc++ 14.1.1 on Gentoo x86-64
+- Clang version 18 on ubuntu-24.04
+- GCC 14.1.1_p20240720 p4 on Gentoo x86-64
+- GCC 14.0.1 on ubuntu-24.04 
+- MSVC ClanCL-toolset 17.0.3 from MSVC 19.40.33813.0
+- MSVC toolset 19.40.33813.0
 
   
 ### version 1.x with C++17 standard on stable 1.x branch
-
-- Clang version 17.0.6 with llvm-libcxx on Gentoo x86-64
-- Clang version 13.0.0 with llvm-libcxx on Gentoo x86-64
-- Clang version 13.0.0 with gcc-libstdc++ 11.2.1 on Gentoo x86-64
-- Clang version 12.0.1 with llvm-libcxx on FreeBSD 13 x86-64
-- Clang version 11.0.1 with gcc-libstdc++ 10.2.0 on Gentoo Linux x86-64 and aarch64
-- Clang version 11.0.1 with llvm-libcxx on x86-64
-- Clang version 10.0.1 with llvm-libcxx on FreeBSD 13 x86-64
-- GCC version 13.2.1_p20240210 p13 on Gentoo x86-64
-- GCC version 12.3.1_p20240209 p2 on Gentoo x86-64
-- GCC version 11.2.1 20211127 on Gentoo x86-64
+- Clang 18.0.1 with llvm-libcxx on Gentoo x86-64
+- Clang 17.0.6 with llvm-libcxx on Gentoo x86-64
+- Clang 13.0.0 with llvm-libcxx on Gentoo x86-64
+- Clang 13.0.0 with gcc-libstdc++ 11.2.1 on Gentoo x86-64
+- Clang 12.0.1 with llvm-libcxx on FreeBSD 13 x86-64
+- Clang 11.0.1 with gcc-libstdc++ 10.2.0 on Gentoo Linux x86-64 and aarch64
+- Clang 11.0.1 with llvm-libcxx on x86-64
+- Clang 10.0.1 with llvm-libcxx on FreeBSD 13 x86-64
+- GCC 14.1.1_p20240720 p4 on Gentoo x86-64
+- GCC 13.2.1_p20240210 p13 on Gentoo x86-64
+- GCC 12.3.1_p20240209 p2 on Gentoo x86-64
+- GCC 11.2.1 20211127 on Gentoo x86-64
 - GCC 10.2.0 on x86-64 on Gentoo x86-64
 - GCC 9.4.0 on Gentoo x86-64
 - MSVC 19 (Visual Studio 2019) support
 
-If you encounter any issues with a C++17 compatible compiler, please report it by submitting an issue. The standard template library (STL) compatibility is expected to be consistent across these compilers:
+If you encounter any issues, please report it by submitting an issue.
  
 ## Usage
 
