@@ -224,12 +224,7 @@
           "type": "test",
           "name": "ci-clangcl-release"
         }
-      ],
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
+      ]
     },
     {
       "name": "ci-msvc-release",
@@ -246,12 +241,7 @@
           "type": "test",
           "name": "ci-msvc-release"
         }
-      ],
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
+      ]
     }
   ]
 }
