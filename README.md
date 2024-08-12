@@ -12,7 +12,7 @@ A comprehensive fixed-point math library written in C++23 and C++17, designed fo
 - version 2.x requires C++23 standard to compile while 1.x only C++17
 - version 2.x version has both math functions avaiable as plain functions and as function objects, while 1.x only as plain functions
 - version 2.x has much more constraints for validity of types checking at compile time compared to 1.x and exploits C++23 standard
-- API is a bit different in version 2.x as plain functions in 2.x comapred to 1.x are defined in sub namespace `fixedmath::func` and function objects in sub namespace `fixedmath::fobj`,  however You can use 'namesapce fixedmath{ using namesapce fixedmath::func; }` for getting backward compatibility.
+- API is a bit different in version 2.x as plain functions in 2.x comapred to 1.x are defined in sub namespace `fixedmath::func` and function objects in sub namespace `fixedmath::fobj`,  however You can use `namesapce fixedmath{ using namesapce fixedmath::func; }` for getting backward compatibility.
 - version 2.x is tested with every PR if it works with clang libstdc++, clang libc++, gcc, msvc, msvc clang-cl compilers
   
 ## Features
