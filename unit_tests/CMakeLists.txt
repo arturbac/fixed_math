@@ -18,7 +18,8 @@ target_link_libraries( fixedmath_ut_core
     )
 target_include_directories( fixedmath_ut_core INTERFACE include )
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+   AND NOT (WIN32 AND CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC"))
   target_compile_options(fixedmath_ut_core
     INTERFACE
       -Wno-disabled-macro-expansion
