@@ -63,7 +63,7 @@ namespace fixedmath
   constexpr fixed_t operator -( fixed_t l ) noexcept;
   
   ///\brief converts any floating point or integral value into fixed point
-  template<typename arithmethic_type>
+  template<typename arithmethic_type, typename>
   constexpr fixed_t arithmetic_to_fixed( arithmethic_type value ) noexcept;
   
   /// implicit convertion to double from fixed
