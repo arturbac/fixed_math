@@ -93,6 +93,7 @@
     {
       "name": "ci-clangcl-release",
       "configurePreset": "ci-clangcl-release",
+      "configuration": "Release",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -102,6 +103,7 @@
     {
       "name": "ci-msvc-release",
       "configurePreset": "ci-msvc-release",
+      "configuration": "Release",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -131,6 +133,7 @@
     {
       "name": "ci-clangcl-release",
       "configurePreset": "ci-clangcl-release",
+      "configuration": "Release",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true},
       "condition": {
@@ -142,6 +145,7 @@
     {
       "name": "ci-msvc-release",
       "configurePreset": "ci-msvc-release",
+      "configuration": "Release",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true},
       "condition": {
