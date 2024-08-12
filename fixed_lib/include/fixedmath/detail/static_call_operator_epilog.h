@@ -5,4 +5,4 @@
 
 #pragma pop_macro("static_call_operator_const")
 #pragma pop_macro("static_call_operator")
-#pragma pop_macro("static_constexpr")
+

@@ -9,7 +9,7 @@
 #include "numbers.h"
 #include "detail/common.h"
 
-#include "detail/static_call_operator_prolog.h
+#include "detail/static_call_operator_prolog.h"
 
 namespace fixedmath::inline v2
   {
@@ -27,7 +27,7 @@ struct arithmetic_to_fixed_t
   template<concepts::arithmetic_and_not_fixed arithmetic_type>
   [[nodiscard, gnu::const, gnu::always_inline]]
   ///\returns fixed on success or NaN if source value is out of range
-  static constexpr auto operator()(arithmetic_type value) noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(arithmetic_type value) static_call_operator_const noexcept -> fixed_t
     {
     if constexpr(std::is_integral_v<arithmetic_type>)
       {
@@ -76,7 +76,8 @@ template<concepts::arithmetic_and_not_fixed arithmethic_type>
 struct fixed_to_arithmetic_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
-  static constexpr auto operator()(std::same_as<fixed_t> auto value) noexcept -> arithmethic_type
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value
+  ) static_call_operator_const noexcept -> arithmethic_type
     {
     if constexpr(typetraits::is_integral_v<arithmethic_type>)
       {

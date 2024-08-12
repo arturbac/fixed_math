@@ -7,12 +7,6 @@
 #pragma push_macro("static_call_operator")
 #pragma push_macro("static_call_operator_const")
 
-#if __cplusplus > 202002L
-#define static_constexpr static
-#else
-#define static_constexpr
-#endif
-
 #if __cplusplus >= 202301L && defined(__cpp_static_call_operator)
 #define static_call_operator static
 #define static_call_operator_const
