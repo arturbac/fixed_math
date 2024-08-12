@@ -5,6 +5,8 @@ using boost::ut::operator""_test;
 using namespace metatests;
 using namespace fixedmath;
 
+static constexpr auto msvc_nonsense_non_constexpr_fix_max_ { limits_::max() };
+
 int main()
   {
   test_result result;
@@ -40,7 +42,7 @@ int main()
       expect_lt(limits_::max(), limits_::quiet_NaN());
       expect_neq(limits_::lowest() + 1, limits_::quiet_NaN());
 
-      expect_neq(as_fixed(limits_::max().v - 65536) + 1_fix, limits_::quiet_NaN());
+      expect_neq(as_fixed(msvc_nonsense_non_constexpr_fix_max_.v - 65536) + 1_fix, limits_::quiet_NaN());
       
       expect( test_resulting_type<fixed_t>( int64_t(1) + 1_fix ) );
       expect( test_resulting_type<fixed_t>( 1_fix  + int64_t(1) ) );

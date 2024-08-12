@@ -89,7 +89,10 @@ int main()
       return {};
     };
     result |= run_runtime_test(fn_tmpl);
+#if !defined(_MSC_VER) || defined(__clang__)
+    // skip msvc toolset undebugable nonsense consteval errors for completely valid code
     result |= run_consteval_test(fn_tmpl);
+#endif
   };
   "fixed_to_arithmetic floating point"_test = [&result]
   {
@@ -123,6 +126,9 @@ int main()
     return {};
     };
     result |= run_runtime_test(fn_tmpl);
+#if !defined(_MSC_VER) || defined(__clang__)
+    // skip msvc toolset undebugable nonsense consteval errors for completely valid code
     result |= run_consteval_test(fn_tmpl);
+#endif
   };
   }
