@@ -56,12 +56,6 @@
       "cacheVariables": {"CMAKE_CXX_COMPILER": "g++-14" }
     },
     {
-      "name": "ci-clangcl-release",
-      "inherits": ["cfg-common", "cfg-build-dir"],
-      "generator": "Visual Studio 17 2022",
-      "toolset": "ClangCL"
-    },
-    {
       "name": "ci-windows-base",
       "hidden": true,
       "inherits": ["cfg-common", "cfg-c++23", "cfg-build-dir"],
