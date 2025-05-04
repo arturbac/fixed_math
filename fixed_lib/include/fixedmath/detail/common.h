@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../types.h"
-#include <fixedmath/detail/type_traits.h>
+#include "type_traits.h"
 #include <bit>
 
 namespace fixedmath::inline v2::detail

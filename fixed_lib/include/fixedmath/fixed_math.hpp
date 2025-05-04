@@ -7,6 +7,7 @@
 #include "types.h"
 #include "limits.h"
 #include "math.h"
+#include "fixed_string.h"
 
 namespace fixedmath::inline v2
   {
