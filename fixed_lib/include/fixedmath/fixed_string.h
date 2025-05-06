@@ -110,10 +110,20 @@ namespace fixedmath::inline v2
         result += fraction >> 16;
       }
         
+      // After parsing, skip all spaces and digits; if any other char, return nullopt
+      while (pos < str.size()) {
+        unsigned char c = static_cast<unsigned char>(str[pos]);
+        if (std::isspace(c) || std::isdigit(c)) {
+          ++pos;
+        } else {
+          return std::nullopt;
+        }
+      }
+        
       // Apply sign
       if (negative)
         result = -result;
-        
+      
       return as_fixed(result);
       }
       

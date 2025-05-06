@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: BSL-1.0
 // SPDX-PackageHomePage: https://github.com/arturbac/fixed_math
 
-#include <fixedmath/fixed_math.hpp>
-#include <fixedmath/iostream.h>
-//#include "../../fixed_math/fixed_lib/include/fixedmath/fixed_math.hpp"
-//#include "../../fixed_math/fixed_lib/include/fixedmath/iostream.h"
+//#include <fixedmath/fixed_math.hpp>
+//#include <fixedmath/iostream.h>
+#include "../../fixed_math/fixed_lib/include/fixedmath/fixed_math.hpp"
+#include "../../fixed_math/fixed_lib/include/fixedmath/iostream.h"
 #include <cassert>
 #include <iostream>
 #include <sstream>
@@ -22,7 +22,7 @@ bool fixed_close_enough(fixed_t a, fixed_t b, fixed_t epsilon = fixed_t{0.0001})
 
 void test_from_string() {
     // Typical cases
-    auto v1 = from_string("3.14159");
+    auto v1 = from_string("3.141592654  ");
     assert(v1 && fixed_close_enough(*v1, fixed_t{3.14159}));
     auto v2 = from_string("-42.5");
     assert(v2 && fixed_close_enough(*v2, fixed_t{-42.5}));
