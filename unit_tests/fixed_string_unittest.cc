@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: BSL-1.0
 // SPDX-PackageHomePage: https://github.com/arturbac/fixed_math
 
-//#include <fixedmath/fixed_math.hpp>
-//#include <fixedmath/iostream.h>
-#include "../../fixed_math/fixed_lib/include/fixedmath/fixed_math.hpp"
-#include "../../fixed_math/fixed_lib/include/fixedmath/iostream.h"
+#include <fixedmath/fixed_math.hpp>
+#include <fixedmath/iostream.h>
+// #include "../../fixed_math/fixed_lib/include/fixedmath/fixed_math.hpp"
+// #include "../../fixed_math/fixed_lib/include/fixedmath/iostream.h"
 #include <cassert>
 #include <iostream>
 #include <sstream>
