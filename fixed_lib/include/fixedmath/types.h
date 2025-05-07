@@ -9,15 +9,15 @@
 #include "detail/static_call_operator_prolog.h"
 
 #define FIXEDMATH_VERSION_MAJOR 2
-#define FIXEDMATH_VERSION_MINOR 0
+#define FIXEDMATH_VERSION_MINOR 1
 #define FIXEDMATH_VERSION_PATCH 0
-#define FIXEDMATH_VERSION_STRING "2.0.0"
+#define FIXEDMATH_VERSION_STRING "2.1.0"
 
 namespace fixedmath::inline v2
   {
 // the idea behind carrier is to use it as carier of internal int64 value in format of fixed to distinguish it from
 // int64 integral type.
-struct fix_carrier_t
+struct [[clang::trivial_abi]] fix_carrier_t
   {
   fixed_internal v{};
 
@@ -27,7 +27,7 @@ struct fix_carrier_t
   };
 
 ///\brief hermetization of fixed value to avoid implicit conversions from int64, long long
-struct fixed_t
+struct [[clang::trivial_abi]] fixed_t
   {
   fixed_internal v{};
 
