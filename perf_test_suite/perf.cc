@@ -7,6 +7,7 @@
 #include <chrono>
 #include <cmath>
 #include <string_view>
+#include <numeric>
 using std::chrono::duration_cast;
 using std::chrono::microseconds;
 using std::chrono::milliseconds;
@@ -22,6 +23,8 @@ using std::tan;
 using std::sin;
 
 using fixedmath::fixed_t;
+using fixedmath::phi;
+using namespace fixedmath::func;
 
 using limits_ = std::numeric_limits<fixed_t>;
 

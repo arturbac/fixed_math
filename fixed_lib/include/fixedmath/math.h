@@ -819,12 +819,12 @@ namespace detail
     {
     fixed_internal x2{mul_<prec_>(x, x)};
 
-    constexpr fixed_internal _35o9{div_<prec_>(35, 9) + 1};
-    constexpr fixed_internal _5o7{div_<prec_>(5, 7) + 1};
-    constexpr fixed_internal _3o5{div_<prec_>(3, 5) + 1};
-    constexpr fixed_internal _1o3{div_<prec_>(1, 3)};
-    constexpr fixed_internal _1{fix_<prec_>(1)};
-    constexpr fixed_internal _63o11{div_<prec_>(63, 11) + 1};
+    constexpr fixed_internal _35o9{div_<prec_>(fixed_internal{35}, fixed_internal{9}) + 1};
+    constexpr fixed_internal _5o7{div_<prec_>(fixed_internal{5}, fixed_internal{7}) + 1};
+    constexpr fixed_internal _3o5{div_<prec_>(fixed_internal{3}, fixed_internal{5}) + 1};
+    constexpr fixed_internal _1o3{div_<prec_>(fixed_internal{1}, fixed_internal{3})};
+    constexpr fixed_internal _1{fix_<prec_>(fixed_internal{1})};
+    constexpr fixed_internal _63o11{div_<prec_>(fixed_internal{63}, fixed_internal{11}) + 1};
 
     fixed_internal y6{_35o9 + mul_<prec_ + 1>(x2, _63o11)};
     fixed_internal y7{_5o7 + mul_<prec_ + 3>(x2, y6)};
