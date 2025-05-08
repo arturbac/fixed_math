@@ -45,8 +45,8 @@ namespace detail
 struct abs_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value) static_call_operator_const noexcept
+    -> fixed_t
     {
     // cmp     x0, #0                          // =0
     // cneg    x0, x0, mi
@@ -61,8 +61,8 @@ inline constexpr abs_t abs;
 struct isnan_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value
-  ) static_call_operator_const noexcept -> bool
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value) static_call_operator_const noexcept
+    -> bool
     {
     return abs(value) == quiet_NaN_result();
     }
@@ -98,9 +98,9 @@ struct lshift_t
 
     if(r >= 0) [[likely]]
       return fix_carrier_t{fixed_internal(
-        (((unsigned_fix_internal(l.v)) << r) & unsigned_fix_internal(0x7fffffffffffffffull)
-        )                                              // lsh unsigned value and clear overwritten sign bit
-        | ((1ull << 63) & unsigned_fix_internal(l.v))  // transfer source sign bit
+        (((unsigned_fix_internal(l.v)) << r)
+         & unsigned_fix_internal(0x7fffffffffffffffull))  // lsh unsigned value and clear overwritten sign bit
+        | ((1ull << 63) & unsigned_fix_internal(l.v))     // transfer source sign bit
       )};
     return quiet_NaN_result();
     }
@@ -113,8 +113,9 @@ inline constexpr lshift_t lshift;
 struct bit_and_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
-  static_call_operator inline constexpr auto operator()(std::same_as<fixed_t> auto l, std::same_as<fixed_t> auto r)
-    static_call_operator_const noexcept -> fixed_t
+  static_call_operator inline constexpr auto
+    operator()(std::same_as<fixed_t> auto l, std::same_as<fixed_t> auto r) static_call_operator_const noexcept
+    -> fixed_t
     {
     return fix_carrier_t{l.v & r.v};
     }
@@ -324,12 +325,45 @@ struct division_t
 inline constexpr division_t division;
 
 //------------------------------------------------------------------------------------------------------
+namespace detail
+  {
+
+  [[nodiscard, gnu::const, gnu::always_inline]]
+  constexpr auto fixed_modulof(std::same_as<fixed_t> auto x, std::same_as<fixed_t> auto y) noexcept -> fixed_t
+    {
+    if(y.v != 0) [[likely]]
+      {
+      fixed_t result{as_fixed(x.v % y.v)};
+      return result;
+      }
+    return quiet_NaN_result();  // abort ?
+    }
+  }  // namespace detail
+
+struct modulo_t
+  {
+  template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
+    requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
+  [[nodiscard, gnu::const, gnu::always_inline]]
+  static_call_operator constexpr auto
+    operator()(supported_type1 lh, supported_type2 rh) static_call_operator_const noexcept
+    {
+    if constexpr(typetraits::one_of_is_double_v<supported_type1, supported_type2>)
+      return std::fmod(detail::promote_to_double(lh),detail::promote_to_double(rh));
+    else
+      return detail::fixed_modulof(detail::promote_to_fixed(lh), detail::promote_to_fixed(rh));
+    }
+  };
+
+inline constexpr modulo_t fmod;
+
+//------------------------------------------------------------------------------------------------------
 
 struct ceil_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value) static_call_operator_const noexcept
+    -> fixed_t
     {
     fixed_internal result{(value.v + 0xffff) & ~((1 << 16ll) - 1)};
     if(value.v < result)
@@ -345,8 +379,8 @@ inline constexpr ceil_t ceil;
 struct floor_t
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value) static_call_operator_const noexcept
+    -> fixed_t
     {
     value = as_fixed(value.v & ~((1 << 16) - 1));
     return value;
@@ -408,8 +442,8 @@ inline constexpr bool sqrt_constexpr_available = true;
 struct sqrt_t
   {
   [[nodiscard]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value) static_call_operator_const noexcept
+    -> fixed_t
     {
     if(std::is_constant_evaluated())
       return detail::sqrt_abacus(value);
@@ -425,8 +459,9 @@ inline constexpr sqrt_t sqrt;
 struct hypot_t
   {
   [[nodiscard]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto lh, std::same_as<fixed_t> auto rh)
-    static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto
+    operator()(std::same_as<fixed_t> auto lh, std::same_as<fixed_t> auto rh) static_call_operator_const noexcept
+    -> fixed_t
     {
     constexpr int prec_ = 16;
     // sqrt(X^2+Y^2) = sqrt( (X/D)^2+(Y/D)^2) * D
@@ -499,8 +534,8 @@ struct sin_t
   ///
   /// error is less or equal to X^9/9!
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto rad
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto rad) static_call_operator_const noexcept
+    -> fixed_t
     {
     using detail::mul_;
     rad = detail::sin_range(rad);
@@ -537,7 +572,7 @@ struct sin_t
     static constexpr fixed_internal _42{fixed_internal{42} << prec_};
     static constexpr fixed_internal _105{fixed_internal{105} << (prec_ + prec_ + 3)};
     static constexpr fixed_internal _315{fixed_internal{315} << prec_};
-    fixed_internal result{mul_<prec_>(x, (_315 - mul_<prec_ + 1 + prec_ + 3>(x2, (_105 - x2 * (_42 - x2))))) / 315};
+    fixed_internal result{mul_<prec_>(x, _315 - mul_<prec_ + 1 + prec_ + 3>(x2, _105 - x2 * (_42 - x2))) / 315};
     return as_fixed(result);
     }
   };
@@ -549,8 +584,8 @@ struct cos_t
   {
   ///\returns cosine of value in radians
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto rad
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto rad) static_call_operator_const noexcept
+    -> fixed_t
     {
     // more effective to use sine than calculate maclurin series for cosine
     // as maclurin series give precise results for -pi/2 .. pi/2
@@ -647,8 +682,8 @@ namespace detail
 struct tan_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto rad
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto rad) static_call_operator_const noexcept
+    -> fixed_t
     {
     using detail::div_;
     using detail::tan_;
@@ -725,8 +760,8 @@ namespace detail
 struct atan_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto value) static_call_operator_const noexcept
+    -> fixed_t
     {
     using detail::atan;
     using detail::atan_sum;
@@ -778,8 +813,9 @@ inline constexpr atan_t atan;
 struct atan2_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto y, std::same_as<fixed_t> auto x)
-    static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto
+    operator()(std::same_as<fixed_t> auto y, std::same_as<fixed_t> auto x) static_call_operator_const noexcept
+    -> fixed_t
     {
     if(x > 0_fix)
       return atan(y / x);
@@ -841,8 +877,8 @@ namespace detail
 struct asin_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto x
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto x) static_call_operator_const noexcept
+    -> fixed_t
     {
     using detail::asin;
     using detail::set_sign;
@@ -885,8 +921,8 @@ inline constexpr asin_t asin;
 struct acos_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto x
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(std::same_as<fixed_t> auto x) static_call_operator_const noexcept
+    -> fixed_t
     {
     if(x >= -1_fix && x <= 1_fix) [[likely]]
       return as_fixed(fixpidiv2.v - asin(x).v);
@@ -901,8 +937,8 @@ inline constexpr acos_t acos;
 struct sin_angle_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(concepts::arithmetic auto angle
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(concepts::arithmetic auto angle) static_call_operator_const noexcept
+    -> fixed_t
     {
     return sin(division(multiply(angle, phi), 180));
     }
@@ -914,8 +950,8 @@ inline constexpr sin_angle_t sin_angle;
 struct cos_angle_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(concepts::arithmetic auto angle
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(concepts::arithmetic auto angle) static_call_operator_const noexcept
+    -> fixed_t
     {
     return cos(division(multiply(angle, phi), 180));
     }
@@ -927,8 +963,8 @@ inline cos_angle_t cos_angle;
 struct tan_angle_t
   {
   [[nodiscard, gnu::const]]
-  static_call_operator constexpr auto operator()(concepts::arithmetic auto angle
-  ) static_call_operator_const noexcept -> fixed_t
+  static_call_operator constexpr auto operator()(concepts::arithmetic auto angle) static_call_operator_const noexcept
+    -> fixed_t
     {
     return tan(division(multiply(angle, phi), 180));
     }
