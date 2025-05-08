@@ -107,6 +107,21 @@ constexpr auto operator/(supported_type1 lh, supported_type2 rh) noexcept
   return fobj::division(lh, rh);
   }
 
+[[gnu::always_inline]]
+constexpr auto operator%=(fixed_t & lh, concepts::arithmetic auto rh) noexcept -> fixed_t &
+  {
+  lh = fobj::fmod(lh, rh);
+  return lh;
+  }
+  
+template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
+  requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
+[[nodiscard, gnu::const, gnu::always_inline]]
+constexpr auto operator%(supported_type1 lh, supported_type2 rh) noexcept
+  {
+  return fobj::fmod(lh, rh);
+  }
+  
 namespace func
   {
   [[nodiscard, gnu::const, gnu::always_inline]]
@@ -210,6 +225,14 @@ namespace func
   constexpr auto tan_angle(concepts::arithmetic auto angle) noexcept -> fixed_t
     {
     return fobj::tan_angle(angle);
+    }
+    
+  template<concepts::arithmetic supported_type1, concepts::arithmetic supported_type2>
+    requires concepts::arithmetic_and_one_is_fixed<supported_type1, supported_type2>
+  [[nodiscard, gnu::const, gnu::always_inline]]
+  constexpr auto fmod(supported_type1 lh, supported_type2 rh) noexcept
+    {
+    return fobj::fmod(lh, rh);
     }
   }  // namespace func
   }  // namespace fixedmath::inline v2

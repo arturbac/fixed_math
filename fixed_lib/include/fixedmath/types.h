@@ -9,9 +9,9 @@
 #include "detail/static_call_operator_prolog.h"
 
 #define FIXEDMATH_VERSION_MAJOR 2
-#define FIXEDMATH_VERSION_MINOR 1
+#define FIXEDMATH_VERSION_MINOR 2
 #define FIXEDMATH_VERSION_PATCH 0
-#define FIXEDMATH_VERSION_STRING "2.1.0"
+#define FIXEDMATH_VERSION_STRING "2.2.0"
 
 namespace fixedmath::inline v2
   {
