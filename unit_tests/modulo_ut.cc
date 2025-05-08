@@ -1,7 +1,6 @@
 #include <unit_test_core.h>
 #include <unit_test_common.h>
-#include <fixedmath/std_formatter.h>
-#include <print>
+
 using boost::ut::operator""_test;
 using namespace metatests;
 using namespace fixedmath;
