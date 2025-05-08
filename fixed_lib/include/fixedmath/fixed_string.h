@@ -147,7 +147,7 @@ namespace func
       // .001 = 65.536    * 65536
       // etc.
       fixed_internal fraction{0};
-      constexpr fixed_internal power[5]{429496730, 42949673, 4294967, 429497, 42950};  // 10^-1 * 2^16 (rounded down)
+      static constexpr fixed_internal power[5]{429496730, 42949673, 4294967, 429497, 42950};  // 10^-1 * 2^16 (rounded down)
       uint8_t i{0};
 
       while(pos < str.size() and detail::isdigit(str[pos]))
@@ -199,7 +199,7 @@ namespace func
     std::string result;
 
     // Handle negative numbers
-    bool negative{value.v < 0};
+    bool const negative{value.v < 0};
     fixed_internal abs_value{negative ? -value.v : value.v};
 
     // Extract integer part (high 48 bits)
