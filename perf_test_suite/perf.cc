@@ -171,6 +171,20 @@ struct div_test
     }
   };
 
+static fixed_t fmod(fixed_t& a, fixed_t& b)
+ {
+ return a % b;
+ }
+
+struct mod_test
+  {
+  template<typename value_type>
+  auto operator()(value_type const & tp)
+    {
+    return fmod(tp,tp);
+    }
+  };
+
 int main(int argc, char ** argv)
   {
   cout << test_executor<sin_test>{}("sin") << endl;
@@ -182,6 +196,7 @@ int main(int argc, char ** argv)
   cout << test_executor<add_test>{}("add") << endl;
   cout << test_executor<mul_test>{}("mul") << endl;
   cout << test_executor<div_test>{}("div") << endl;
+  cout << test_executor<mod_test>{}("mod") << endl;
   return EXIT_SUCCESS;
   }
 
