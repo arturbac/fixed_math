@@ -63,5 +63,5 @@ add_fixedmath_ut( misc_functions_ut )
 add_fixedmath_ut( sin_cos_ut )
 add_fixedmath_ut( tan_ut )
 add_fixedmath_ut( atan_ut )
-add_fixedmath_ut( string_convertion_ut )
+add_fixedmath_ut( fixed_string_unittest )
 
