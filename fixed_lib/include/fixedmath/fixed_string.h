@@ -142,12 +142,27 @@ namespace func
 
       // 16 bits of precision = 65536 units
       // Each position after decimal point is a power of 10:
-      // .1 = 6553.6      * 65536
-      // .01 = 655.36     * 65536
-      // .001 = 65.536    * 65536
+      // .1 = 6553.6      * 2^32
+      // .01 = 655.36     * 2^32
+      // .001 = 65.536    * 2^32
       // etc.
       fixed_internal fraction{0};
-      constexpr fixed_internal power[5]{429496730, 42949673, 4294967, 429497, 42950};  // 10^-1 * 2^16 (rounded down)
+      static constexpr fixed_internal power[14]{
+        28147497671066,
+        2814749767107,
+        281474976711,
+        28147497671,
+        2814749767,
+        281474977,
+        28147498,
+        2814750,
+        281475,
+        28148,
+        2815,
+        281,
+        28,
+        3
+      };  // 10^-1 * 2^16 (rounded down)
       uint8_t i{0};
 
       while(pos < str.size() and detail::isdigit(str[pos]))
@@ -165,7 +180,7 @@ namespace func
         ++i;
         }
 
-      result += fraction >> 16;
+      result += fraction >> 32;
       }
 
     // After parsing, skip all spaces and digits; if any other char, return nullopt
@@ -199,7 +214,7 @@ namespace func
     std::string result;
 
     // Handle negative numbers
-    bool negative{value.v < 0};
+    bool const negative{value.v < 0};
     fixed_internal abs_value{negative ? -value.v : value.v};
 
     // Extract integer part (high 48 bits)
