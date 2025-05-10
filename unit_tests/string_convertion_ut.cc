@@ -204,77 +204,77 @@ int main()
       {
       auto v{0.0000152587890625_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.0000152587890625"sv);
+      expect_eq(s1, "0.0000152587890625"sv);
       }
       {
       auto v{0.000030517578125_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.000030517578125"sv);
+      expect_eq(s1, "0.000030517578125"sv);
       }
       {
       auto v{0.00006103515625_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.00006103515625"sv);
+      expect_eq(s1, "0.00006103515625"sv);
       }
       {
       auto v{0.0001220703125_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.0001220703125"sv);
+      expect_eq(s1, "0.0001220703125"sv);
       }
       {
       auto v{0.000244140625_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.000244140625"sv);
+      expect_eq(s1, "0.000244140625"sv);
       }
       {
       auto v{0.00048828125_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.00048828125"sv);
+      expect_eq(s1, "0.00048828125"sv);
       }
       {
       auto v{0.0009765625_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.0009765625"sv);
+      expect_eq(s1, "0.0009765625"sv);
       }
       {
       auto v{0.001953125_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.001953125"sv);
+      expect_eq(s1, "0.001953125"sv);
       }
       {
       auto v{0.00390625_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.00390625"sv);
+      expect_eq(s1, "0.00390625"sv);
       }
       {
       auto v{0.0078125_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.0078125"sv);
+      expect_eq(s1, "0.0078125"sv);
       }
       {
       auto v{0.015625_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.015625"sv);
+      expect_eq(s1, "0.015625"sv);
       }
       {
       auto v{0.03125_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.03125"sv);
+      expect_eq(s1, "0.03125"sv);
       }
       {
       auto v{0.0625_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.0625"sv);
+      expect_eq(s1, "0.0625"sv);
       }
       {
       auto v{0.125_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.125"sv);
+      expect_eq(s1, "0.125"sv);
       }
       {
       auto v{0.25_fix};
       std::string s1 = to_string(v, 16);
-      expect_eq(s1,"0.25"sv);
+      expect_eq(s1, "0.25"sv);
       }
     return {};
     };
@@ -316,7 +316,44 @@ int main()
       std::string out{std::format("{}", val)};
       expect_eq(out.substr(0, 5), "1.234"sv);
       }
-#ifdef __cpp_lib_to_chars
+      {
+      std::string_view ctx{"12}"};
+      auto res{fixedmath::detail::ctx_parse(ctx.begin(), ctx.end())};
+      expect_eq(res.precision, 12);
+      }
+      {
+      std::string_view ctx{"1}"};
+      auto res{fixedmath::detail::ctx_parse(ctx.begin(), ctx.end())};
+      expect_eq(res.precision, 1);
+      }
+      {
+      std::string_view ctx{"0}"};
+      auto res{fixedmath::detail::ctx_parse(ctx.begin(), ctx.end())};
+      expect_eq(res.precision, 0);
+      }
+      {
+      std::string_view ctx{"}"};
+      auto res{fixedmath::detail::ctx_parse(ctx.begin(), ctx.end())};
+      expect_eq(res.precision, func::from_string_default_precision);
+      }
+      {
+      require_throw(
+        []
+        {
+          std::string_view ctx{"a}"};
+          (void)fixedmath::detail::ctx_parse(ctx.begin(), ctx.end());
+        }
+      );
+      }
+      {
+      require_throw(
+        []
+        {
+          std::string_view ctx{"120}"};
+          (void)fixedmath::detail::ctx_parse(ctx.begin(), ctx.end());
+        }
+      );
+      }
       {
       fixed_t val{1.2344};
       std::string out{std::format("{:1}", val)};
@@ -357,8 +394,7 @@ int main()
       std::string out{std::format("{:12}", val)};
       expect_eq(out, "-0.000015258789"sv);
       }
-#endif
-      return {};
+    return {};
     };
     result |= run_runtime_test(fn_tmpl);
   };
