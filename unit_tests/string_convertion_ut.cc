@@ -172,7 +172,7 @@ int main()
     return {};
     };
     result |= run_runtime_test(fn_tmpl);
-    // result |= run_consteval_test(fn_tmpl);
+    result |= run_consteval_test(fn_tmpl);
   };
 
   static_assert(expect(to_string(fixed_t{3.14159}, 5).substr(0, 2) == "3."sv));
