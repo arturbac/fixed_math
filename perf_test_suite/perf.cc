@@ -171,11 +171,6 @@ struct div_test
     }
   };
 
-static fixed_t fmod(fixed_t& a, fixed_t& b)
- {
- return a % b;
- }
-
 struct mod_test
   {
   template<typename value_type>
