@@ -203,12 +203,15 @@ namespace func
     return as_fixed(result);
     }
 
+  inline constexpr int from_string_default_precision = 5;
+
   /// Convert fixed_t to string without using floating point operations
   /// @param value The fixed_t value to convert
   /// @param precision The number of decimal places (default: 5)
   /// @return A string representation of the fixed_t value
   [[nodiscard]]
-  constexpr auto to_string(std::same_as<fixed_t> auto value, int precision = 5) noexcept -> std::string
+  constexpr auto to_string(std::same_as<fixed_t> auto value, int precision = from_string_default_precision) noexcept
+    -> std::string
     {
     // Check if value is NaN
     if(fobj::isnan(value))
