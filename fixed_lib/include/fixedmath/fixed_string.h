@@ -11,6 +11,7 @@
 #include <optional>
 #include <algorithm>
 #include <concepts>
+#include <array>
 #include "detail/static_call_operator_prolog.h"
 
 namespace fixedmath::inline v2
@@ -69,25 +70,23 @@ namespace detail
 
   inline constexpr isdigit_t isdigit;
 
-  namespace string
-    {
-    constexpr fixed_internal power[14]{
-      28147497671066,
-      2814749767107,
-      281474976711,
-      28147497671,
-      2814749767,
-      281474977,
-      28147498,
-      2814750,
-      281475,
-      28148,
-      2815,
-      281,
-      28,
-      3
-    };  // 10^-1 * 2^16 (rounded down)
-    }
+  // 10^-1 * 2^16 (rounded down)
+  inline constexpr std::array<fixed_internal, 14> from_string_powers{
+    28147497671066,
+    2814749767107,
+    281474976711,
+    28147497671,
+    2814749767,
+    281474977,
+    28147498,
+    2814750,
+    281475,
+    28148,
+    2815,
+    281,
+    28,
+    3
+  };
 
   }  // namespace detail
 
@@ -174,10 +173,10 @@ namespace func
         int digit{str[pos] - '0'};
 
         // Add digit * current power of 10
-        fraction += digit * detail::string::power[i];
+        fraction += digit * detail::from_string_powers[i];
 
         // Next decimal place (divide by 10)
-        if(i == sizeof(detail::string::power) / sizeof(fixed_internal) - 1)  // Stop if we've reached our precision limit
+        if(i == detail::from_string_powers.size() - 1)  // Stop if we've reached our precision limit
           break;
 
         ++pos;
