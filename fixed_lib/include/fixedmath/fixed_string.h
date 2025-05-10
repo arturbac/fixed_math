@@ -69,6 +69,26 @@ namespace detail
 
   inline constexpr isdigit_t isdigit;
 
+  namespace string
+    {
+    constexpr fixed_internal power[14]{
+      28147497671066,
+      2814749767107,
+      281474976711,
+      28147497671,
+      2814749767,
+      281474977,
+      28147498,
+      2814750,
+      281475,
+      28148,
+      2815,
+      281,
+      28,
+      3
+    };  // 10^-1 * 2^16 (rounded down)
+    }
+
   }  // namespace detail
 
 namespace func
@@ -147,22 +167,6 @@ namespace func
       // .001 = 65.536    * 2^32
       // etc.
       fixed_internal fraction{0};
-      constexpr fixed_internal power[14]{
-        28147497671066,
-        2814749767107,
-        281474976711,
-        28147497671,
-        2814749767,
-        281474977,
-        28147498,
-        2814750,
-        281475,
-        28148,
-        2815,
-        281,
-        28,
-        3
-      };  // 10^-1 * 2^16 (rounded down)
       uint8_t i{0};
 
       while(pos < str.size() and detail::isdigit(str[pos]))
@@ -170,10 +174,10 @@ namespace func
         int digit{str[pos] - '0'};
 
         // Add digit * current power of 10
-        fraction += digit * power[i];
+        fraction += digit * detail::string::power[i];
 
         // Next decimal place (divide by 10)
-        if(i == sizeof(power) / sizeof(fixed_internal) - 1)  // Stop if we've reached our precision limit
+        if(i == sizeof(detail::string::power) / sizeof(fixed_internal) - 1)  // Stop if we've reached our precision limit
           break;
 
         ++pos;
