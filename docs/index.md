@@ -42,6 +42,11 @@ See [documentation of division](division.md) for more details.
 - `auto operator /(supported_type1 lh, supported_type2 rh) noexcept`: Operator overload for division.
 - `fixed_t & operator /=(fixed_t &lh, supported_type rh) noexcept`: Division assignment.
 
+### Modulo
+
+- `auto operator %(supported_type1 lh, supported_type2 rh) noexcept`: Operator overload for modulo.
+- `fixed_t & operator %=(fixed_t &lh, supported_type rh) noexcept`: modulo assignment.
+
 ## Bitwise Operations
 
 See [documentation of bitwise operations](bitwise_operations.md) for more details.
@@ -75,6 +80,12 @@ See [documentation of conversion between fixed and arithmetic types](conversion_
 - `fixed_t angle_to_radians(integral_type angle) noexcept`: Converts angle 0 - 360 to radians.
 - `fixed_t sqrt(fixed_t value) noexcept`: Returns the square root of `value`.
 - `fixed_t hypot(fixed_t lh, fixed_t rh) noexcept`: Returns the hypotenuse of `lh` and `rh`.
+- `fixed_t fmod(fixed_t value) noexcept`: Returns the modulo of `value`.
+- `from_string(std::string_view str) noexcept` : Returns `std::optional<fixed_t>` defined in `fixedmath/fixed_string.h`
+- `to_string(fixed_t value, int precision) noexcept` : Returns `std::string` representation of fixed value defined in `fixedmath/fixed_string.h`
+- `std::formatter<fixedmath::fixed_t>` defined in `fixedmath/std_formatter.h`
+- `operator<<(std::ostream & outstr, fixed_t src)` defined in `fixedmath/iostream.h`
+- `operator>>(std::istream & instr, fixed_t & dst)` defined in `fixedmath/iostream.h`
 
 ## FixedMath Applications and Use Cases
 
