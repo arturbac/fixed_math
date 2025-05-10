@@ -147,7 +147,7 @@ namespace func
       // .001 = 65.536    * 2^32
       // etc.
       fixed_internal fraction{0};
-      static constexpr fixed_internal power[14]{
+      constexpr fixed_internal power[14]{
         28147497671066,
         2814749767107,
         281474976711,
