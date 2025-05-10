@@ -316,6 +316,7 @@ int main()
       std::string out{std::format("{}", val)};
       expect_eq(out.substr(0, 5), "1.234"sv);
       }
+#ifdef __cpp_lib_to_chars
       {
       fixed_t val{1.2344};
       std::string out{std::format("{:1}", val)};
@@ -356,6 +357,7 @@ int main()
       std::string out{std::format("{:12}", val)};
       expect_eq(out, "-0.000015258789"sv);
       }
+#endif
       return {};
     };
     result |= run_runtime_test(fn_tmpl);

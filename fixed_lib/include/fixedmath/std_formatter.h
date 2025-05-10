@@ -7,6 +7,7 @@
 #include "fixed_string.h"
 #include <format>
 #include <algorithm>
+#include <charconv>
 
 template<>
 struct std::formatter<fixedmath::fixed_t>
@@ -17,14 +18,15 @@ struct std::formatter<fixedmath::fixed_t>
   constexpr auto parse(ParseContext & ctx) -> decltype(ctx.begin())
     {
     auto it = ctx.begin();
+#ifdef __cpp_lib_to_chars
     if(it != ctx.end() && *it != '}')
       {
-      auto parse_res{std::from_chars(it, ctx.end(), precision)};
-      if(parse_res.ec == std::errc{})
+      if(auto parse_res{std::from_chars(it, ctx.end(), precision)}; parse_res.ec == std::errc{})
         it = parse_res.ptr;
       else
         throw std::format_error("Invalid fixed_t precision format");
       }
+#endif
     return it;
     }
 

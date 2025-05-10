@@ -32,17 +32,18 @@ jobs:
       run: |
         wget https://apt.llvm.org/llvm.sh
         chmod +x llvm.sh
-        sudo ./llvm.sh 18
+        sudo ./llvm.sh 19
         
     - name: Install dependencies
       run: |
            sudo apt-get update
-           sudo apt-get install -y cmake g++-14 ninja-build clang-18 libfmt-dev libc++-18-dev libc++abi-18-dev
+           sudo apt-get install -y cmake g++-14 ninja-build clang-19 libfmt-dev libc++-19-dev libc++abi-19-dev
 
-    - name: clang-18-release
-      run: cmake --workflow --preset="ci-clang-18-release"
-    - name: clang-18-libc++-release
-      run: cmake --workflow --preset="ci-clang-18-libc++-release"
+    - name: clang-release
+      run: cmake --workflow --preset="ci-clang-release"
+      
+    - name: clang-libc++-release
+      run: cmake --workflow --preset="ci-clang-libc++-release"
       
   build-and-test-msvc:
     runs-on: windows-latest
