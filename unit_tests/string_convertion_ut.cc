@@ -311,9 +311,51 @@ int main()
   {
     auto fn_tmpl = []() -> metatests::test_result
     {
+      {
       fixed_t val{1.2345};
       std::string out{std::format("{}", val)};
       expect_eq(out.substr(0, 5), "1.234"sv);
+      }
+      {
+      fixed_t val{1.2344};
+      std::string out{std::format("{:1}", val)};
+      expect_eq(out, "1.2"sv);
+      }
+      {
+      fixed_t val{1.2344};
+      std::string out{std::format("{:3}", val)};
+      expect_eq(out, "1.234"sv);
+      }
+      {
+      fixed_t val{1.2344};
+      std::string out{std::format("{:0}", val)};
+      expect_eq(out, "1"sv);
+      }
+      {
+      fixed_t val{1.2344};
+      std::string out{std::format("{:4}", val)};
+      expect_eq(out, "1.2344"sv);
+      }
+      {
+      fixed_t val{0.0000152587890625};
+      std::string out{std::format("{:8}", val)};
+      expect_eq(out, "0.00001525"sv);
+      }
+      {
+      fixed_t val{-0.0000152587890625};
+      std::string out{std::format("{:8}", val)};
+      expect_eq(out, "-0.00001525"sv);
+      }
+      {
+      fixed_t val{0.0000152587890625};
+      std::string out{std::format("{:12}", val)};
+      expect_eq(out, "0.000015258789"sv);
+      }
+      {
+      fixed_t val{-0.0000152587890625};
+      std::string out{std::format("{:12}", val)};
+      expect_eq(out, "-0.000015258789"sv);
+      }
       return {};
     };
     result |= run_runtime_test(fn_tmpl);

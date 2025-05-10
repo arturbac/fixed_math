@@ -6,20 +6,32 @@
 #include "math.h"
 #include "fixed_string.h"
 #include <format>
+#include <algorithm>
 
-// TODO add precision handling
 template<>
 struct std::formatter<fixedmath::fixed_t>
   {
+  int precision = fixedmath::func::from_string_default_precision;
+
   template<typename ParseContext>
   constexpr auto parse(ParseContext & ctx) -> decltype(ctx.begin())
     {
-    return ctx.begin();
+    auto it = ctx.begin();
+    if(it != ctx.end() && *it != '}')
+      {
+      auto parse_res{std::from_chars(it, ctx.end(), precision)};
+      if(parse_res.ec == std::errc{})
+        it = parse_res.ptr;
+      else
+        throw std::format_error("Invalid fixed_t precision format");
+      }
+    return it;
     }
 
   template<typename FormatContext>
   auto format(fixedmath::fixed_t const & value, FormatContext & ctx) const -> decltype(ctx.out())
     {
-    return format_to(ctx.out(), "{}", fixedmath::func::to_string(value));
+    auto const formatted{fixedmath::func::to_string(value, precision)};
+    return std::copy(formatted.begin(), formatted.end(), ctx.out());
     }
   };
