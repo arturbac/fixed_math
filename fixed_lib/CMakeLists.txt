@@ -23,10 +23,10 @@ install(TARGETS fixed_math
 )
 
 install(FILES ${fixed_math_include_files}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fixed_math 
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fixedmath 
         )
 install(FILES ${fixed_math_include_files_detail}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fixed_math/detail
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fixedmath/detail
         )
 
 set(ConfigPackageLocation ${CMAKE_INSTALL_LIBDIR}/cmake/fixed_math)
